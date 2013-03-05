@@ -1,0 +1,7 @@
+[
+    {
+        "settings": ["master"],
+        "TODO": "TODO"
+    },
+    { "settings": [ "device:opera-mini" ], "selector": "opera-mini" }
+]

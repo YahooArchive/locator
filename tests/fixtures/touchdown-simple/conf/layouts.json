@@ -1,0 +1,21 @@
+[
+  {
+    "settings": ["master"],
+    "default": {
+      "main": {
+        "type": "foo"
+      }
+    }
+  },
+  {
+    "settings": ["device:smartphone"],
+    "default": {
+      "main": {
+        "type": "foo",
+        "config": {
+          "bar": "baz"
+        }
+      }
+    }
+  }
+]

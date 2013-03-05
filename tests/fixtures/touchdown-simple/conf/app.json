@@ -1,0 +1,10 @@
+[
+  {
+    "settings": ["master"],
+    "selector": "default"
+  },
+  {
+    "settings": ["device:smartphone"],
+    "selector": "smartphone"
+  }
+]
