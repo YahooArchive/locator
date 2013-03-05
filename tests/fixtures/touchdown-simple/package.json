@@ -1,0 +1,9 @@
+{
+  "name": "simple",
+  "dependencies": {
+    "roster": "*"
+  },
+  "touchdown": {
+    "bundle": "app"
+  }
+}
