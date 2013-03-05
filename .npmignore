@@ -1,0 +1,6 @@
+*.log
+
+GNUmakefile
+tests
+lib-conv
+html-report

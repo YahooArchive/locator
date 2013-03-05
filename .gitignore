@@ -1,14 +1,6 @@
-lib-cov
-*.seed
+node_modules
+!tests/fixtures/**/node_modules
 *.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
 
-pids
-logs
-results
-
-npm-debug.log
+lib-cov
+html-report

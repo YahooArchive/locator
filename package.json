@@ -1,0 +1,34 @@
+{
+    "name": "modown-locator",
+    "version": "0.1.0",
+    "description": "modown resource locator",
+    "author": "Drew Folta <folta@yahoo-inc.com>",
+    "contributors": [
+        "Isao Yagi <isao@yahoo-inc.com>",
+        "Michael Ridgway <mridgway@yahoo-inc.com>"
+    ],
+    "directories": {
+        "lib": "./lib"
+    },
+    "engines": {
+        "node": ">0.8",
+        "npm": ">1.0"
+    },
+    "homepage": "yo/modown",
+    "dependencies": {
+        "async": "*",
+        "dive": "*",
+        "glob": "~3.1.20"
+    },
+    "devDependencies": {
+        "chai": "*",
+        "mocha": "*",
+        "istanbul": "0.1.x",
+        "mocha-istanbul": "*"
+    },
+    "scripts": {
+        "test": "make test",
+        "coverage": "make coverage"
+    },
+    "license": "MIT"
+}
