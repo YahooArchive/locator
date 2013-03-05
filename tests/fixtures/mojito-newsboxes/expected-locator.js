@@ -11,7 +11,6 @@ module.exports = {
             },
             configs: {
                 'application.json': 'application.json',
-                'package.json': 'package.json',
                 'routes.json': 'routes.json'
             },
             middleware: {
@@ -29,13 +28,6 @@ module.exports = {
             name: 'modown-lib-read',
             type: 'package',
             baseDirectory: __dirname = '/node_modules/modown-lib-read',
-            resources: {
-                '{}': {
-                    configs: {
-                        'package.json': 'package.json'
-                    }
-                }
-            },
             bundles: {
                 Read: {
                     name: 'Read',
@@ -84,8 +76,7 @@ module.exports = {
             resources: {
                 '{}': {
                     configs: {
-                        'dimensions.json': 'lib/app/dimensions.json',
-                        'package.json': 'package.json'
+                        'dimensions.json': 'lib/app/dimensions.json'
                     },
                     middleware: {
                         'modown-contextualizer': 'lib/app/middleware/modown-contextualizer.js'
@@ -134,7 +125,7 @@ module.exports = {
         Weather: {
             name: 'Weather',
             type: 'mojito-mojit',
-            baseDirector: __dirname + '/mojits/Weather',
+            baseDirectory: __dirname + '/mojits/Weather',
             resources: {
                 '{}': {
                     templates: {
