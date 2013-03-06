@@ -6,7 +6,8 @@ module.exports = {
         '{}': {
             configs: {
                 app: 'configs/app.json',
-                dimensions: 'configs/dimensions.json'
+                dimensions: 'configs/dimensions.json',
+                routes: 'configs/routes.js'
             },
             controllers: {
                 player: 'controllers/player.js',
@@ -31,7 +32,6 @@ module.exports = {
             resources: {
                 '{}': {
                     configs: {
-                        'test/test': 'configs/test/test.json',
                         roster: 'configs/roster.json'
                     },
                     controllers: {

@@ -20,6 +20,20 @@ describe('locator', function() {
         });
     });
 
+    describe('walkAppTouchdown', function() {
+        it('touchdown-simple', function() {
+            var locator = new Locator();
+            locator.walkAppTouchdown(libpath.join(fixturesPath, 'touchdown-simple'), function(err) {
+                if (err) {
+                    throw err;
+                }
+                var have = locator.getData();
+                var want = require(fixturesPath + '/touchdown-simple/expected-locator.js');
+                expect(have).to.deep.equal(want);
+            });
+        });
+    });
+
 
 });
 
