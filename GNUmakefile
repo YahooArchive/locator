@@ -9,7 +9,7 @@ lib-cov: clean-coverage
 
 .PHONY: coverage
 coverage: lib-cov
-	COVER_RESOLVER=1 $(NPMBIN)/mocha --reporter mocha-istanbul tests/lib
+	COVER_LOCATOR=1 $(NPMBIN)/mocha --reporter mocha-istanbul tests/lib
 	@echo
 	@echo Open html-report/index.html file in your browser
 
