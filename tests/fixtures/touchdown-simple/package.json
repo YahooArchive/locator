@@ -5,5 +5,8 @@
   },
   "touchdown": {
     "bundle": "app"
+  },
+  "modown": {
+    "ruleset": "touchdown-package"
   }
 }
