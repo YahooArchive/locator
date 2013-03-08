@@ -7,6 +7,9 @@
         "Isao Yagi <isao@yahoo-inc.com>",
         "Michael Ridgway <mridgway@yahoo-inc.com>"
     ],
+    "main": {
+        "lib/bundleLocator.js"
+    },
     "directories": {
         "lib": "./lib"
     },
@@ -16,7 +19,8 @@
     },
     "homepage": "yo/modown",
     "dependencies": {
-        "async": "*"
+        "async": "*",
+        "dive": "*"
     },
     "devDependencies": {
         "chai": "*",

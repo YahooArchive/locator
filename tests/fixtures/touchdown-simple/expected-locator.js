@@ -1,7 +1,8 @@
 module.exports = {
+    options: {},
     name: 'simple',
-    type: 'package',
     baseDirectory: __dirname,
+    type: 'touchdown-package',
     resources: {
         '{}': {
             configs: {
@@ -26,9 +27,10 @@ module.exports = {
     },
     bundles: {
         roster: {
+            options: {},
             name: 'roster',
-            type: 'package',
             baseDirectory: __dirname + '/node_modules/roster',
+            type: 'touchdown-package',
             resources: {
                 '{}': {
                     configs: {
@@ -36,11 +38,6 @@ module.exports = {
                     },
                     controllers: {
                         roster: 'controllers/roster.js'
-                    },
-                    lang: {
-                        roster: {
-                            'en-US': 'lang/roster.en-US.json'
-                        }
                     },
                     styles: {
                         roster: 'styles/css/roster.sass'
@@ -52,6 +49,11 @@ module.exports = {
                     views: {
                         roster: 'views/roster.js'
                     }
+                },
+                'en-US': {
+                    lang: {
+                        roster: 'lang/roster.en-US.json'
+                    },
                 }
             }
         }
