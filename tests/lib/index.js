@@ -19,6 +19,8 @@ function compareObjects(have, want) {
         Object.keys(want).forEach(function(key) {
             compareObjects(have[key], want[key]);
         });
+    } else {
+        expect(have).to.deep.equal(want);
     }
 }
 
@@ -27,19 +29,18 @@ describe('BundleLocator', function() {
 
     describe('parseBundle', function() {
 
-/* TODO
-        it('mojito-newsboxes', function() {
+        it('mojito-newsboxes', function(next) {
             var locator = new BundleLocator();
-            locator.walkAppMojito(libpath.join(fixturesPath, 'mojito-newsboxes'), function(err) {
+            var options = {};
+            locator.parseBundle(libpath.join(fixturesPath, 'mojito-newsboxes'), options, function(err, bundle) {
                 if (err) {
                     throw err;
                 }
-                var have = locator.getData();
                 var want = require(fixturesPath + '/mojito-newsboxes/expected-locator.js');
-                expect(have).to.deep.equal(want);
+                compareObjects(bundle, want);
+                next();
             });
         });
-*/
 
         it('touchdown-simple', function(next) {
             var locator = new BundleLocator();

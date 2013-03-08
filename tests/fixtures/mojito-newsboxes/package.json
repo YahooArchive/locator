@@ -10,5 +10,8 @@
     },
     "dependencies": {
         "modown": "> 0.1"
+    },
+    "modown": {
+        "ruleset": "mojito-package"
     }
 }

@@ -1,11 +1,13 @@
 module.exports = {
+    options: {},
     name: 'modown-newsboxes',
-    type: 'package',
     baseDirectory: __dirname,
+    type: 'mojito-package',
     resources: {
         '{}': {
             configs: {
                 'application.json': 'application.json',
+                'package.json': 'package.json',
                 'routes.json': 'routes.json'
             },
             assets: {
@@ -25,9 +27,12 @@ module.exports = {
     },
     bundles: {
         Shelf: {
+            options: {
+                ruleset: 'mojito-mojit'
+            },
             name: 'Shelf',
-            type: 'mojito-mojit',
             baseDirectory: __dirname + '/mojits/Shelf',
+            type: 'mojito-mojit',
             resources: {
                 common: {
                     controllers: {
@@ -43,11 +48,11 @@ module.exports = {
                             shelf: 'assets/shelf.css'
                         }
                     },
-                    binders: {
-                        index: 'binders/index.js'
-                    },
                     templates: {
                         index: 'templates/index.hb.html'
+                    },
+                    views: {
+                        index: 'views/index.js'
                     }
                 },
                 'opera-mini': {
@@ -63,9 +68,12 @@ module.exports = {
             }
         },
         Weather: {
+            options: {
+                ruleset: 'mojito-mojit'
+            },
             name: 'Weather',
-            type: 'mojito-mojit',
             baseDirectory: __dirname + '/mojits/Weather',
+            type: 'mojito-mojit',
             resources: {
                 common: {
                     controllers: {
@@ -83,9 +91,10 @@ module.exports = {
             }
         },
         modown: {
+            options: {},
             name: 'modown',
-            type: 'package',
             baseDirectory: __dirname + '/node_modules/modown/lib/app',
+            type: 'mojito-package',
             resources: {
                 '{}': {
                     configs: {
@@ -98,15 +107,25 @@ module.exports = {
             }
         },
         'modown-lib-read': {
+            options: {},
             name: 'modown-lib-read',
-            type: 'package',
             baseDirectory: __dirname + '/node_modules/modown-lib-read',
-            resources: {},
+            type: 'mojito-package',
+            resources: {
+                '{}': {
+                    configs: {
+                        'package.json': 'package.json'
+                    }
+                }
+            },
             bundles: {
                 Read: {
+                    options: {
+                        ruleset: 'mojito-mojit'
+                    },
                     name: 'Read',
-                    type: 'mojito-mojit',
                     baseDirectory: __dirname + '/node_modules/modown-lib-read/mojits/Read',
+                    type: 'mojito-mojit',
                     resources: {
                         '{}': {
                             assets: {
@@ -114,11 +133,11 @@ module.exports = {
                                     read: 'assets/read.css'
                                 }
                             },
-                            binders: {
-                                index:  'binders/index.js'
-                            },
                             templates: {
                                 index: 'templates/index.hb.html'
+                            },
+                            views: {
+                                index:  'views/index.js'
                             }
                         },
                         common: {
