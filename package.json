@@ -7,9 +7,7 @@
         "Isao Yagi <isao@yahoo-inc.com>",
         "Michael Ridgway <mridgway@yahoo-inc.com>"
     ],
-    "main": {
-        "lib/bundleLocator.js"
-    },
+    "main": "lib/bundleLocator.js",
     "directories": {
         "lib": "./lib"
     },
@@ -26,11 +24,10 @@
         "chai": "*",
         "mocha": "*",
         "istanbul": "0.1.x",
-        "mocha-istanbul": "*"
+        "mocha-istanbul": "git://github.com/arikon/mocha-istanbul.git#master"
     },
     "scripts": {
-        "test": "make test",
-        "coverage": "make coverage"
+        "test": "make test && make coverage"
     },
     "license": "MIT"
 }

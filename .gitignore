@@ -3,4 +3,5 @@ node_modules
 *.log
 
 lib-cov
-html-report
+lcov-report
+lcov.info

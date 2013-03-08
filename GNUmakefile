@@ -9,9 +9,9 @@ lib-cov: clean-coverage
 
 .PHONY: coverage
 coverage: lib-cov
-	COVER_LOCATOR=1 $(NPMBIN)/mocha --reporter mocha-istanbul tests/lib
+	COVER_LOCATOR=1 ISTANBUL_REPORTERS=text-summary,lcov $(NPMBIN)/mocha --reporter mocha-istanbul tests/lib
 	@echo
-	@echo Open html-report/index.html file in your browser
+	@echo Open lcov-report/index.html file in your browser
 
 .PHONY: clean
 clean: clean-coverage
@@ -19,5 +19,6 @@ clean: clean-coverage
 .PHONY: clean-coverage
 clean-coverage:
 	-rm -rf lib-cov
-	-rm -rf html-report
+	-rm -rf lcov-report
+	-rm lcov.info
 

@@ -1,6 +1,6 @@
 *.log
-
 GNUmakefile
 tests
 lib-conv
-html-report
+lcov-report
+lcov.info
