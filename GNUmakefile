@@ -2,7 +2,9 @@ NPMBIN = ./node_modules/.bin
 
 .PHONY: test
 test: lib
-	$(NPMBIN)/mocha --reporter spec tests/lib
+	-rm -rf artifacts/test/report.xml
+	-mkdir -p artifacts/test
+	$(NPMBIN)/mocha --reporter xunit tests/lib > artifacts/test/report.xml
 
 lib-cov: clean-coverage
 	@test -d artifacts || mkdir artifacts
