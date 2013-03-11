@@ -5,7 +5,7 @@
  */
 
 
-/*jslint anon:true, sloppy:true, regexp:true*/
+/*jslint anon:true, white:true, sloppy:true, regexp:true*/
 /*global YUI*/
 
 

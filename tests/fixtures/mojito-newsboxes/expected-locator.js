@@ -1,3 +1,4 @@
+/*jslint nomen:true, white:true, node:true */
 module.exports = {
     options: {},
     name: 'modown-newsboxes',
@@ -146,7 +147,7 @@ module.exports = {
                             },
                             models: {
                                 rss:  'models/rss.common.js'
-                            },
+                            }
                         },
                         'opera-mini': {
                             assets: {

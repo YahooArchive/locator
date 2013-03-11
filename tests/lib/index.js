@@ -1,7 +1,13 @@
+// TODO COPYRIGHT
+/*jslint nomen:true, white:true, node:true */
+/*globals describe,it */
+"use strict";
+
+
 var libpath = require('path'),
     expect = require('chai').expect,
-    BundleLocator = require(process.env.COVER_LOCATOR? '../../lib-cov/bundleLocator.js' : '../../lib/bundleLocator.js'),
-    Bundle = require(process.env.COVER_LOCATOR? '../../lib-cov/bundle.js' : '../../lib/bundle.js'),
+    BundleLocator = require(process.env.COVER_LOCATOR? '../../artifacts/lib-cov/bundleLocator.js' : '../../lib/bundleLocator.js'),
+    Bundle = require(process.env.COVER_LOCATOR? '../../artifacts/lib-cov/bundle.js' : '../../lib/bundle.js'),
     fixturesPath = libpath.join(__dirname, '../fixtures');
 
 
@@ -30,8 +36,8 @@ describe('BundleLocator', function() {
     describe('parseBundle', function() {
 
         it('mojito-newsboxes', function(next) {
-            var locator = new BundleLocator();
-            var options = {};
+            var locator = new BundleLocator(),
+                options = {};
             locator.parseBundle(libpath.join(fixturesPath, 'mojito-newsboxes'), options, function(err, bundle) {
                 if (err) {
                     throw err;
@@ -43,8 +49,8 @@ describe('BundleLocator', function() {
         });
 
         it('touchdown-simple', function(next) {
-            var locator = new BundleLocator();
-            var options = {};
+            var locator = new BundleLocator(),
+                options = {};
             locator.parseBundle(libpath.join(fixturesPath, 'touchdown-simple'), options, function(err, bundle) {
                 if (err) {
                     throw err;

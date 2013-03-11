@@ -1,3 +1,4 @@
+/*jslint nomen:true, white:true, node:true */
 var locator = require('locator');
 
 module.exports = function (req, res, options, next) {

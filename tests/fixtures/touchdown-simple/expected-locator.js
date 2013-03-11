@@ -1,3 +1,4 @@
+/*jslint nomen:true, white:true, node:true */
 module.exports = {
     options: {},
     name: 'simple',
@@ -53,7 +54,7 @@ module.exports = {
                 'en-US': {
                     lang: {
                         roster: 'lang/roster.en-US.json'
-                    },
+                    }
                 }
             }
         }

@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "shared": {},
+    "jobs": {
+        "component": {
+            "build": {
+                "publish": {
+                    "task": "none"
+                }
+            }
+        }
+    }
+}

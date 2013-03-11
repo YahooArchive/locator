@@ -1,6 +1,4 @@
 *.log
 GNUmakefile
 tests
-lib-conv
-lcov-report
-lcov.info
+artifacts
