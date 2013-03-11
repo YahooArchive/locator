@@ -13,10 +13,11 @@ lib-cov: clean-coverage
 .PHONY: coverage
 coverage: lib-cov
 	COVER_LOCATOR=1 ISTANBUL_REPORTERS=text-summary,lcov $(NPMBIN)/mocha --reporter mocha-istanbul tests/lib
-	mv lcov-report artifacts/
-	mv lcov.info artifacts/
+	-mkdir -p artifacts/test/coverage
+	mv lcov-report artifacts/test/coverage
+	mv lcov.info artifacts/test/coverage
 	@echo
-	@echo Open artifacts/lcov-report/index.html file in your browser
+	@echo Open artifacts/test/coverage/lcov-report/index.html file in your browser
 
 .PHONY: clean
 clean: clean-coverage
@@ -24,6 +25,6 @@ clean: clean-coverage
 .PHONY: clean-coverage
 clean-coverage:
 	-rm -rf artifacts/lib-cov
-	-rm -rf artifacts/lcov-report
-	-rm artifacts/lcov.info
+	-rm -rf artifacts/test/coverage/lcov-report
+	-rm artifacts/test/coverage/lcov.info
 
