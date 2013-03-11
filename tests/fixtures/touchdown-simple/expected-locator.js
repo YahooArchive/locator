@@ -40,6 +40,11 @@ module.exports = {
                     controllers: {
                         roster: 'controllers/roster.js'
                     },
+                    lang: {
+                        'en-US': {
+                            roster: 'lang/roster.en-US.json'
+                        }
+                    },
                     styles: {
                         roster: 'styles/css/roster.sass'
                     },
@@ -49,11 +54,6 @@ module.exports = {
                     },
                     views: {
                         roster: 'views/roster.js'
-                    }
-                },
-                'en-US': {
-                    lang: {
-                        roster: 'lang/roster.en-US.json'
                     }
                 }
             }
