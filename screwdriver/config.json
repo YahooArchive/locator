@@ -1,6 +1,9 @@
 {
     "version": 2,
-    "shared": {},
+    "shared": {
+        "notification_email": "mojito-next@yahoo-inc.com",
+        "build_container": "node8"
+    },
     "jobs": {
         "component": {
             "build": {
