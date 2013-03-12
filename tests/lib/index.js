@@ -33,30 +33,34 @@ function compareObjects(have, want) {
 
 describe('BundleLocator', function() {
 
-    describe('parseBundle', function() {
+    describe('locateBundles', function() {
 
         it('mojito-newsboxes', function(next) {
-            var locator = new BundleLocator(),
+            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
+                locator = new BundleLocator(),
                 options = {};
-            locator.parseBundle(libpath.join(fixturesPath, 'mojito-newsboxes'), options, function(err, bundle) {
+            locator.locateBundles(fixture, options, function(err) {
                 if (err) {
                     throw err;
                 }
-                var want = require(fixturesPath + '/mojito-newsboxes/expected-locator.js');
-                compareObjects(bundle, want);
+                var have = locator.getRootBundle();
+                var want = require(fixture + '/expected-locator.js');
+                compareObjects(have, want);
                 next();
             });
         });
 
         it('touchdown-simple', function(next) {
-            var locator = new BundleLocator(),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                locator = new BundleLocator(),
                 options = {};
-            locator.parseBundle(libpath.join(fixturesPath, 'touchdown-simple'), options, function(err, bundle) {
+            locator.locateBundles(fixture, options, function(err) {
                 if (err) {
                     throw err;
                 }
-                var want = require(fixturesPath + '/touchdown-simple/expected-locator.js');
-                compareObjects(bundle, want);
+                var have = locator.getRootBundle();
+                var want = require(fixture + '/expected-locator.js');
+                compareObjects(have, want);
                 next();
             });
         });
