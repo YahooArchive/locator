@@ -40,11 +40,12 @@ describe('BundleLocator', function() {
                 locator = new BundleLocator(),
                 options = {};
             locator.locateBundles(fixture, options, function(err) {
+                var have, want;
                 if (err) {
                     throw err;
                 }
-                var have = locator.getRootBundle();
-                var want = require(fixture + '/expected-locator.js');
+                have = locator.getRootBundle();
+                want = require(fixture + '/expected-locator.js');
                 compareObjects(have, want);
                 next();
             });
@@ -55,11 +56,12 @@ describe('BundleLocator', function() {
                 locator = new BundleLocator(),
                 options = {};
             locator.locateBundles(fixture, options, function(err) {
+                var have, want;
                 if (err) {
                     throw err;
                 }
-                var have = locator.getRootBundle();
-                var want = require(fixture + '/expected-locator.js');
+                have = locator.getRootBundle();
+                want = require(fixture + '/expected-locator.js');
                 compareObjects(have, want);
                 next();
             });
