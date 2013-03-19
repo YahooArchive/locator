@@ -7,9 +7,6 @@
     "jobs": {
         "component": {
             "build": {
-                "docs": {
-                    "task": "none"
-                },
                 "test": {
                     "task": "script",
                     "command": "node node_modules/istanbul/lib/cli.js cover --dir ${COVERAGE_DIR} -- ./node_modules/mocha/bin/_mocha tests/lib/*.js --reporter xunit-file",
