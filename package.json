@@ -18,7 +18,8 @@
     "homepage": "yo/modown",
     "dependencies": {
         "async": "*",
-        "dive": "*"
+        "dive": "*",
+        "rsvp": "1.2.0"
     },
     "devDependencies": {
         "chai": "*",

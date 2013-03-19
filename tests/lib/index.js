@@ -39,15 +39,17 @@ describe('BundleLocator', function() {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator(),
                 options = {};
-            locator.locateBundles(fixture, options, function(err) {
-                var have, want;
-                if (err) {
-                    throw err;
+            locator.parseBundle(fixture, options).then(function(have) {
+                var want = require(fixture + '/expected-locator.js');
+                try {
+                    compareObjects(have, want);
+                    compareObjects(locator.getBundle('Weather'), want.bundles.Weather);
+                    next();
+                } catch(err) {
+                    next(err);
                 }
-                have = locator.getRootBundle();
-                want = require(fixture + '/expected-locator.js');
-                compareObjects(have, want);
-                next();
+            }, function(err) {
+                next(err);
             });
         });
 
@@ -55,15 +57,16 @@ describe('BundleLocator', function() {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 locator = new BundleLocator(),
                 options = {};
-            locator.locateBundles(fixture, options, function(err) {
-                var have, want;
-                if (err) {
-                    throw err;
+            locator.parseBundle(fixture, options).then(function(have) {
+                var want = require(fixture + '/expected-locator.js');
+                try {
+                    compareObjects(have, want);
+                    next();
+                } catch (err) {
+                    next(err);
                 }
-                have = locator.getRootBundle();
-                want = require(fixture + '/expected-locator.js');
-                compareObjects(have, want);
-                next();
+            }, function(err) {
+                next(err);
             });
         });
 
