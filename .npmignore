@@ -1,4 +1,4 @@
-*.log
-GNUmakefile
 tests
+*.log
 artifacts
+coverage

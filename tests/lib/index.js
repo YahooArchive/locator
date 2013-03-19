@@ -1,13 +1,13 @@
 // TODO COPYRIGHT
-/*jslint nomen:true, white:true, node:true */
+/*jslint nomen:true, anon:true, node:true */
 /*globals describe,it */
 "use strict";
 
 
 var libpath = require('path'),
     expect = require('chai').expect,
-    BundleLocator = require(process.env.COVER_LOCATOR? '../../artifacts/lib-cov/bundleLocator.js' : '../../lib/bundleLocator.js'),
-    Bundle = require(process.env.COVER_LOCATOR? '../../artifacts/lib-cov/bundle.js' : '../../lib/bundle.js'),
+    BundleLocator = require('../../lib/bundleLocator.js'),
+    Bundle = require('../../lib/bundle.js'),
     fixturesPath = libpath.join(__dirname, '../fixtures');
 
 
@@ -45,7 +45,7 @@ describe('BundleLocator', function() {
                     compareObjects(have, want);
                     compareObjects(locator.getBundle('Weather'), want.bundles.Weather);
                     next();
-                } catch(err) {
+                } catch (err) {
                     next(err);
                 }
             }, function(err) {

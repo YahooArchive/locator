@@ -23,12 +23,14 @@
     },
     "devDependencies": {
         "chai": "*",
+        "istanbul": "*",
+        "jslint": "*",
         "mocha": "*",
-        "istanbul": "0.1.x",
-        "mocha-istanbul": "git://github.com/arikon/mocha-istanbul.git#master"
+        "xunit-file": "*"
     },
     "scripts": {
-        "test": "make test && make coverage"
+        "cover": "./node_modules/istanbul/lib/cli.js cover -- ./node_modules/mocha/bin/_mocha tests/lib/*.js --reporter spec",
+        "test": "./node_modules/.bin/jslint lib/*.js tests/lib/*.js && ./node_modules/.bin/_mocha tests/lib/*.js --reporter spec"
     },
-    "license": "MIT"
+    "license": "BSD"
 }

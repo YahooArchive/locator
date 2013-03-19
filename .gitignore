@@ -2,3 +2,4 @@ node_modules
 !tests/fixtures/**/node_modules
 *.log
 artifacts
+coverage
