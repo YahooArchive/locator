@@ -40,10 +40,14 @@ describe('BundleLocator', function() {
                 locator = new BundleLocator(),
                 options = {};
             locator.parseBundle(fixture, options).then(function(have) {
-                var want = require(fixture + '/expected-locator.js');
+                var want = require(fixture + '/expected-locator.js'),
+                    weather;
                 try {
+                    weather = locator.getBundle('Weather');
                     compareObjects(have, want);
-                    compareObjects(locator.getBundle('Weather'), want.bundles.Weather);
+                    compareObjects(weather, want.bundles.Weather);
+                    compareObjects(weather.getResources(), want.bundles.Weather.resources['{}']);
+                    compareObjects(weather.getResources({}, 'common'), want.bundles.Weather.resources.common);
                     next();
                 } catch (err) {
                     next(err);
