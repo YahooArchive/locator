@@ -47,20 +47,18 @@ describe('BundleLocator', function() {
                 options = {};
             locator.parseBundle(fixture, options).then(function(have) {
                 var want = require(fixture + '/expected-locator.js'),
-                    weather;
+                    read;
                 try {
-                    weather = locator.getBundle('Weather');
+                    read = locator.getBundle('Read');
                     compareObjects(have, want);
-                    compareObjects(weather, want.bundles.Weather);
-                    compareObjects(weather.getResources(), want.bundles.Weather.resources['{}']);
-                    compareObjects(weather.getResources({}, 'common'), want.bundles.Weather.resources.common);
+                    compareObjects(read, want.bundles['modown-lib-read'].bundles.Read);
+                    compareObjects(read.getResources(), want.bundles['modown-lib-read'].bundles.Read.resources['{}']);
+                    compareObjects(read.getResources({}, 'common'), want.bundles['modown-lib-read'].bundles.Read.resources.common);
                     next();
                 } catch (err) {
                     next(err);
                 }
-            }, function(err) {
-                next(err);
-            });
+            }, next);
         });
 
         it('touchdown-simple', function(next) {
@@ -75,9 +73,7 @@ describe('BundleLocator', function() {
                 } catch (err) {
                     next(err);
                 }
-            }, function(err) {
-                next(err);
-            });
+            }, next);
         });
 
     });
