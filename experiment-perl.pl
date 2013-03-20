@@ -5,9 +5,15 @@ use warnings;
 use Data::Dumper;
 
 our @FIND = qw(
-    Yahoo::Backyard::SingleSignOn
+    Cwd
+    Data::Dumper
+    File::Basename
+    File::Path
+    Getopt::Long
     HTTP::Status
+    Pod::Usage
     XML::LibXML
+    Yahoo::Backyard::SingleSignOn
 );
 
 sub main {
