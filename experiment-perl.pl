@@ -14,6 +14,7 @@ our @FIND = qw(
     Pod::Usage
     XML::LibXML
     Yahoo::Backyard::SingleSignOn
+    ysecure
 );
 
 sub main {
