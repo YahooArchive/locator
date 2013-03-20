@@ -5,31 +5,21 @@ use warnings;
 use Data::Dumper;
 
 our @FIND = qw(
-    Cwd
-    Data::Dumper
-    File::Basename
-    File::Path
-    Getopt::Long
-    HTTP::Status
-    Pod::Usage
-    XML::LibXML
-    Yahoo::Backyard::SingleSignOn
-    ysecure
+    /home/y/conf/keydb/mcs_mweb.keydb                                           
+    /home/y/conf/keydb/mobile.build.keydb
+    /home/y/conf/ymobile/dist/distkey                                           
 );
 
 sub main {
     my @found;
     foreach my $find ( @FIND ) {
-        eval "use $find";
-        unless ($@) {
-            push @found, $find;
-        }
+        push(@found, $find) if -e $find;
     }
     print Dumper(\@found);
 
-    use ysecure;
-    my $username = ycrGetKey('mobile.build.user.name');
-    print "-- USER $username\n";
+#   use ysecure;
+#   my $username = ycrGetKey('mobile.build.user.name');
+#   print "-- USER $username\n";
 }
 main();
 
