@@ -78,6 +78,83 @@ describe('BundleLocator', function() {
 
     });
 
+
+    describe('plugins', function() {
+
+        it('basics', function(next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                locator = new BundleLocator(),
+                options = {},
+                pathCalls = {}, // relative path: array of calls
+                pluginJS,
+                pluginDefault,
+                pluginAll;
+
+            pluginJS = {
+                calls: 0,
+                resourceAdded: function(res, api) {
+                    pluginJS.calls += 1;
+                    if (!pathCalls[res.relativePath]) {
+                        pathCalls[res.relativePath] = [];
+                    }
+                    pathCalls[res.relativePath].push('js');
+                }
+            };
+            locator.plug('js', pluginJS);
+
+            pluginDefault = {
+                calls: 0,
+                describe: {
+                    extensions: 'css,dust'
+                },
+                resourceAdded: function(res, api) {
+                    pluginDefault.calls += 1;
+                    if (!pathCalls[res.relativePath]) {
+                        pathCalls[res.relativePath] = [];
+                    }
+                    pathCalls[res.relativePath].push('default');
+                    return api.promise(function(fulfill, reject) {
+                        fulfill();
+                    });
+                }
+            };
+            locator.plug(null, pluginDefault);
+
+            pluginAll = {
+                calls: 0,
+                resourceAdded: function(res, api) {
+                    pluginAll.calls += 1;
+                    if (!pathCalls[res.relativePath]) {
+                        pathCalls[res.relativePath] = [];
+                    }
+                    pathCalls[res.relativePath].push('all');
+                    return api.promise(function(fulfill, reject) {
+                        fulfill();
+                    });
+                }
+            };
+            locator.plug(null, pluginAll);
+
+            locator.parseBundle(fixture, options).then(function(have) {
+                var want = require(fixture + '/expected-locator.js');
+                try {
+                    compareObjects(have, want);
+                    expect(pluginJS.calls).to.equal(8);
+                    expect(pluginDefault.calls).to.equal(2);
+                    expect(pluginAll.calls).to.equal(15);
+                    // sample a couple to make sure that plugins were called in registration order
+                    expect(pathCalls['controllers/teamManager.js']).to.deep.equal(['js', 'all']);
+                    expect(pathCalls['templates/roster.dust']).to.deep.equal(['default', 'all']);
+                    next();
+                } catch (err) {
+                    next(err);
+                }
+            }, next);
+        });
+
+    });
+
+
 });
 
 
