@@ -90,8 +90,8 @@ describe('BundleLocator', function() {
                 type: 'controller',
                 ext: '.js'
             };
-            expect(locator._filterResource(res)).to.equal(true);
-            expect(locator._filterResource(res, {})).to.equal(true);
+            expect(locator._filterResource(res)).to.equal(false);
+            expect(locator._filterResource(res, {})).to.equal(false);
             expect(locator._filterResource(res, {extensions: 'js'})).to.equal(true);
             expect(locator._filterResource(res, {extensions: ['js', 'orange']})).to.equal(true);
             expect(locator._filterResource(res, {extensions: 'orange'})).to.equal(false);
@@ -123,7 +123,7 @@ describe('BundleLocator', function() {
                     pathCalls[res.relativePath].push('js');
                 }
             };
-            locator.plug(pluginJS, {extensions: 'js'});
+            locator.plug({extensions: 'js'}, pluginJS);
 
             pluginDefault = {
                 calls: 0,
@@ -141,7 +141,7 @@ describe('BundleLocator', function() {
                     });
                 }
             };
-            locator.plug(pluginDefault);
+            locator.plug(pluginDefault.describe, pluginDefault);
 
             pluginAll = {
                 calls: 0,
@@ -156,7 +156,7 @@ describe('BundleLocator', function() {
                     });
                 }
             };
-            locator.plug(pluginAll);
+            locator.plug({}, pluginAll);
 
             locator.parseBundle(fixture, options).then(function(have) {
                 var want = require(fixture + '/expected-locator.js');
@@ -164,10 +164,10 @@ describe('BundleLocator', function() {
                     compareObjects(have, want);
                     expect(pluginJS.calls).to.equal(8);
                     expect(pluginDefault.calls).to.equal(2);
-                    expect(pluginAll.calls).to.equal(15);
+                    expect(pluginAll.calls).to.equal(0);
                     // sample a couple to make sure that plugins were called in registration order
-                    expect(pathCalls['controllers/teamManager.js']).to.deep.equal(['js', 'all']);
-                    expect(pathCalls['templates/roster.dust']).to.deep.equal(['default', 'all']);
+                    expect(pathCalls['controllers/teamManager.js']).to.deep.equal(['js']);
+                    expect(pathCalls['templates/roster.dust']).to.deep.equal(['default']);
                     next();
                 } catch (err) {
                     next(err);
