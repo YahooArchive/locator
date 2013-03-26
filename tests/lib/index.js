@@ -213,14 +213,14 @@ describe('BundleLocator', function() {
             BundleLocator = require('../../lib/bundleLocator.js');
             locator = new BundleLocator();
 
-            locator.plug('dust', {
+            locator.plug({extensions: 'dust'}, {
                 resourceAdded: function(res, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
-                    return api.writeFile(res.bundleName, path, '// just testing', {encoding: 'utf8'});
+                    return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
                 }
             });
 
-            locator.plug('less', {
+            locator.plug({extensions: 'less'}, {
                 resourceAdded: function(res, api) {
                     reads.push([res.bundleName, res.relativePath].join(' '));
                 }
