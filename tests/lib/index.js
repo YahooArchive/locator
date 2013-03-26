@@ -81,6 +81,29 @@ describe('BundleLocator', function() {
 
     describe('plugins', function() {
 
+        it('_filterResource()', function() {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                locator = new BundleLocator(),
+                res;
+
+            res = {
+                type: 'controller',
+                ext: '.js'
+            };
+            expect(locator._filterResource(res)).to.equal(true);
+            expect(locator._filterResource(res, {})).to.equal(true);
+            expect(locator._filterResource(res, {extensions: 'js'})).to.equal(true);
+            expect(locator._filterResource(res, {extensions: ['js', 'orange']})).to.equal(true);
+            expect(locator._filterResource(res, {extensions: 'orange'})).to.equal(false);
+            expect(locator._filterResource(res, {types: 'controller'})).to.equal(true);
+            expect(locator._filterResource(res, {types: ['controller', 'red']})).to.equal(true);
+            expect(locator._filterResource(res, {types: 'red'})).to.equal(false);
+            expect(locator._filterResource(res, {extensions: 'js', types: 'controller'})).to.equal(true);
+            expect(locator._filterResource(res, {extensions: 'orange', types: 'controller'})).to.equal(false);
+            expect(locator._filterResource(res, {extensions: 'js', types: 'red'})).to.equal(false);
+            expect(locator._filterResource(res, {extensions: 'orange', types: 'red'})).to.equal(false);
+        });
+
         it('basics', function(next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 locator = new BundleLocator(),
@@ -100,7 +123,7 @@ describe('BundleLocator', function() {
                     pathCalls[res.relativePath].push('js');
                 }
             };
-            locator.plug(pluginJS, 'js');
+            locator.plug(pluginJS, {extensions: 'js'});
 
             pluginDefault = {
                 calls: 0,
