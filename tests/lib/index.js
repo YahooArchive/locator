@@ -11,9 +11,10 @@
 
 
 var libpath = require('path'),
+    libfs = require('fs'),
+    mockery = require('mockery'),
     expect = require('chai').expect,
     BundleLocator = require('../../lib/bundleLocator.js'),
-    Bundle = require('../../lib/bundle.js'),
     fixturesPath = libpath.join(__dirname, '../fixtures');
 
 
@@ -173,6 +174,79 @@ describe('BundleLocator', function() {
                     next(err);
                 }
             }, next);
+        });
+
+
+        it('create file during resourceAdded', function(next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                locator,
+                options = {},
+                jslint,
+                mockfs,
+                writes = [],
+                reads = [];
+
+            mockery.enable({
+                useCleanCache: true,
+                warnOnReplace: false,
+                warnOnUnregistered: false
+            });
+            mockfs = {
+                readdir: libfs.readdir,
+                stat: function(path, callback) {
+                    if (path.indexOf('plugin.sel') > 0) {
+                        callback(null, {fake: 'stat'});
+                        return;
+                    }
+                    return libfs.stat(path, callback);
+                },
+                writeFile: function(path, data, options, callback) {
+                    writes.push(path);
+                    callback();
+                }
+            };
+            jslint = 'readFileS' + 'ync';
+            mockfs[jslint] = libfs[jslint];
+            mockery.registerMock('fs', mockfs);
+
+            BundleLocator = require('../../lib/bundleLocator.js');
+            locator = new BundleLocator();
+
+            locator.plug({extensions: 'dust'}, {
+                resourceAdded: function(res, api) {
+                    var path = 'styles/css/plugin.sel' + writes.length + '.less';
+                    return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
+                }
+            });
+
+            locator.plug({extensions: 'less'}, {
+                resourceAdded: function(res, api) {
+                    reads.push([res.bundleName, res.relativePath].join(' '));
+                }
+            });
+
+            locator.parseBundle(fixture, options).then(function(have) {
+                try {
+                    expect(writes.length).to.equal(2);
+                    expect(writes[0]).to.equal(libpath.join(fixture, 'node_modules/roster/styles/css/plugin.sel0.less'));
+                    expect(writes[1]).to.equal(libpath.join(fixture, 'node_modules/roster/styles/css/plugin.sel1.less'));
+                    expect(reads.length).to.equal(2);
+                    expect(reads[0]).to.equal('roster styles/css/plugin.sel0.less');
+                    expect(reads[1]).to.equal('roster styles/css/plugin.sel1.less');
+                    mockery.deregisterAll();
+                    mockery.disable();
+                    next();
+                } catch (err) {
+                    mockery.deregisterAll();
+                    mockery.disable();
+                    next(err);
+                }
+            }, function(err) {
+                mockery.deregisterAll();
+                mockery.disable();
+                next(err);
+            });
         });
 
     });

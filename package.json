@@ -26,6 +26,7 @@
         "istanbul": "*",
         "jslint": "*",
         "mocha": "*",
+        "mockery": "1.4.x",
         "xunit-file": "*"
     },
     "scripts": {
