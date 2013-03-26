@@ -100,7 +100,7 @@ describe('BundleLocator', function() {
                     pathCalls[res.relativePath].push('js');
                 }
             };
-            locator.plug('js', pluginJS);
+            locator.plug(pluginJS, 'js');
 
             pluginDefault = {
                 calls: 0,
@@ -118,7 +118,7 @@ describe('BundleLocator', function() {
                     });
                 }
             };
-            locator.plug(null, pluginDefault);
+            locator.plug(pluginDefault);
 
             pluginAll = {
                 calls: 0,
@@ -133,7 +133,7 @@ describe('BundleLocator', function() {
                     });
                 }
             };
-            locator.plug(null, pluginAll);
+            locator.plug(pluginAll);
 
             locator.parseBundle(fixture, options).then(function(have) {
                 var want = require(fixture + '/expected-locator.js');
