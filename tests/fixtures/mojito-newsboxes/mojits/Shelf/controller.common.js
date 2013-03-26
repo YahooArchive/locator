@@ -10,11 +10,6 @@
 YUI.add('ShelfController', function (Y, NAME) {
     'use strict';
 
-    /**
-     * Display a clickable tile for each feed in ./definition.json.
-     * N.B. static html5app build can't use routes, so use .html.
-     * @param {ActionContext} ac The action context.
-     */
     function index(ac) {
         var vudata = { // Mustache template data.
                 tiles: []
@@ -32,11 +27,6 @@ YUI.add('ShelfController', function (Y, NAME) {
         });
     }
 
-    /**
-     * Display feed titles in a grid of scrollable tiles. Feed data from
-     * ./definition.json.
-     * @class ShelfController
-     */
     Y.namespace('mojito.controllers')[NAME] = {
         index: index
     };

@@ -11,11 +11,6 @@
 
 YUI.add('ShelfIndexBinder', function(Y, NAME) {
 
-    /**
-     * Generates a color.
-     * @param {String} color The seed color.
-     * @return {String} "#nnn234" where nnn are random numbers between 0-9.
-     */
     function someColor(color) {
         var somenum = Math.floor(Math.random() * 9);
         color = color || '';
@@ -24,10 +19,6 @@ YUI.add('ShelfIndexBinder', function(Y, NAME) {
                 someColor(color + somenum);
     }
 
-    /**
-     * Applies background color to a node.
-     * @param {Y.Node} node The node to colorize.
-     */
     function colorize(node) {
         setTimeout(function() {
             node.setStyles({
@@ -37,20 +28,12 @@ YUI.add('ShelfIndexBinder', function(Y, NAME) {
         }, Math.floor(Math.random() * 500));
     }
 
-    /**
-     * Bind client-side DOM events.
-     * @class ShelfIndexBinder
-     */
     Y.namespace('mojito.binders')[NAME] = {
 
         init: function(mojitProxy) {
             this.mp = mojitProxy;
         },
 
-        /**
-         * Invoked after ../controller.common.js:index().
-         * @param {Y.Node} node The node instance for this mojit's div.
-         */
         bind: function(node) {
             node.all('div.toc ul li a').each(function(el) {
                 colorize(el);
