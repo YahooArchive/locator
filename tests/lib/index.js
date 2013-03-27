@@ -89,7 +89,7 @@ describe('BundleLocator', function() {
 
             res = {
                 type: 'controller',
-                ext: '.js'
+                ext: 'js'
             };
             expect(locator._filterResource(res)).to.equal(false);
             expect(locator._filterResource(res, {})).to.equal(false);
@@ -104,6 +104,29 @@ describe('BundleLocator', function() {
             expect(locator._filterResource(res, {extensions: 'js', types: 'red'})).to.equal(false);
             expect(locator._filterResource(res, {extensions: 'orange', types: 'red'})).to.equal(false);
         });
+
+
+        it('api.getBundleResources()', function(next) {
+            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
+                locator = new BundleLocator();
+            locator.parseBundle(fixture).then(function(have) {
+                var ress;
+                try {
+                    ress = locator._pluginAPI.getBundleResources('Shelf', {types: 'templates'});
+                    expect(ress.length).to.equal(2);
+                    expect(ress[0]).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.hb.html'));
+                    expect(ress[1]).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.opera-mini.hb.html'));
+                    ress = locator._pluginAPI.getBundleResources('Read', {extensions: 'css'});
+                    expect(ress.length).to.equal(2);
+                    expect(ress[0]).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
+                    expect(ress[1]).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
+                    next();
+                } catch (err) {
+                    next(err);
+                }
+            }, next);
+        });
+
 
         it('basics', function(next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
