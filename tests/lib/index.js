@@ -89,7 +89,7 @@ describe('BundleLocator', function() {
 
             res = {
                 type: 'controller',
-                ext: '.js'
+                ext: 'js'
             };
             expect(locator._filterResource(res)).to.equal(false);
             expect(locator._filterResource(res, {})).to.equal(false);
