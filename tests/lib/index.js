@@ -113,10 +113,14 @@ describe('BundleLocator', function() {
                 var ress;
                 try {
                     ress = locator._pluginAPI.getBundleResources('Shelf', {types: 'templates'});
+                    // order doesn't matter, since it depends on how the filesystem is walked
+                    ress.sort();
                     expect(ress.length).to.equal(2);
                     expect(ress[0]).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.hb.html'));
                     expect(ress[1]).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.opera-mini.hb.html'));
                     ress = locator._pluginAPI.getBundleResources('Read', {extensions: 'css'});
+                    // order doesn't matter, since it depends on how the filesystem is walked
+                    ress.sort();
                     expect(ress.length).to.equal(2);
                     expect(ress[0]).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
                     expect(ress[1]).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
