@@ -186,7 +186,7 @@ describe('BundleLocator', function() {
                 var want = require(fixture + '/expected-locator.js');
                 try {
                     compareObjects(have, want);
-                    expect(pluginJS.calls).to.equal(8);
+                    expect(pluginJS.calls).to.equal(10);
                     expect(pluginDefault.calls).to.equal(2);
                     expect(pluginAll.calls).to.equal(0);
                     // sample a couple to make sure that plugins were called in registration order
