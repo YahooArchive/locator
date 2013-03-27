@@ -7,22 +7,22 @@ module.exports = {
     resources: {
         '{}': {
             configs: {
-                'application.json': 'application.json',
-                'package.json': 'package.json',
-                'routes.json': 'routes.json'
+                'application.json': __dirname + '/application.json',
+                'package.json': __dirname + '/package.json',
+                'routes.json': __dirname + '/routes.json'
             },
             assets: {
                 ico: {
-                    favicon: 'assets/favicon.ico'
+                    favicon: __dirname + '/assets/favicon.ico'
                 }
             },
             middleware: {
-                debug: 'middleware/debug.js'
+                debug: __dirname + '/middleware/debug.js'
             }
         },
         common: {
             models: {
-                flickr: 'models/flickr.common.js'
+                flickr: __dirname + '/models/flickr.common.js'
             }
         }
     },
@@ -37,33 +37,33 @@ module.exports = {
             resources: {
                 common: {
                     controllers: {
-                        controller: 'controller.common.js'
+                        controller: __dirname + '/mojits/Shelf/controller.common.js'
                     }
                 },
                 '{}': {
                     configs: {
-                        'definition.json': 'definition.json'
+                        'definition.json': __dirname + '/mojits/Shelf/definition.json'
                     },
                     assets: {
                         css: {
-                            shelf: 'assets/shelf.css'
+                            shelf: __dirname + '/mojits/Shelf/assets/shelf.css'
                         }
                     },
                     templates: {
-                        index: 'templates/index.hb.html'
+                        index: __dirname + '/mojits/Shelf/templates/index.hb.html'
                     },
                     views: {
-                        index: 'views/index.js'
+                        index: __dirname + '/mojits/Shelf/views/index.js'
                     }
                 },
                 'opera-mini': {
                     assets: {
                         css: {
-                            shelf: 'assets/shelf.opera-mini.css'
+                            shelf: __dirname + '/mojits/Shelf/assets/shelf.opera-mini.css'
                         }
                     },
                     templates: {
-                        index: 'templates/index.opera-mini.hb.html'
+                        index: __dirname + '/mojits/Shelf/templates/index.opera-mini.hb.html'
                     }
                 }
             }
@@ -78,15 +78,15 @@ module.exports = {
             resources: {
                 common: {
                     controllers: {
-                        controller: 'controller.common.js'
+                        controller: __dirname + '/mojits/Weather/controller.common.js'
                     },
                     models: {
-                        YqlWeatherModel: 'models/YqlWeatherModel.common.js'
+                        YqlWeatherModel: __dirname + '/mojits/Weather/models/YqlWeatherModel.common.js'
                     }
                 },
                 '{}': {
                     templates: {
-                        index: 'templates/index.hb.html'
+                        index: __dirname + '/mojits/Weather/templates/index.hb.html'
                     }
                 }
             }
@@ -99,10 +99,10 @@ module.exports = {
             resources: {
                 '{}': {
                     configs: {
-                        'dimensions.json': 'dimensions.json'
+                        'dimensions.json': __dirname + '/node_modules/modown/lib/app/dimensions.json'
                     },
                     middleware: {
-                        'modown-contextualizer': 'middleware/modown-contextualizer.js'
+                        'modown-contextualizer': __dirname + '/node_modules/modown/lib/app/middleware/modown-contextualizer.js'
                     }
                 }
             }
@@ -115,7 +115,7 @@ module.exports = {
             resources: {
                 '{}': {
                     configs: {
-                        'package.json': 'package.json'
+                        'package.json': __dirname + '/node_modules/modown-lib-read/package.json'
                     }
                 }
             },
@@ -131,32 +131,32 @@ module.exports = {
                         '{}': {
                             assets: {
                                 css: {
-                                    read: 'assets/read.css'
+                                    read: __dirname + '/node_modules/modown-lib-read/mojits/Read/assets/read.css'
                                 }
                             },
                             templates: {
-                                index: 'templates/index.hb.html'
+                                index: __dirname + '/node_modules/modown-lib-read/mojits/Read/templates/index.hb.html'
                             },
                             views: {
-                                index:  'views/index.js'
+                                index:  __dirname + '/node_modules/modown-lib-read/mojits/Read/views/index.js'
                             }
                         },
                         common: {
                             controllers: {
-                                controller: 'controller.common.js'
+                                controller: __dirname + '/node_modules/modown-lib-read/mojits/Read/controller.common.js'
                             },
                             models: {
-                                rss:  'models/rss.common.js'
+                                rss:  __dirname + '/node_modules/modown-lib-read/mojits/Read/models/rss.common.js'
                             }
                         },
                         'opera-mini': {
                             assets: {
                                 css: {
-                                    read: 'assets/read.opera-mini.css'
+                                    read: __dirname + '/node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'
                                 }
                             },
                             templates: {
-                                index: 'templates/index.opera-mini.hb.html'
+                                index: __dirname + '/node_modules/modown-lib-read/mojits/Read/templates/index.opera-mini.hb.html'
                             }
                         }
                     }

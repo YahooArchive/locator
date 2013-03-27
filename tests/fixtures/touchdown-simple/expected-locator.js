@@ -7,22 +7,22 @@ module.exports = {
     resources: {
         '{}': {
             configs: {
-                app: 'configs/app.json',
-                dimensions: 'configs/dimensions.json',
-                routes: 'configs/routes.js'
+                app: __dirname + '/configs/app.json',
+                dimensions: __dirname + '/configs/dimensions.json',
+                routes: __dirname + '/configs/routes.js'
             },
             controllers: {
-                player: 'controllers/player.js',
-                teamManager: 'controllers/teamManager.js'
+                player: __dirname + '/controllers/player.js',
+                teamManager: __dirname + '/controllers/teamManager.js'
             },
             models: {
-                player: 'models/player.js',
-                roster: 'models/roster.js'
+                player: __dirname + '/models/player.js',
+                roster: __dirname + '/models/roster.js'
             }
         },
         smartphone: {
             controllers: {
-                teamManager: 'controllers/teamManager.smartphone.js'
+                teamManager: __dirname + '/controllers/teamManager.smartphone.js'
             }
         }
     },
@@ -35,25 +35,25 @@ module.exports = {
             resources: {
                 '{}': {
                     configs: {
-                        roster: 'configs/roster.json'
+                        roster: __dirname + '/node_modules/roster/configs/roster.json'
                     },
                     controllers: {
-                        roster: 'controllers/roster.js'
+                        roster: __dirname + '/node_modules/roster/controllers/roster.js'
                     },
                     lang: {
                         'en-US': {
-                            roster: 'lang/roster.en-US.json'
+                            roster: __dirname + '/node_modules/roster/lang/roster.en-US.json'
                         }
                     },
                     styles: {
-                        roster: 'styles/css/roster.sass'
+                        roster: __dirname + '/node_modules/roster/styles/css/roster.sass'
                     },
                     templates: {
-                        roster: 'templates/roster.dust',
-                        'partials/player': 'templates/partials/player.dust'
+                        roster: __dirname + '/node_modules/roster/templates/roster.dust',
+                        'partials/player': __dirname + '/node_modules/roster/templates/partials/player.dust'
                     },
                     views: {
-                        roster: 'views/roster.js'
+                        roster: __dirname + '/node_modules/roster/views/roster.js'
                     }
                 }
             }
