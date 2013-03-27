@@ -19,6 +19,7 @@
     "dependencies": {
         "async": "*",
         "dive": "*",
+        "mkdirp": "0.3.x",
         "yui": "~3.9.0"
     },
     "devDependencies": {
