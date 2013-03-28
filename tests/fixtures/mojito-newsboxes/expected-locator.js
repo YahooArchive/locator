@@ -7,9 +7,9 @@ module.exports = {
     resources: {
         '{}': {
             configs: {
-                'application.json': __dirname + '/application.json',
-                'package.json': __dirname + '/package.json',
-                'routes.json': __dirname + '/routes.json'
+                application: __dirname + '/application.json',
+                'package': __dirname + '/package.json',
+                routes: __dirname + '/routes.json'
             },
             assets: {
                 ico: {
@@ -42,7 +42,7 @@ module.exports = {
                 },
                 '{}': {
                     configs: {
-                        'definition.json': __dirname + '/mojits/Shelf/definition.json'
+                        definition: __dirname + '/mojits/Shelf/definition.json'
                     },
                     assets: {
                         css: {
@@ -99,7 +99,7 @@ module.exports = {
             resources: {
                 '{}': {
                     configs: {
-                        'dimensions.json': __dirname + '/node_modules/modown/lib/app/dimensions.json'
+                        dimensions: __dirname + '/node_modules/modown/lib/app/dimensions.json'
                     },
                     middleware: {
                         'modown-contextualizer': __dirname + '/node_modules/modown/lib/app/middleware/modown-contextualizer.js'
@@ -115,7 +115,7 @@ module.exports = {
             resources: {
                 '{}': {
                     configs: {
-                        'package.json': __dirname + '/node_modules/modown-lib-read/package.json'
+                        'package': __dirname + '/node_modules/modown-lib-read/package.json'
                     }
                 }
             },
