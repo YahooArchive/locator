@@ -137,6 +137,7 @@ describe('BundleLocator', function() {
                 locator = new BundleLocator(),
                 options = {},
                 pathCalls = {}, // relative path: array of calls
+                bundleCalls = {},
                 pluginJS,
                 pluginDefault,
                 pluginAll;
@@ -167,6 +168,12 @@ describe('BundleLocator', function() {
                     return api.promise(function(fulfill, reject) {
                         fulfill();
                     });
+                },
+                bundleAdded: function(bundle, api) {
+                    if (!bundleCalls[bundle.name]) {
+                        bundleCalls[bundle.name] = 0;
+                    }
+                    bundleCalls[bundle.name] += 1;
                 }
             };
             locator.plug(pluginDefault.describe, pluginDefault);
@@ -196,6 +203,9 @@ describe('BundleLocator', function() {
                     // sample a couple to make sure that plugins were called in registration order
                     expect(pathCalls['controllers/teamManager.js']).to.deep.equal(['js']);
                     expect(pathCalls['templates/roster.dust']).to.deep.equal(['default']);
+                    expect(Object.keys(bundleCalls).length).to.equal(2);
+                    expect(bundleCalls.simple).to.equal(1);
+                    expect(bundleCalls.roster).to.equal(1);
                     next();
                 } catch (err) {
                     next(err);
@@ -213,7 +223,8 @@ describe('BundleLocator', function() {
                 mockfs,
                 mkdirs = [],
                 writes = [],
-                reads = [];
+                reads = [],
+                bundleCalls = {};
 
             mockery.enable({
                 useCleanCache: true,
@@ -249,6 +260,12 @@ describe('BundleLocator', function() {
                 resourceAdded: function(res, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
+                },
+                bundleAdded: function(bundle, api) {
+                    if (!bundleCalls[bundle.name]) {
+                        bundleCalls[bundle.name] = 0;
+                    }
+                    bundleCalls[bundle.name] += 1;
                 }
             });
 
@@ -269,6 +286,9 @@ describe('BundleLocator', function() {
                     expect(reads.length).to.equal(2);
                     expect(reads[0]).to.equal('roster styles/css/plugin.sel0.less');
                     expect(reads[1]).to.equal('roster styles/css/plugin.sel1.less');
+                    expect(Object.keys(bundleCalls).length).to.equal(2);
+                    expect(bundleCalls.simple).to.equal(1);
+                    expect(bundleCalls.roster).to.equal(1);
                     mockery.deregisterAll();
                     mockery.disable();
                     next();
