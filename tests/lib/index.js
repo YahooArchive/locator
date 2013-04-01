@@ -153,20 +153,29 @@ describe('BundleLocator', function() {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 locator = new BundleLocator(),
                 options = {},
-                pathCalls = {}, // relative path: array of calls
+                fileCalls = {},     // relative path: array of calls
+                resourceCalls = {}, // relative path: array of calls
                 bundleCalls = {},
                 pluginJS,
                 pluginDefault,
                 pluginAll;
 
             pluginJS = {
-                calls: 0,
-                resourceAdded: function(res, api) {
-                    pluginJS.calls += 1;
-                    if (!pathCalls[res.relativePath]) {
-                        pathCalls[res.relativePath] = [];
+                fileCalls: 0,
+                resourceCalls: 0,
+                fileAdded: function(res, api) {
+                    pluginJS.fileCalls += 1;
+                    if (!fileCalls[res.relativePath]) {
+                        fileCalls[res.relativePath] = [];
                     }
-                    pathCalls[res.relativePath].push('js');
+                    fileCalls[res.relativePath].push('js');
+                },
+                resourceAdded: function(res, api) {
+                    pluginJS.resourceCalls += 1;
+                    if (!resourceCalls[res.relativePath]) {
+                        resourceCalls[res.relativePath] = [];
+                    }
+                    resourceCalls[res.relativePath].push('js');
                 }
             };
             locator.plug({extensions: 'js'}, pluginJS);
@@ -178,10 +187,10 @@ describe('BundleLocator', function() {
                 },
                 resourceAdded: function(res, api) {
                     pluginDefault.calls += 1;
-                    if (!pathCalls[res.relativePath]) {
-                        pathCalls[res.relativePath] = [];
+                    if (!resourceCalls[res.relativePath]) {
+                        resourceCalls[res.relativePath] = [];
                     }
-                    pathCalls[res.relativePath].push('default');
+                    resourceCalls[res.relativePath].push('default');
                     return api.promise(function(fulfill, reject) {
                         fulfill();
                     });
@@ -199,10 +208,10 @@ describe('BundleLocator', function() {
                 calls: 0,
                 resourceAdded: function(res, api) {
                     pluginAll.calls += 1;
-                    if (!pathCalls[res.relativePath]) {
-                        pathCalls[res.relativePath] = [];
+                    if (!resourceCalls[res.relativePath]) {
+                        resourceCalls[res.relativePath] = [];
                     }
-                    pathCalls[res.relativePath].push('all');
+                    resourceCalls[res.relativePath].push('all');
                     return api.promise(function(fulfill, reject) {
                         fulfill();
                     });
@@ -214,12 +223,13 @@ describe('BundleLocator', function() {
                 var want = require(fixture + '/expected-locator.js');
                 try {
                     compareObjects(have, want);
-                    expect(pluginJS.calls).to.equal(10);
+                    expect(pluginJS.fileCalls).to.equal(10);
+                    expect(pluginJS.resourceCalls).to.equal(8);
                     expect(pluginDefault.calls).to.equal(2);
                     expect(pluginAll.calls).to.equal(0);
                     // sample a couple to make sure that plugins were called in registration order
-                    expect(pathCalls['controllers/teamManager.js']).to.deep.equal(['js']);
-                    expect(pathCalls['templates/roster.dust']).to.deep.equal(['default']);
+                    expect(resourceCalls['controllers/teamManager.js']).to.deep.equal(['js']);
+                    expect(resourceCalls['templates/roster.dust']).to.deep.equal(['default']);
                     expect(Object.keys(bundleCalls).length).to.equal(2);
                     expect(bundleCalls.simple).to.equal(1);
                     expect(bundleCalls.roster).to.equal(1);
