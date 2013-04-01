@@ -163,14 +163,14 @@ describe('BundleLocator', function() {
             pluginJS = {
                 fileCalls: 0,
                 resourceCalls: 0,
-                fileAdded: function(res, api) {
+                fileUpdated: function(res, api) {
                     pluginJS.fileCalls += 1;
                     if (!fileCalls[res.relativePath]) {
                         fileCalls[res.relativePath] = [];
                     }
                     fileCalls[res.relativePath].push('js');
                 },
-                resourceAdded: function(res, api) {
+                resourceUpdated: function(res, api) {
                     pluginJS.resourceCalls += 1;
                     if (!resourceCalls[res.relativePath]) {
                         resourceCalls[res.relativePath] = [];
@@ -185,7 +185,7 @@ describe('BundleLocator', function() {
                 describe: {
                     extensions: 'css,dust'
                 },
-                resourceAdded: function(res, api) {
+                resourceUpdated: function(res, api) {
                     pluginDefault.calls += 1;
                     if (!resourceCalls[res.relativePath]) {
                         resourceCalls[res.relativePath] = [];
@@ -195,7 +195,7 @@ describe('BundleLocator', function() {
                         fulfill();
                     });
                 },
-                bundleAdded: function(bundle, api) {
+                bundleUpdated: function(bundle, api) {
                     if (!bundleCalls[bundle.name]) {
                         bundleCalls[bundle.name] = 0;
                     }
@@ -206,7 +206,7 @@ describe('BundleLocator', function() {
 
             pluginAll = {
                 calls: 0,
-                resourceAdded: function(res, api) {
+                resourceUpdated: function(res, api) {
                     pluginAll.calls += 1;
                     if (!resourceCalls[res.relativePath]) {
                         resourceCalls[res.relativePath] = [];
@@ -241,7 +241,7 @@ describe('BundleLocator', function() {
         });
 
 
-        it('create file during resourceAdded', function(next) {
+        it('create file during resourceUpdated', function(next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
@@ -284,11 +284,11 @@ describe('BundleLocator', function() {
             locator = new BundleLocator();
 
             locator.plug({extensions: 'dust'}, {
-                resourceAdded: function(res, api) {
+                resourceUpdated: function(res, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
                 },
-                bundleAdded: function(bundle, api) {
+                bundleUpdated: function(bundle, api) {
                     if (!bundleCalls[bundle.name]) {
                         bundleCalls[bundle.name] = 0;
                     }
@@ -297,7 +297,7 @@ describe('BundleLocator', function() {
             });
 
             locator.plug({extensions: 'less'}, {
-                resourceAdded: function(res, api) {
+                resourceUpdated: function(res, api) {
                     reads.push([res.bundleName, res.relativePath].join(' '));
                 }
             });
@@ -332,7 +332,7 @@ describe('BundleLocator', function() {
         });
 
 
-        it('create file during resourceAdded into build directory', function(next) {
+        it('create file during resourceUpdated into build directory', function(next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
@@ -376,14 +376,14 @@ describe('BundleLocator', function() {
             });
 
             locator.plug({extensions: 'dust'}, {
-                resourceAdded: function(res, api) {
+                resourceUpdated: function(res, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
                 }
             });
 
             locator.plug({extensions: 'less'}, {
-                resourceAdded: function(res, api) {
+                resourceUpdated: function(res, api) {
                     reads.push(res.fullPath);
                 }
             });
