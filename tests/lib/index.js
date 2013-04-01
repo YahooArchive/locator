@@ -5,7 +5,7 @@
  */
 
 
-/*jslint nomen:true, anon:true, node:true */
+/*jslint nomen:true, node:true */
 /*globals describe,it */
 "use strict";
 
@@ -29,7 +29,7 @@ function compareObjects(have, want) {
             expect(want).to.have.keys(Object.keys(have));
         }
 
-        Object.keys(want).forEach(function(key) {
+        Object.keys(want).forEach(function (key) {
             compareObjects(have[key], want[key]);
         });
     } else {
@@ -38,15 +38,15 @@ function compareObjects(have, want) {
 }
 
 
-describe('BundleLocator', function() {
+describe('BundleLocator', function () {
 
-    describe('locateBundles', function() {
+    describe('locateBundles', function () {
 
-        it('mojito-newsboxes', function(next) {
+        it('mojito-newsboxes', function (next) {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator(),
                 options = {};
-            locator.parseBundle(fixture, options).then(function(have) {
+            locator.parseBundle(fixture, options).then(function (have) {
                 var want = require(fixture + '/expected-locator.js'),
                     read;
                 try {
@@ -62,11 +62,11 @@ describe('BundleLocator', function() {
             }, next);
         });
 
-        it('touchdown-simple', function(next) {
+        it('touchdown-simple', function (next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 locator = new BundleLocator(),
                 options = {};
-            locator.parseBundle(fixture, options).then(function(have) {
+            locator.parseBundle(fixture, options).then(function (have) {
                 var want = require(fixture + '/expected-locator.js');
                 try {
                     compareObjects(have, want);
@@ -80,9 +80,9 @@ describe('BundleLocator', function() {
     });
 
 
-    describe('plugins', function() {
+    describe('plugins', function () {
 
-        it('_filterResource()', function() {
+        it('_filterResource()', function () {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 locator = new BundleLocator(),
                 res;
@@ -106,15 +106,15 @@ describe('BundleLocator', function() {
         });
 
 
-        it('api.getBundleResources()', function(next) {
+        it('api.getBundleResources()', function (next) {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
-            locator.parseBundle(fixture).then(function(have) {
+            locator.parseBundle(fixture).then(function (have) {
                 var ress;
                 try {
                     ress = locator._pluginAPI.getBundleResources('Shelf', {types: 'templates'});
                     // order doesn't matter, since it depends on how the filesystem is walked
-                    ress.sort(function(a, b) {
+                    ress.sort(function (a, b) {
                         return a.fullPath.localeCompare(b.fullPath);
                     });
                     expect(ress.length).to.equal(2);
@@ -129,7 +129,7 @@ describe('BundleLocator', function() {
 
                     ress = locator._pluginAPI.getBundleResources('Read', {extensions: 'css'});
                     // order doesn't matter, since it depends on how the filesystem is walked
-                    ress.sort(function(a, b) {
+                    ress.sort(function (a, b) {
                         return a.fullPath.localeCompare(b.fullPath);
                     });
                     expect(ress.length).to.equal(2);
@@ -149,7 +149,7 @@ describe('BundleLocator', function() {
         });
 
 
-        it('basics', function(next) {
+        it('basics', function (next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 locator = new BundleLocator(),
                 options = {},
@@ -163,14 +163,14 @@ describe('BundleLocator', function() {
             pluginJS = {
                 fileCalls: 0,
                 resourceCalls: 0,
-                fileUpdated: function(res, api) {
+                fileUpdated: function (res, api) {
                     pluginJS.fileCalls += 1;
                     if (!fileCalls[res.relativePath]) {
                         fileCalls[res.relativePath] = [];
                     }
                     fileCalls[res.relativePath].push('js');
                 },
-                resourceUpdated: function(res, api) {
+                resourceUpdated: function (res, api) {
                     pluginJS.resourceCalls += 1;
                     if (!resourceCalls[res.relativePath]) {
                         resourceCalls[res.relativePath] = [];
@@ -185,17 +185,17 @@ describe('BundleLocator', function() {
                 describe: {
                     extensions: 'css,dust'
                 },
-                resourceUpdated: function(res, api) {
+                resourceUpdated: function (res, api) {
                     pluginDefault.calls += 1;
                     if (!resourceCalls[res.relativePath]) {
                         resourceCalls[res.relativePath] = [];
                     }
                     resourceCalls[res.relativePath].push('default');
-                    return api.promise(function(fulfill, reject) {
+                    return api.promise(function (fulfill, reject) {
                         fulfill();
                     });
                 },
-                bundleUpdated: function(bundle, api) {
+                bundleUpdated: function (bundle, api) {
                     if (!bundleCalls[bundle.name]) {
                         bundleCalls[bundle.name] = 0;
                     }
@@ -206,20 +206,20 @@ describe('BundleLocator', function() {
 
             pluginAll = {
                 calls: 0,
-                resourceUpdated: function(res, api) {
+                resourceUpdated: function (res, api) {
                     pluginAll.calls += 1;
                     if (!resourceCalls[res.relativePath]) {
                         resourceCalls[res.relativePath] = [];
                     }
                     resourceCalls[res.relativePath].push('all');
-                    return api.promise(function(fulfill, reject) {
+                    return api.promise(function (fulfill, reject) {
                         fulfill();
                     });
                 }
             };
             locator.plug({}, pluginAll);
 
-            locator.parseBundle(fixture, options).then(function(have) {
+            locator.parseBundle(fixture, options).then(function (have) {
                 var want = require(fixture + '/expected-locator.js');
                 try {
                     compareObjects(have, want);
@@ -241,7 +241,7 @@ describe('BundleLocator', function() {
         });
 
 
-        it('create file during resourceUpdated', function(next) {
+        it('create file during resourceUpdated', function (next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
@@ -260,18 +260,18 @@ describe('BundleLocator', function() {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                stat: function(path, callback) {
+                stat: function (path, callback) {
                     if (path.indexOf('plugin.sel') > 0) {
                         callback(null, {fake: 'stat'});
                         return;
                     }
                     return libfs.stat(path, callback);
                 },
-                mkdir: function(path, mode, callback) {
+                mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
                     callback();
                 },
-                writeFile: function(path, data, options, callback) {
+                writeFile: function (path, data, options, callback) {
                     writes.push(path);
                     callback();
                 }
@@ -284,11 +284,11 @@ describe('BundleLocator', function() {
             locator = new BundleLocator();
 
             locator.plug({extensions: 'dust'}, {
-                resourceUpdated: function(res, api) {
+                resourceUpdated: function (res, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
                 },
-                bundleUpdated: function(bundle, api) {
+                bundleUpdated: function (bundle, api) {
                     if (!bundleCalls[bundle.name]) {
                         bundleCalls[bundle.name] = 0;
                     }
@@ -297,12 +297,12 @@ describe('BundleLocator', function() {
             });
 
             locator.plug({extensions: 'less'}, {
-                resourceUpdated: function(res, api) {
+                resourceUpdated: function (res, api) {
                     reads.push([res.bundleName, res.relativePath].join(' '));
                 }
             });
 
-            locator.parseBundle(fixture, options).then(function(have) {
+            locator.parseBundle(fixture, options).then(function (have) {
                 try {
                     expect(mkdirs.length).to.equal(2);
                     expect(mkdirs[0]).to.equal(libpath.join(fixture, 'node_modules/roster/styles/css'));
@@ -324,7 +324,7 @@ describe('BundleLocator', function() {
                     mockery.disable();
                     next(err);
                 }
-            }, function(err) {
+            }, function (err) {
                 mockery.deregisterAll();
                 mockery.disable();
                 next(err);
@@ -332,7 +332,7 @@ describe('BundleLocator', function() {
         });
 
 
-        it('create file during resourceUpdated into build directory', function(next) {
+        it('create file during resourceUpdated into build directory', function (next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
@@ -349,18 +349,18 @@ describe('BundleLocator', function() {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                stat: function(path, callback) {
+                stat: function (path, callback) {
                     if (path.indexOf('plugin.sel') > 0) {
                         callback(null, {fake: 'stat'});
                         return;
                     }
                     return libfs.stat(path, callback);
                 },
-                mkdir: function(path, mode, callback) {
+                mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
                     callback();
                 },
-                writeFile: function(path, data, options, callback) {
+                writeFile: function (path, data, options, callback) {
                     writes.push(path);
                     callback();
                 }
@@ -376,19 +376,19 @@ describe('BundleLocator', function() {
             });
 
             locator.plug({extensions: 'dust'}, {
-                resourceUpdated: function(res, api) {
+                resourceUpdated: function (res, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
                 }
             });
 
             locator.plug({extensions: 'less'}, {
-                resourceUpdated: function(res, api) {
+                resourceUpdated: function (res, api) {
                     reads.push(res.fullPath);
                 }
             });
 
-            locator.parseBundle(fixture).then(function(have) {
+            locator.parseBundle(fixture).then(function (have) {
                 try {
                     expect(mkdirs.length).to.equal(2);
                     expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
@@ -407,7 +407,7 @@ describe('BundleLocator', function() {
                     mockery.disable();
                     next(err);
                 }
-            }, function(err) {
+            }, function (err) {
                 mockery.deregisterAll();
                 mockery.disable();
                 next(err);
