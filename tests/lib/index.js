@@ -114,16 +114,33 @@ describe('BundleLocator', function() {
                 try {
                     ress = locator._pluginAPI.getBundleResources('Shelf', {types: 'templates'});
                     // order doesn't matter, since it depends on how the filesystem is walked
-                    ress.sort();
+                    ress.sort(function(a, b) {
+                        return a.fullPath.localeCompare(b.fullPath);
+                    });
                     expect(ress.length).to.equal(2);
-                    expect(ress[0]).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.hb.html'));
-                    expect(ress[1]).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.opera-mini.hb.html'));
+                    expect(ress[0]).to.be.an('object');
+                    expect(ress[0].bundleName).to.equal('Shelf');
+                    expect(ress[0].type).to.equal('templates');
+                    expect(ress[0].fullPath).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.hb.html'));
+                    expect(ress[1]).to.be.an('object');
+                    expect(ress[1].bundleName).to.equal('Shelf');
+                    expect(ress[1].type).to.equal('templates');
+                    expect(ress[1].fullPath).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.opera-mini.hb.html'));
+
                     ress = locator._pluginAPI.getBundleResources('Read', {extensions: 'css'});
                     // order doesn't matter, since it depends on how the filesystem is walked
-                    ress.sort();
+                    ress.sort(function(a, b) {
+                        return a.fullPath.localeCompare(b.fullPath);
+                    });
                     expect(ress.length).to.equal(2);
-                    expect(ress[0]).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
-                    expect(ress[1]).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
+                    expect(ress[0]).to.be.an('object');
+                    expect(ress[0].bundleName).to.equal('Read');
+                    expect(ress[0].ext).to.equal('css');
+                    expect(ress[0].fullPath).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
+                    expect(ress[1]).to.be.an('object');
+                    expect(ress[1].bundleName).to.equal('Read');
+                    expect(ress[1].ext).to.equal('css');
+                    expect(ress[1].fullPath).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
                     next();
                 } catch (err) {
                     next(err);
