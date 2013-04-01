@@ -414,6 +414,72 @@ describe('BundleLocator', function () {
             });
         });
 
+
+        it('create file during bundleUpdated()', function (next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                locator,
+                options = {},
+                jslint,
+                mockfs,
+                bundleCalls = 0;
+
+            mockery.enable({
+                useCleanCache: true,
+                warnOnReplace: false,
+                warnOnUnregistered: false
+            });
+            mockfs = {
+                readdir: libfs.readdir,
+                stat: function (path, callback) {
+                    if (path.indexOf('plugin.sel') > 0) {
+                        callback(null, {fake: 'stat'});
+                        return;
+                    }
+                    return libfs.stat(path, callback);
+                },
+                mkdir: function (path, mode, callback) {
+                    callback();
+                },
+                writeFile: function (path, data, options, callback) {
+                    callback();
+                }
+            };
+            jslint = 'readFileS' + 'ync';
+            mockfs[jslint] = libfs[jslint];
+            mockery.registerMock('fs', mockfs);
+
+            BundleLocator = require('../../lib/bundleLocator.js');
+            locator = new BundleLocator();
+
+            locator.plug({types: 'configs'}, {
+                bundleUpdated: function (bundle, api) {
+                    if ('roster' === bundle.name) {
+                        bundleCalls += 1;
+                        if (1 === bundleCalls) {
+                            return api.writeFileInBundle(bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'});
+                        }
+                    }
+                }
+            });
+
+            locator.parseBundle(fixture, options).then(function (have) {
+                try {
+                    expect(bundleCalls).to.equal(2);
+                    mockery.deregisterAll();
+                    mockery.disable();
+                    next();
+                } catch (err) {
+                    mockery.deregisterAll();
+                    mockery.disable();
+                    next(err);
+                }
+            }, function (err) {
+                mockery.deregisterAll();
+                mockery.disable();
+                next(err);
+            });
+        });
     });
 
 
