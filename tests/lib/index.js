@@ -106,6 +106,23 @@ describe('BundleLocator', function () {
         });
 
 
+        it('api.getBundle()', function (next) {
+            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
+                locator = new BundleLocator();
+            locator.parseBundle(fixture).then(function (have) {
+                var bundle;
+                try {
+                    bundle = locator._pluginAPI.getBundle('Shelf');
+                    expect(bundle).to.be.an('object');
+                    expect(bundle.name).to.equal('Shelf');
+                    next();
+                } catch (err) {
+                    next(err);
+                }
+            }, next);
+        });
+
+
         it('api.getBundleResources()', function (next) {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
