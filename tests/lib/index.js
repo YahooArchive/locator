@@ -432,7 +432,7 @@ describe('BundleLocator', function () {
         });
 
 
-        it('create file during bundleUpdated()', function (next) {
+        it('create files during bundleUpdated()', function (next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
@@ -449,10 +449,6 @@ describe('BundleLocator', function () {
             mockfs = {
                 readdir: libfs.readdir,
                 stat: function (path, callback) {
-                    if (path.indexOf('plugin.sel') > 0) {
-                        callback(null, {fake: 'stat'});
-                        return;
-                    }
                     return libfs.stat(path, callback);
                 },
                 mkdir: function (path, mode, callback) {
@@ -474,7 +470,9 @@ describe('BundleLocator', function () {
                     if ('roster' === bundle.name) {
                         bundleCalls += 1;
                         if (1 === bundleCalls) {
-                            return api.writeFileInBundle(bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'});
+                            return api.writeFileInBundle(bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'}).then(function () {
+                                return api.writeFileInBundle(bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
+                            });
                         }
                     }
                 }
