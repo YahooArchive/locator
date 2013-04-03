@@ -173,29 +173,29 @@ describe('BundleLocator', function () {
                 fileCalls = {},     // relative path: array of calls
                 resourceCalls = {}, // relative path: array of calls
                 bundleCalls = {},
-                pluginJS,
+                pluginJSON,
                 pluginDefault,
                 pluginAll;
 
-            pluginJS = {
+            pluginJSON = {
                 fileCalls: 0,
                 resourceCalls: 0,
                 fileUpdated: function (res, api) {
-                    pluginJS.fileCalls += 1;
+                    pluginJSON.fileCalls += 1;
                     if (!fileCalls[res.relativePath]) {
                         fileCalls[res.relativePath] = [];
                     }
                     fileCalls[res.relativePath].push('js');
                 },
                 resourceUpdated: function (res, api) {
-                    pluginJS.resourceCalls += 1;
+                    pluginJSON.resourceCalls += 1;
                     if (!resourceCalls[res.relativePath]) {
                         resourceCalls[res.relativePath] = [];
                     }
                     resourceCalls[res.relativePath].push('js');
                 }
             };
-            locator.plug({extensions: 'js'}, pluginJS);
+            locator.plug({extensions: 'js'}, pluginJSON);
 
             pluginDefault = {
                 calls: 0,
@@ -240,8 +240,8 @@ describe('BundleLocator', function () {
                 var want = require(fixture + '/expected-locator.js');
                 try {
                     compareObjects(have, want);
-                    expect(pluginJS.fileCalls).to.equal(10);
-                    expect(pluginJS.resourceCalls).to.equal(8);
+                    expect(pluginJSON.fileCalls).to.equal(10);
+                    expect(pluginJSON.resourceCalls).to.equal(8);
                     expect(pluginDefault.calls).to.equal(2);
                     expect(pluginAll.calls).to.equal(0);
                     // sample a couple to make sure that plugins were called in registration order
