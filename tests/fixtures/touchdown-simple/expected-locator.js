@@ -3,6 +3,7 @@ module.exports = {
     options: {},
     name: 'simple',
     baseDirectory: __dirname,
+    buildDirectory: __dirname + '/build/simple',
     type: 'touchdown-package',
     resources: {
         '{}': {
@@ -95,6 +96,7 @@ module.exports = {
             options: {},
             name: 'roster',
             baseDirectory: __dirname + '/node_modules/roster',
+            buildDirectory: __dirname + '/build/roster',
             type: 'touchdown-package',
             resources: {
                 '{}': {

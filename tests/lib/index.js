@@ -64,7 +64,10 @@ describe('BundleLocator', function () {
 
         it('touchdown-simple', function (next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
-                locator = new BundleLocator(),
+                locator = new BundleLocator({
+                    applicationDirectory: fixture,
+                    buildDirectory: 'build'
+                }),
                 options = {};
             locator.parseBundle(fixture, options).then(function (have) {
                 var want = require(fixture + '/expected-locator.js');
@@ -84,7 +87,10 @@ describe('BundleLocator', function () {
 
         it('_filterResource()', function () {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
-                locator = new BundleLocator(),
+                locator = new BundleLocator({
+                    applicationDirectory: fixture,
+                    buildDirectory: 'build'
+                }),
                 res;
 
             res = {
@@ -168,7 +174,10 @@ describe('BundleLocator', function () {
 
         it('basics', function (next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
-                locator = new BundleLocator(),
+                locator = new BundleLocator({
+                    applicationDirectory: fixture,
+                    buildDirectory: 'build'
+                }),
                 options = {},
                 fileCalls = {},     // relative path: array of calls
                 resourceCalls = {}, // relative path: array of calls
@@ -298,7 +307,10 @@ describe('BundleLocator', function () {
             mockery.registerMock('fs', mockfs);
 
             BundleLocator = require('../../lib/bundleLocator.js');
-            locator = new BundleLocator();
+            locator = new BundleLocator({
+                applicationDirectory: fixture,
+                buildDirectory: 'build'
+            });
 
             locator.plug({extensions: 'dust'}, {
                 resourceUpdated: function (res, api) {
@@ -322,11 +334,11 @@ describe('BundleLocator', function () {
             locator.parseBundle(fixture, options).then(function (have) {
                 try {
                     expect(mkdirs.length).to.equal(2);
-                    expect(mkdirs[0]).to.equal(libpath.join(fixture, 'node_modules/roster/styles/css'));
-                    expect(mkdirs[1]).to.equal(libpath.join(fixture, 'node_modules/roster/styles/css'));
+                    expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
+                    expect(mkdirs[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
                     expect(writes.length).to.equal(2);
-                    expect(writes[0]).to.equal(libpath.join(fixture, 'node_modules/roster/styles/css/plugin.sel0.less'));
-                    expect(writes[1]).to.equal(libpath.join(fixture, 'node_modules/roster/styles/css/plugin.sel1.less'));
+                    expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
+                    expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel1.less'));
                     expect(reads.length).to.equal(2);
                     expect(reads[0]).to.equal('roster styles/css/plugin.sel0.less');
                     expect(reads[1]).to.equal('roster styles/css/plugin.sel1.less');
@@ -406,6 +418,11 @@ describe('BundleLocator', function () {
             });
 
             locator.parseBundle(fixture).then(function (have) {
+                // Attempt to walk build directory, which should be skipped.
+                locator.parseBundle(libpath.resolve(fixture, 'build')).then(function () {
+                    return have;
+                });
+            }).then(function (have) {
                 try {
                     expect(mkdirs.length).to.equal(2);
                     expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
@@ -463,7 +480,10 @@ describe('BundleLocator', function () {
             mockery.registerMock('fs', mockfs);
 
             BundleLocator = require('../../lib/bundleLocator.js');
-            locator = new BundleLocator();
+            locator = new BundleLocator({
+                applicationDirectory: fixture,
+                buildDirectory: 'build'
+            });
 
             locator.plug({types: 'configs'}, {
                 bundleUpdated: function (bundle, api) {
