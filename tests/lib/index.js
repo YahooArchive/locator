@@ -490,7 +490,8 @@ describe('BundleLocator', function () {
                     if ('roster' === bundle.name) {
                         bundleCalls += 1;
                         if (1 === bundleCalls) {
-                            return api.writeFileInBundle(bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'}).then(function () {
+                            return api.writeFileInBundle(bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'}).then(function (pathToNewFile) {
+                                expect(pathToNewFile).to.equal(libpath.join(bundle.buildDirectory, 'configs/foo.json'));
                                 return api.writeFileInBundle(bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
                             });
                         }
