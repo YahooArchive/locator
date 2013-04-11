@@ -276,7 +276,7 @@ describe('BundleLocator', function () {
                 mockfs,
                 mkdirs = [],
                 writes = [],
-                reads = [],
+                updates = [],
                 bundleCalls = {};
 
             mockery.enable({
@@ -296,6 +296,9 @@ describe('BundleLocator', function () {
                 mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
                     callback();
+                },
+                readFile: function (path, options, callback) {
+                    callback(undefined, 'fs.readFile(' + path + ')');
                 },
                 writeFile: function (path, data, options, callback) {
                     writes.push(path);
@@ -327,7 +330,7 @@ describe('BundleLocator', function () {
 
             locator.plug({extensions: 'less'}, {
                 resourceUpdated: function (res, api) {
-                    reads.push([res.bundleName, res.relativePath].join(' '));
+                    updates.push([res.bundleName, res.relativePath].join(' '));
                 }
             });
 
@@ -339,9 +342,107 @@ describe('BundleLocator', function () {
                     expect(writes.length).to.equal(2);
                     expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
                     expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel1.less'));
+                    expect(updates.length).to.equal(2);
+                    expect(updates[0]).to.equal('roster styles/css/plugin.sel0.less');
+                    expect(updates[1]).to.equal('roster styles/css/plugin.sel1.less');
+                    expect(Object.keys(bundleCalls).length).to.equal(2);
+                    expect(bundleCalls.simple).to.equal(1);
+                    expect(bundleCalls.roster).to.equal(1);
+                    mockery.deregisterAll();
+                    mockery.disable();
+                    next();
+                } catch (err) {
+                    mockery.deregisterAll();
+                    mockery.disable();
+                    next(err);
+                }
+            }, function (err) {
+                mockery.deregisterAll();
+                mockery.disable();
+                next(err);
+            });
+        });
+
+
+        it('NOOP: create file during resourceUpdated', function (next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                locator,
+                options = {},
+                jslint,
+                mockfs,
+                mkdirs = [],
+                reads = [],
+                writes = [],
+                updates = [],
+                bundleCalls = {};
+
+            mockery.enable({
+                useCleanCache: true,
+                warnOnReplace: false,
+                warnOnUnregistered: false
+            });
+            mockfs = {
+                readdir: libfs.readdir,
+                stat: function (path, callback) {
+                    if (path.indexOf('plugin.sel') > 0) {
+                        callback(null, {fake: 'stat'});
+                        return;
+                    }
+                    return libfs.stat(path, callback);
+                },
+                mkdir: function (path, mode, callback) {
+                    mkdirs.push(path);
+                    callback();
+                },
+                readFile: function (path, options, callback) {
+                    reads.push(path);
+                    callback(undefined, 'AAA-BBB-AAA');
+                },
+                writeFile: function (path, data, options, callback) {
+                    writes.push(path);
+                    callback();
+                }
+            };
+            jslint = 'readFileS' + 'ync';
+            mockfs[jslint] = libfs[jslint];
+            mockery.registerMock('fs', mockfs);
+
+            BundleLocator = require('../../lib/bundleLocator.js');
+            locator = new BundleLocator({
+                applicationDirectory: fixture,
+                buildDirectory: 'build'
+            });
+
+            locator.plug({extensions: 'dust'}, {
+                resourceUpdated: function (res, api) {
+                    var path = 'styles/css/plugin.sel' + writes.length + '.less';
+                    return api.writeFileInBundle(res.bundleName, path, 'AAA-BBB-AAA', {encoding: 'utf8'});
+                },
+                bundleUpdated: function (bundle, api) {
+                    if (!bundleCalls[bundle.name]) {
+                        bundleCalls[bundle.name] = 0;
+                    }
+                    bundleCalls[bundle.name] += 1;
+                }
+            });
+
+            locator.plug({extensions: 'less'}, {
+                resourceUpdated: function (res, api) {
+                    updates.push([res.bundleName, res.relativePath].join(' '));
+                }
+            });
+
+            locator.parseBundle(fixture, options).then(function (have) {
+                try {
                     expect(reads.length).to.equal(2);
-                    expect(reads[0]).to.equal('roster styles/css/plugin.sel0.less');
-                    expect(reads[1]).to.equal('roster styles/css/plugin.sel1.less');
+                    expect(reads[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
+                    expect(reads[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
+                    expect(mkdirs.length).to.equal(0);
+                    expect(writes.length).to.equal(0);
+                    expect(updates.length).to.equal(2);
+                    expect(updates[0]).to.equal('roster styles/css/plugin.sel0.less');
+                    expect(updates[1]).to.equal('roster styles/css/plugin.sel0.less');
                     expect(Object.keys(bundleCalls).length).to.equal(2);
                     expect(bundleCalls.simple).to.equal(1);
                     expect(bundleCalls.roster).to.equal(1);
@@ -369,7 +470,7 @@ describe('BundleLocator', function () {
                 mockfs,
                 mkdirs = [],
                 writes = [],
-                reads = [];
+                updates = [];
 
             mockery.enable({
                 useCleanCache: true,
@@ -388,6 +489,9 @@ describe('BundleLocator', function () {
                 mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
                     callback();
+                },
+                readFile: function (path, options, callback) {
+                    callback(undefined, 'fs.readFile(' + path + ')');
                 },
                 writeFile: function (path, data, options, callback) {
                     writes.push(path);
@@ -413,7 +517,7 @@ describe('BundleLocator', function () {
 
             locator.plug({extensions: 'less'}, {
                 resourceUpdated: function (res, api) {
-                    reads.push(res.fullPath);
+                    updates.push(res.fullPath);
                 }
             });
 
@@ -430,9 +534,9 @@ describe('BundleLocator', function () {
                     expect(writes.length).to.equal(2);
                     expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
                     expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel1.less'));
-                    expect(reads.length).to.equal(2);
-                    expect(reads[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
-                    expect(reads[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel1.less'));
+                    expect(updates.length).to.equal(2);
+                    expect(updates[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
+                    expect(updates[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel1.less'));
                     mockery.deregisterAll();
                     mockery.disable();
                     next();
@@ -470,6 +574,9 @@ describe('BundleLocator', function () {
                 },
                 mkdir: function (path, mode, callback) {
                     callback();
+                },
+                readFile: function (path, options, callback) {
+                    callback(undefined, 'fs.readFile(' + path + ')');
                 },
                 writeFile: function (path, data, options, callback) {
                     callback();
