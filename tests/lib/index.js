@@ -112,6 +112,19 @@ describe('BundleLocator', function () {
         });
 
 
+        it('_objectExclude()', function () {
+            var locator = new BundleLocator(),
+                src = {a: 'aaa', b: 'bbb', c: 'ccc'};
+            compareObjects(locator._objectExclude(src, []), src);
+            compareObjects(locator._objectExclude(src, ['a']), {b: 'bbb', c: 'ccc'});
+            compareObjects(locator._objectExclude(src, ['b']), {a: 'aaa', c: 'ccc'});
+            compareObjects(locator._objectExclude(src, ['a', 'b']), {c: 'ccc'});
+            compareObjects(locator._objectExclude(src, ['a', 'c']), {b: 'bbb'});
+            compareObjects(locator._objectExclude(src, ['b', 'c']), {a: 'aaa'});
+            compareObjects(locator._objectExclude(src, ['a', 'c', 'b']), {});
+        });
+
+
         it('api.getBundle()', function (next) {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
@@ -598,7 +611,13 @@ describe('BundleLocator', function () {
                         bundleCalls += 1;
                         if (1 === bundleCalls) {
                             return api.writeFileInBundle(bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'}).then(function (pathToNewFile) {
-                                expect(pathToNewFile).to.equal(libpath.join(bundle.buildDirectory, 'configs/foo.json'));
+                                try {
+                                    expect(pathToNewFile).to.equal(libpath.join(bundle.buildDirectory, 'configs/foo.json'));
+                                } catch (err) {
+                                    mockery.deregisterAll();
+                                    mockery.disable();
+                                    next(err);
+                                }
                                 return api.writeFileInBundle(bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
                             });
                         }
@@ -623,6 +642,96 @@ describe('BundleLocator', function () {
                 next(err);
             });
         });
+    });
+
+
+    describe('file watching', function () {
+
+        it('detects changes', function (next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                locator,
+                mockwatch;
+
+            mockery.enable({
+                useCleanCache: true,
+                warnOnReplace: false,
+                warnOnUnregistered: false
+            });
+
+            mockwatch = {
+                _handlers: {},
+                createMonitor: function (dir, options, callback) {
+                    callback({
+                        on: function (evt, handler) {
+                            mockwatch._handlers[evt] = handler;
+                        }
+                    });
+                    // fire one event per tick
+                    setTimeout(function () {
+                        mockwatch._handlers.created(libpath.resolve(fixture, 'controllers/x.sel.js'));
+                        setTimeout(function () {
+                            mockwatch._handlers.changed(libpath.resolve(fixture, 'controllers/x.sel.js'));
+                            setTimeout(function () {
+                                mockwatch._handlers.removed(libpath.resolve(fixture, 'controllers/x.sel.js'));
+                            }, 0);
+                        }, 0);
+                    }, 0);
+                }
+            };
+            mockery.registerMock('watch', mockwatch);
+
+            BundleLocator = require('../../lib/bundleLocator.js');
+            locator = new BundleLocator({
+                applicationDirectory: fixture
+            });
+
+            locator.parseBundle(fixture).then(function () {
+                var bundle = locator.getBundle('simple'),
+                    fileUpdatedCalls = 0,
+                    fileDeletedCalls = 0,
+                    resUpdatedCalls = 0;
+                locator.plug({extensions: 'js'}, {
+                    fileUpdated: function (meta, api) {
+                        fileUpdatedCalls += 1;
+                    },
+                    fileDeleted: function (meta, api) {
+                        fileDeletedCalls += 1;
+                    },
+                    resourceUpdated: function (res, api) {
+                        resUpdatedCalls += 1;
+                        try {
+                            expect(bundle.resources.sel.controllers.x.relativePath).to.equal(res.relativePath);
+                        } catch (err) {
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next(err);
+                        }
+                    },
+                    resourceDeleted: function (res, api) {
+                        try {
+                            expect(fileUpdatedCalls).to.equal(2);
+                            expect(resUpdatedCalls).to.equal(2);
+                            expect(fileDeletedCalls).to.equal(1);
+                            expect(bundle.resources).to.not.have.property('sel');
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next();
+                        } catch (err) {
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next(err);
+                        }
+                    }
+                });
+                return locator.watch(fixture);
+            }).then(null, function (err) {
+                mockery.deregisterAll();
+                mockery.disable();
+                next(err);
+            });
+        });
+
     });
 
 

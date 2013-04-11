@@ -20,6 +20,7 @@
         "async": "*",
         "dive": "*",
         "mkdirp": "0.3.x",
+        "watch": "0.6.x",
         "yui": "~3.9.0"
     },
     "devDependencies": {
