@@ -234,7 +234,7 @@ describe('BundleLocator', function () {
                         fulfill();
                     });
                 },
-                bundleUpdated: function (bundle, api) {
+                bundleUpdated: function (bundle, api, why) {
                     if (!bundleCalls[bundle.name]) {
                         bundleCalls[bundle.name] = 0;
                     }
@@ -333,7 +333,7 @@ describe('BundleLocator', function () {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
                 },
-                bundleUpdated: function (bundle, api) {
+                bundleUpdated: function (bundle, api, why) {
                     if (!bundleCalls[bundle.name]) {
                         bundleCalls[bundle.name] = 0;
                     }
@@ -432,7 +432,7 @@ describe('BundleLocator', function () {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(res.bundleName, path, 'AAA-BBB-AAA', {encoding: 'utf8'});
                 },
-                bundleUpdated: function (bundle, api) {
+                bundleUpdated: function (bundle, api, why) {
                     if (!bundleCalls[bundle.name]) {
                         bundleCalls[bundle.name] = 0;
                     }
@@ -606,7 +606,7 @@ describe('BundleLocator', function () {
             });
 
             locator.plug({types: 'configs'}, {
-                bundleUpdated: function (bundle, api) {
+                bundleUpdated: function (bundle, api, why) {
                     if ('roster' === bundle.name) {
                         bundleCalls += 1;
                         if (1 === bundleCalls) {
@@ -620,6 +620,20 @@ describe('BundleLocator', function () {
                                 }
                                 return api.writeFileInBundle(bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
                             });
+                        }
+                        if (2 === bundleCalls) {
+                            try {
+                                expect(Object.keys(why.files).length).to.equal(2);
+                                expect(why.files).to.have.property('configs/foo.json');
+                                expect(why.files).to.have.property('configs/bar.json');
+                                expect(Object.keys(why.resources).length).to.equal(2);
+                                expect(why.resources).to.have.property('configs/foo.json');
+                                expect(why.resources).to.have.property('configs/bar.json');
+                            } catch (err) {
+                                mockery.deregisterAll();
+                                mockery.disable();
+                                next(err);
+                            }
                         }
                     }
                 }
