@@ -112,6 +112,19 @@ describe('BundleLocator', function () {
         });
 
 
+        it('_objectExclude()', function () {
+            var locator = new BundleLocator(),
+                src = {a: 'aaa', b: 'bbb', c: 'ccc'};
+            compareObjects(locator._objectExclude(src, []), src);
+            compareObjects(locator._objectExclude(src, ['a']), {b: 'bbb', c: 'ccc'});
+            compareObjects(locator._objectExclude(src, ['b']), {a: 'aaa', c: 'ccc'});
+            compareObjects(locator._objectExclude(src, ['a', 'b']), {c: 'ccc'});
+            compareObjects(locator._objectExclude(src, ['a', 'c']), {b: 'bbb'});
+            compareObjects(locator._objectExclude(src, ['b', 'c']), {a: 'aaa'});
+            compareObjects(locator._objectExclude(src, ['a', 'c', 'b']), {});
+        });
+
+
         it('api.getBundle()', function (next) {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
@@ -598,7 +611,13 @@ describe('BundleLocator', function () {
                         bundleCalls += 1;
                         if (1 === bundleCalls) {
                             return api.writeFileInBundle(bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'}).then(function (pathToNewFile) {
-                                expect(pathToNewFile).to.equal(libpath.join(bundle.buildDirectory, 'configs/foo.json'));
+                                try {
+                                    expect(pathToNewFile).to.equal(libpath.join(bundle.buildDirectory, 'configs/foo.json'));
+                                } catch (err) {
+                                    mockery.deregisterAll();
+                                    mockery.disable();
+                                    next(err);
+                                }
                                 return api.writeFileInBundle(bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
                             });
                         }
@@ -668,7 +687,7 @@ describe('BundleLocator', function () {
             });
 
             locator.parseBundle(fixture).then(function () {
-                var ress = locator.getBundle('simple').resources,
+                var bundle = locator.getBundle('simple'),
                     fileUpdatedCalls = 0,
                     fileDeletedCalls = 0,
                     resUpdatedCalls = 0;
@@ -681,16 +700,28 @@ describe('BundleLocator', function () {
                     },
                     resourceUpdated: function (res, api) {
                         resUpdatedCalls += 1;
-                        expect(ress.sel.controllers.x).to.equal(res.relativePath);
+                        try {
+                            expect(bundle.resources.sel.controllers.x.relativePath).to.equal(res.relativePath);
+                        } catch (err) {
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next(err);
+                        }
                     },
                     resourceDeleted: function (res, api) {
-                        expect(fileUpdatedCalls).to.equal(2);
-                        expect(resUpdatedCalls).to.equal(2);
-                        expect(fileDeletedCalls).to.equal(1);
-                        expect(ress).to.not.have.property('sel');
-                        mockery.deregisterAll();
-                        mockery.disable();
-                        next();
+                        try {
+                            expect(fileUpdatedCalls).to.equal(2);
+                            expect(resUpdatedCalls).to.equal(2);
+                            expect(fileDeletedCalls).to.equal(1);
+                            expect(bundle.resources).to.not.have.property('sel');
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next();
+                        } catch (err) {
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next(err);
+                        }
                     }
                 });
                 return locator.watch(fixture);
