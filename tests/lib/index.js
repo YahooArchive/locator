@@ -209,12 +209,12 @@ describe('BundleLocator', function () {
                     }
                     fileCalls[evt.file.relativePath].push('js');
                 },
-                resourceUpdated: function (res, api) {
+                resourceUpdated: function (evt, api) {
                     pluginJSON.resourceCalls += 1;
-                    if (!resourceCalls[res.relativePath]) {
-                        resourceCalls[res.relativePath] = [];
+                    if (!resourceCalls[evt.resource.relativePath]) {
+                        resourceCalls[evt.resource.relativePath] = [];
                     }
-                    resourceCalls[res.relativePath].push('js');
+                    resourceCalls[evt.resource.relativePath].push('js');
                 }
             };
             locator.plug({extensions: 'js'}, pluginJSON);
@@ -224,12 +224,12 @@ describe('BundleLocator', function () {
                 describe: {
                     extensions: 'css,dust'
                 },
-                resourceUpdated: function (res, api) {
+                resourceUpdated: function (evt, api) {
                     pluginDefault.calls += 1;
-                    if (!resourceCalls[res.relativePath]) {
-                        resourceCalls[res.relativePath] = [];
+                    if (!resourceCalls[evt.resource.relativePath]) {
+                        resourceCalls[evt.resource.relativePath] = [];
                     }
-                    resourceCalls[res.relativePath].push('default');
+                    resourceCalls[evt.resource.relativePath].push('default');
                     return api.promise(function (fulfill, reject) {
                         fulfill();
                     });
@@ -245,12 +245,12 @@ describe('BundleLocator', function () {
 
             pluginAll = {
                 calls: 0,
-                resourceUpdated: function (res, api) {
+                resourceUpdated: function (evt, api) {
                     pluginAll.calls += 1;
-                    if (!resourceCalls[res.relativePath]) {
-                        resourceCalls[res.relativePath] = [];
+                    if (!resourceCalls[evt.resource.relativePath]) {
+                        resourceCalls[evt.resource.relativePath] = [];
                     }
-                    resourceCalls[res.relativePath].push('all');
+                    resourceCalls[evt.resource.relativePath].push('all');
                     return api.promise(function (fulfill, reject) {
                         fulfill();
                     });
@@ -329,9 +329,9 @@ describe('BundleLocator', function () {
             });
 
             locator.plug({extensions: 'dust'}, {
-                resourceUpdated: function (res, api) {
+                resourceUpdated: function (evt, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
-                    return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
+                    return api.writeFileInBundle(evt.resource.bundleName, path, '// just testing', {encoding: 'utf8'});
                 },
                 bundleUpdated: function (evt, api) {
                     if (!bundleCalls[evt.bundle.name]) {
@@ -342,8 +342,8 @@ describe('BundleLocator', function () {
             });
 
             locator.plug({extensions: 'less'}, {
-                resourceUpdated: function (res, api) {
-                    updates.push([res.bundleName, res.relativePath].join(' '));
+                resourceUpdated: function (evt, api) {
+                    updates.push([evt.resource.bundleName, evt.resource.relativePath].join(' '));
                 }
             });
 
@@ -428,9 +428,9 @@ describe('BundleLocator', function () {
             });
 
             locator.plug({extensions: 'dust'}, {
-                resourceUpdated: function (res, api) {
+                resourceUpdated: function (evt, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
-                    return api.writeFileInBundle(res.bundleName, path, 'AAA-BBB-AAA', {encoding: 'utf8'});
+                    return api.writeFileInBundle(evt.resource.bundleName, path, 'AAA-BBB-AAA', {encoding: 'utf8'});
                 },
                 bundleUpdated: function (evt, api) {
                     if (!bundleCalls[evt.bundle.name]) {
@@ -441,8 +441,8 @@ describe('BundleLocator', function () {
             });
 
             locator.plug({extensions: 'less'}, {
-                resourceUpdated: function (res, api) {
-                    updates.push([res.bundleName, res.relativePath].join(' '));
+                resourceUpdated: function (evt, api) {
+                    updates.push([evt.resource.bundleName, evt.resource.relativePath].join(' '));
                 }
             });
 
@@ -522,15 +522,15 @@ describe('BundleLocator', function () {
             });
 
             locator.plug({extensions: 'dust'}, {
-                resourceUpdated: function (res, api) {
+                resourceUpdated: function (evt, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
-                    return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
+                    return api.writeFileInBundle(evt.resource.bundleName, path, '// just testing', {encoding: 'utf8'});
                 }
             });
 
             locator.plug({extensions: 'less'}, {
-                resourceUpdated: function (res, api) {
-                    updates.push(res.fullPath);
+                resourceUpdated: function (evt, api) {
+                    updates.push(evt.resource.fullPath);
                 }
             });
 
@@ -712,17 +712,17 @@ describe('BundleLocator', function () {
                     fileDeleted: function (evt, api) {
                         fileDeletedCalls += 1;
                     },
-                    resourceUpdated: function (res, api) {
+                    resourceUpdated: function (evt, api) {
                         resUpdatedCalls += 1;
                         try {
-                            expect(bundle.resources.sel.controllers.x.relativePath).to.equal(res.relativePath);
+                            expect(bundle.resources.sel.controllers.x.relativePath).to.equal(evt.resource.relativePath);
                         } catch (err) {
                             mockery.deregisterAll();
                             mockery.disable();
                             next(err);
                         }
                     },
-                    resourceDeleted: function (res, api) {
+                    resourceDeleted: function (evt, api) {
                         try {
                             expect(fileUpdatedCalls).to.equal(2);
                             expect(resUpdatedCalls).to.equal(2);
