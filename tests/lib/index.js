@@ -202,12 +202,12 @@ describe('BundleLocator', function () {
             pluginJSON = {
                 fileCalls: 0,
                 resourceCalls: 0,
-                fileUpdated: function (res, api) {
+                fileUpdated: function (evt, api) {
                     pluginJSON.fileCalls += 1;
-                    if (!fileCalls[res.relativePath]) {
-                        fileCalls[res.relativePath] = [];
+                    if (!fileCalls[evt.file.relativePath]) {
+                        fileCalls[evt.file.relativePath] = [];
                     }
-                    fileCalls[res.relativePath].push('js');
+                    fileCalls[evt.file.relativePath].push('js');
                 },
                 resourceUpdated: function (res, api) {
                     pluginJSON.resourceCalls += 1;
@@ -706,10 +706,10 @@ describe('BundleLocator', function () {
                     fileDeletedCalls = 0,
                     resUpdatedCalls = 0;
                 locator.plug({extensions: 'js'}, {
-                    fileUpdated: function (meta, api) {
+                    fileUpdated: function (evt, api) {
                         fileUpdatedCalls += 1;
                     },
-                    fileDeleted: function (meta, api) {
+                    fileDeleted: function (evt, api) {
                         fileDeletedCalls += 1;
                     },
                     resourceUpdated: function (res, api) {
