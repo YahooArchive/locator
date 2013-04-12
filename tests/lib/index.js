@@ -234,11 +234,11 @@ describe('BundleLocator', function () {
                         fulfill();
                     });
                 },
-                bundleUpdated: function (bundle, api, why) {
-                    if (!bundleCalls[bundle.name]) {
-                        bundleCalls[bundle.name] = 0;
+                bundleUpdated: function (evt, api) {
+                    if (!bundleCalls[evt.bundle.name]) {
+                        bundleCalls[evt.bundle.name] = 0;
                     }
-                    bundleCalls[bundle.name] += 1;
+                    bundleCalls[evt.bundle.name] += 1;
                 }
             };
             locator.plug(pluginDefault.describe, pluginDefault);
@@ -333,11 +333,11 @@ describe('BundleLocator', function () {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(res.bundleName, path, '// just testing', {encoding: 'utf8'});
                 },
-                bundleUpdated: function (bundle, api, why) {
-                    if (!bundleCalls[bundle.name]) {
-                        bundleCalls[bundle.name] = 0;
+                bundleUpdated: function (evt, api) {
+                    if (!bundleCalls[evt.bundle.name]) {
+                        bundleCalls[evt.bundle.name] = 0;
                     }
-                    bundleCalls[bundle.name] += 1;
+                    bundleCalls[evt.bundle.name] += 1;
                 }
             });
 
@@ -432,11 +432,11 @@ describe('BundleLocator', function () {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(res.bundleName, path, 'AAA-BBB-AAA', {encoding: 'utf8'});
                 },
-                bundleUpdated: function (bundle, api, why) {
-                    if (!bundleCalls[bundle.name]) {
-                        bundleCalls[bundle.name] = 0;
+                bundleUpdated: function (evt, api) {
+                    if (!bundleCalls[evt.bundle.name]) {
+                        bundleCalls[evt.bundle.name] = 0;
                     }
-                    bundleCalls[bundle.name] += 1;
+                    bundleCalls[evt.bundle.name] += 1;
                 }
             });
 
@@ -606,29 +606,29 @@ describe('BundleLocator', function () {
             });
 
             locator.plug({types: 'configs'}, {
-                bundleUpdated: function (bundle, api, why) {
-                    if ('roster' === bundle.name) {
+                bundleUpdated: function (evt, api) {
+                    if ('roster' === evt.bundle.name) {
                         bundleCalls += 1;
                         if (1 === bundleCalls) {
-                            return api.writeFileInBundle(bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'}).then(function (pathToNewFile) {
+                            return api.writeFileInBundle(evt.bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'}).then(function (pathToNewFile) {
                                 try {
-                                    expect(pathToNewFile).to.equal(libpath.join(bundle.buildDirectory, 'configs/foo.json'));
+                                    expect(pathToNewFile).to.equal(libpath.join(evt.bundle.buildDirectory, 'configs/foo.json'));
                                 } catch (err) {
                                     mockery.deregisterAll();
                                     mockery.disable();
                                     next(err);
                                 }
-                                return api.writeFileInBundle(bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
+                                return api.writeFileInBundle(evt.bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
                             });
                         }
                         if (2 === bundleCalls) {
                             try {
-                                expect(Object.keys(why.files).length).to.equal(2);
-                                expect(why.files).to.have.property('configs/foo.json');
-                                expect(why.files).to.have.property('configs/bar.json');
-                                expect(Object.keys(why.resources).length).to.equal(2);
-                                expect(why.resources).to.have.property('configs/foo.json');
-                                expect(why.resources).to.have.property('configs/bar.json');
+                                expect(Object.keys(evt.files).length).to.equal(2);
+                                expect(evt.files).to.have.property('configs/foo.json');
+                                expect(evt.files).to.have.property('configs/bar.json');
+                                expect(Object.keys(evt.resources).length).to.equal(2);
+                                expect(evt.resources).to.have.property('configs/foo.json');
+                                expect(evt.resources).to.have.property('configs/bar.json');
                             } catch (err) {
                                 mockery.deregisterAll();
                                 mockery.disable();
