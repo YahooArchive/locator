@@ -5,6 +5,7 @@ module.exports = {
     baseDirectory: __dirname,
     buildDirectory: __dirname + '/build/simple',
     type: 'touchdown-package',
+    files: {},
     resources: {
         '{}': {
             configs: {
@@ -98,6 +99,7 @@ module.exports = {
             baseDirectory: __dirname + '/node_modules/roster',
             buildDirectory: __dirname + '/build/roster',
             type: 'touchdown-package',
+            files: {},
             resources: {
                 '{}': {
                     "configs": {
@@ -183,3 +185,33 @@ module.exports = {
         }
     }
 };
+module.exports.files[__dirname + '/app.js'] = true;
+module.exports.files[__dirname + '/configs'] = true;
+module.exports.files[__dirname + '/expected-locator.js'] = true;
+module.exports.files[__dirname + '/controllers'] = true;
+module.exports.files[__dirname + '/models'] = true;
+module.exports.files[__dirname + '/package.json'] = true;
+module.exports.files[__dirname + '/configs/app.json'] = true;
+module.exports.files[__dirname + '/configs/dimensions.json'] = true;
+module.exports.files[__dirname + '/configs/routes.js'] = true;
+module.exports.files[__dirname + '/controllers/player.js'] = true;
+module.exports.files[__dirname + '/controllers/teamManager.js'] = true;
+module.exports.files[__dirname + '/controllers/teamManager.smartphone.js'] = true;
+module.exports.files[__dirname + '/models/player.js'] = true;
+module.exports.files[__dirname + '/models/roster.js'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/configs'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/controllers'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/lang'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/package.json'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/styles'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/templates'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/views'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/configs/roster.json'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/controllers/roster.js'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/lang/roster.en-US.json'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/styles/css'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/templates/partials'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/templates/roster.dust'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/views/roster.js'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/styles/css/roster.sass'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/templates/partials/player.dust'] = true;
