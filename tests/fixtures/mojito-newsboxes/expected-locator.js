@@ -4,6 +4,7 @@ module.exports = {
     name: 'modown-newsboxes',
     baseDirectory: __dirname,
     type: 'mojito-package',
+    files: {},
     resources: {
         '{}': {
             "assets": {
@@ -83,6 +84,7 @@ module.exports = {
             name: 'Shelf',
             baseDirectory: __dirname + '/mojits/Shelf',
             type: 'mojito-mojit',
+            files: {},
             resources: {
                 common: {
                     "controllers": {
@@ -182,6 +184,7 @@ module.exports = {
             name: 'Weather',
             baseDirectory: __dirname + '/mojits/Weather',
             type: 'mojito-mojit',
+            files: {},
             resources: {
                 common: {
                     "controllers": {
@@ -227,6 +230,7 @@ module.exports = {
             name: 'modown',
             baseDirectory: __dirname + '/node_modules/modown/lib/app',
             type: 'mojito-package',
+            files: {},
             resources: {
                 '{}': {
                     "configs": {
@@ -259,6 +263,7 @@ module.exports = {
             name: 'modown-lib-read',
             baseDirectory: __dirname + '/node_modules/modown-lib-read',
             type: 'mojito-package',
+            files: {},
             resources: {
                 '{}': {
                     "configs": {
@@ -282,6 +287,7 @@ module.exports = {
                     name: 'Read',
                     baseDirectory: __dirname + '/node_modules/modown-lib-read/mojits/Read',
                     type: 'mojito-mojit',
+                    files: {},
                     resources: {
                         '{}': {
                             "assets": {
@@ -378,3 +384,47 @@ module.exports = {
         }
     }
 };
+module.exports.files[__dirname + '/application.json'] = true;
+module.exports.files[__dirname + '/assets'] = true;
+module.exports.files[__dirname + '/assets/favicon.ico'] = true;
+module.exports.files[__dirname + '/expected-locator.js'] = true;
+module.exports.files[__dirname + '/middleware'] = true;
+module.exports.files[__dirname + '/middleware/debug.js'] = true;
+module.exports.files[__dirname + '/models'] = true;
+module.exports.files[__dirname + '/models/flickr.common.js'] = true;
+module.exports.files[__dirname + '/mojits'] = true;
+module.exports.files[__dirname + '/package.json'] = true;
+module.exports.files[__dirname + '/routes.json'] = true;
+module.exports.files[__dirname + '/server.js'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/assets'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/controller.common.js'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/definition.json'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/templates'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/views'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/assets/shelf.css'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/assets/shelf.opera-mini.css'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/templates/index.hb.html'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/templates/index.opera-mini.hb.html'] = true;
+module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/views/index.js'] = true;
+module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/controller.common.js'] = true;
+module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/models'] = true;
+module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/templates'] = true;
+module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/models/YqlWeatherModel.common.js'] = true;
+module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/templates/index.hb.html'] = true;
+module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app'] = true;
+module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/dimensions.json'] = true;
+module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware'] = true;
+module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware/modown-contextualizer.js'] = true;
+module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read/mojits'] = true;
+module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read/package.json'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/assets'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/controller.common.js'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/models'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/templates'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/views'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/assets/read.css'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/models/rss.common.js'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/templates/index.hb.html'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/templates/index.opera-mini.hb.html'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/views/index.js'] = true;

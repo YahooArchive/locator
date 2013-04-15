@@ -109,6 +109,7 @@ describe('BundleLocator', function () {
             expect(locator._filterResource(res, {extensions: 'orange', types: 'controller'})).to.equal(false);
             expect(locator._filterResource(res, {extensions: 'js', types: 'red'})).to.equal(false);
             expect(locator._filterResource(res, {extensions: 'orange', types: 'red'})).to.equal(false);
+            expect(locator._filterResource({ext: ''}, {extensions: 'orange'})).to.equal(false);
         });
 
 
@@ -134,6 +135,34 @@ describe('BundleLocator', function () {
                     bundle = locator._pluginAPI.getBundle('Shelf');
                     expect(bundle).to.be.an('object');
                     expect(bundle.name).to.equal('Shelf');
+                    next();
+                } catch (err) {
+                    next(err);
+                }
+            }, next);
+        });
+
+
+        it('api.getBundleFiles()', function (next) {
+            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
+                locator = new BundleLocator();
+            locator.parseBundle(fixture).then(function (have) {
+                var files;
+                try {
+                    files = locator._pluginAPI.getBundleFiles('Shelf', {extensions: 'js'});
+                    // order doesn't matter, since it depends on how the filesystem is walked
+                    files.sort();
+                    expect(files.length).to.equal(2);
+                    expect(files).to.contain(libpath.join(fixture, 'mojits/Shelf/controller.common.js'));
+                    expect(files).to.contain(libpath.join(fixture, 'mojits/Shelf/views/index.js'));
+
+                    files = locator._pluginAPI.getBundleFiles('Read', {extensions: 'css'});
+                    // order doesn't matter, since it depends on how the filesystem is walked
+                    files.sort();
+                    expect(files.length).to.equal(2);
+                    expect(files).to.contain(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
+                    expect(files).to.contain(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
+
                     next();
                 } catch (err) {
                     next(err);
