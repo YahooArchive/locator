@@ -6,7 +6,7 @@
 
 
 /*jslint nomen:true, node:true */
-/*globals describe,it */
+/*globals describe,it,before */
 "use strict";
 
 
@@ -40,44 +40,98 @@ function compareObjects(have, want) {
 
 describe('BundleLocator', function () {
 
-    describe('locateBundles', function () {
 
-        it('mojito-newsboxes', function (next) {
-            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
-                locator = new BundleLocator(),
-                options = {};
+    describe('mojito-newsboxes', function () {
+        var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
+            locator = new BundleLocator(),
+            options = {},
+            rootHave,
+            rootWant = require(fixture + '/expected-locator.js');
+
+        before(function (next) {
             locator.parseBundle(fixture, options).then(function (have) {
-                var want = require(fixture + '/expected-locator.js'),
-                    read;
-                try {
-                    read = locator.getBundle('Read');
-                    compareObjects(have, want);
-                    compareObjects(read, want.bundles['modown-lib-read'].bundles.Read);
-                    compareObjects(read.getResources(), want.bundles['modown-lib-read'].bundles.Read.resources['{}']);
-                    compareObjects(read.getResources({}, 'common'), want.bundles['modown-lib-read'].bundles.Read.resources.common);
-                    next();
-                } catch (err) {
-                    next(err);
-                }
+                rootHave = have;
+                next();
             }, next);
         });
 
-        it('touchdown-simple', function (next) {
-            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
-                locator = new BundleLocator({
-                    applicationDirectory: fixture,
-                    buildDirectory: 'build'
-                }),
-                options = {};
-            locator.parseBundle(fixture, options).then(function (have) {
-                var want = require(fixture + '/expected-locator.js');
-                try {
-                    compareObjects(have, want);
-                    next();
-                } catch (err) {
-                    next(err);
+        it('parseBundle()', function () {
+            var read = locator.getBundle('Read');
+            compareObjects(rootHave, rootWant);
+            compareObjects(read, rootWant.bundles['modown-lib-read'].bundles.Read);
+            compareObjects(read.getResources(), rootWant.bundles['modown-lib-read'].bundles.Read.resources['{}']);
+            compareObjects(read.getResources({}, 'common'), rootWant.bundles['modown-lib-read'].bundles.Read.resources.common);
+        });
+
+        it('listAllResources()', function () {
+            var ress = locator.listAllResources({extensions: 'js'});
+            expect(ress.length).to.equal(10);
+            ress.forEach(function (res) {
+                if ('Read' === res.bundleName && 'controller.common.js' === res.relativePath) {
+                    compareObjects(res, rootWant.bundles['modown-lib-read'].bundles.Read.resources.common.controllers.controller);
+                    return;
                 }
+                if ('Read' === res.bundleName && 'models/rss.common.js' === res.relativePath) {
+                    compareObjects(res, rootWant.bundles['modown-lib-read'].bundles.Read.resources.common.models.rss);
+                    return;
+                }
+                if ('Read' === res.bundleName && 'views/index.js' === res.relativePath) {
+                    compareObjects(res, rootWant.bundles['modown-lib-read'].bundles.Read.resources['{}'].views.index);
+                    return;
+                }
+                if ('Shelf' === res.bundleName && 'controller.common.js' === res.relativePath) {
+                    compareObjects(res, rootWant.bundles.Shelf.resources.common.controllers.controller);
+                    return;
+                }
+                if ('Shelf' === res.bundleName && 'views/index.js' === res.relativePath) {
+                    compareObjects(res, rootWant.bundles.Shelf.resources['{}'].views.index);
+                    return;
+                }
+                if ('Weather' === res.bundleName && 'controller.common.js' === res.relativePath) {
+                    compareObjects(res, rootWant.bundles.Weather.resources.common.controllers.controller);
+                    return;
+                }
+                if ('Weather' === res.bundleName && 'models/YqlWeatherModel.common.js' === res.relativePath) {
+                    compareObjects(res, rootWant.bundles.Weather.resources.common.models.YqlWeatherModel);
+                    return;
+                }
+                if ('modown' === res.bundleName && 'middleware/modown-contextualizer.js' === res.relativePath) {
+                    compareObjects(res, rootWant.bundles.modown.resources['{}'].middleware['modown-contextualizer']);
+                    return;
+                }
+                if ('modown-newsboxes' === res.bundleName && 'middleware/debug.js' === res.relativePath) {
+                    compareObjects(res, rootWant.resources['{}'].middleware.debug);
+                    return;
+                }
+                if ('modown-newsboxes' === res.bundleName && 'models/flickr.common.js' === res.relativePath) {
+                    compareObjects(res, rootWant.resources.common.models.flickr);
+                    return;
+                }
+            });
+        });
+
+    });
+
+
+    describe('touchdown-simple', function () {
+        var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+            locator = new BundleLocator({
+                applicationDirectory: fixture,
+                buildDirectory: 'build'
+            }),
+            options = {},
+            rootHave,
+            rootWant = require(fixture + '/expected-locator.js');
+
+        before(function (next) {
+            locator.parseBundle(fixture, options).then(function (bundle) {
+                rootHave = bundle;
+                next();
             }, next);
+        });
+
+        it('parseBundle()', function () {
+            compareObjects(rootHave, rootWant);
         });
 
     });
