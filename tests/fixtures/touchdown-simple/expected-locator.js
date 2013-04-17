@@ -125,6 +125,18 @@ module.exports = {
                         }
                     },
                     "lang": {
+                        "": {
+                            "roster": {
+                                "bundleName": "roster",
+                                "fullPath": __dirname + "/node_modules/roster/lang/roster.json",
+                                "relativePath": "lang/roster.json",
+                                "ext": "json",
+                                "name": "roster",
+                                "type": "lang",
+                                "subtype": "",
+                                "selector": "{}"
+                            }
+                        },
                         "en-US": {
                             "roster": {
                                 "bundleName": "roster",
@@ -208,6 +220,7 @@ module.exports.bundles.roster.files[__dirname + '/node_modules/roster/templates'
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/views'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/configs/roster.json'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/controllers/roster.js'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/lang/roster.json'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/lang/roster.en-US.json'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/styles/css'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/templates/partials'] = true;
