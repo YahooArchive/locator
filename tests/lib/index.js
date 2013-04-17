@@ -61,6 +61,7 @@ describe('BundleLocator', function () {
             compareObjects(read, rootWant.bundles['modown-lib-read'].bundles.Read);
             compareObjects(read.getResources(), rootWant.bundles['modown-lib-read'].bundles.Read.resources['{}']);
             compareObjects(read.getResources({}, 'common'), rootWant.bundles['modown-lib-read'].bundles.Read.resources.common);
+            expect(locator.getRootBundle().name).to.equal('modown-newsboxes');
         });
 
         it('listAllResources()', function () {
