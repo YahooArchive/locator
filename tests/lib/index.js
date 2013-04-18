@@ -830,6 +830,86 @@ describe('BundleLocator', function () {
             });
         });
 
+        it('ignores files in build directory', function (next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                locator,
+                mockwatch,
+                fileUpdatedCalls = 0,
+                fileDeletedCalls = 0,
+                resUpdatedCalls = 0,
+                resDeletedCalls = 0;
+
+            mockery.enable({
+                useCleanCache: true,
+                warnOnReplace: false,
+                warnOnUnregistered: false
+            });
+
+            mockwatch = {
+                _handlers: {},
+                createMonitor: function (dir, options, callback) {
+                    callback({
+                        on: function (evt, handler) {
+                            mockwatch._handlers[evt] = handler;
+                        }
+                    });
+                    // fire one event per tick
+                    setTimeout(function () {
+                        mockwatch._handlers.created(libpath.resolve(fixture, 'build/controllers/x.sel.js'));
+                        setTimeout(function () {
+                            mockwatch._handlers.changed(libpath.resolve(fixture, 'build/controllers/x.sel.js'));
+                            setTimeout(function () {
+                                mockwatch._handlers.removed(libpath.resolve(fixture, 'build/controllers/x.sel.js'));
+                                try {
+                                    expect(fileUpdatedCalls).to.equal(0);
+                                    expect(fileDeletedCalls).to.equal(0);
+                                    expect(resUpdatedCalls).to.equal(0);
+                                    expect(resDeletedCalls).to.equal(0);
+                                    mockery.deregisterAll();
+                                    mockery.disable();
+                                    next();
+                                } catch (err) {
+                                    mockery.deregisterAll();
+                                    mockery.disable();
+                                    next(err);
+                                }
+                            }, 0);
+                        }, 0);
+                    }, 0);
+                }
+            };
+            mockery.registerMock('watch', mockwatch);
+
+            BundleLocator = require('../../lib/bundleLocator.js');
+            locator = new BundleLocator({
+                applicationDirectory: fixture,
+                buildDirectory: libpath.join(fixture, 'build')
+            });
+
+            locator.parseBundle(fixture).then(function () {
+                locator.plug({extensions: 'js'}, {
+                    fileUpdated: function (evt, api) {
+                        fileUpdatedCalls += 1;
+                    },
+                    fileDeleted: function (evt, api) {
+                        fileDeletedCalls += 1;
+                    },
+                    resourceUpdated: function (evt, api) {
+                        resUpdatedCalls += 1;
+                    },
+                    resourceDeleted: function (evt, api) {
+                        resDeletedCalls += 1;
+                    }
+                });
+                return locator.watch(fixture);
+            }).then(null, function (err) {
+                mockery.deregisterAll();
+                mockery.disable();
+                next(err);
+            });
+        });
+
     });
 
 
