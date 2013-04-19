@@ -740,6 +740,70 @@ describe('BundleLocator', function () {
                 next(err);
             });
         });
+
+
+        it('reports errors in sync plugins', function (next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                locator,
+                options = {};
+
+            BundleLocator = require('../../lib/bundleLocator.js');
+            locator = new BundleLocator({
+                applicationDirectory: fixture
+            });
+
+            locator.plug({types: 'configs'}, {
+                resourceUpdated: function (evt, api) {
+                    throw new Error('NOPE');
+                }
+            });
+
+            locator.parseBundle(fixture, options).then(function () {
+                next(new Error('shouldnt get here'));
+            }, function (err) {
+                try {
+                    expect(err).to.be.an('object');
+                    expect(err.message).to.equal('NOPE');
+                    next();
+                } catch (err2) {
+                    next(err2);
+                }
+            });
+        });
+
+
+        it('reports errors in async plugins', function (next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                locator,
+                options = {};
+
+            BundleLocator = require('../../lib/bundleLocator.js');
+            locator = new BundleLocator({
+                applicationDirectory: fixture
+            });
+
+            locator.plug({types: 'configs'}, {
+                resourceUpdated: function (evt, api) {
+                    return api.promise(function (fulfill, reject) {
+                        reject(new Error('NOPE'));
+                    });
+                }
+            });
+
+            locator.parseBundle(fixture, options).then(function () {
+                next(new Error('shouldnt get here'));
+            }, function (err) {
+                try {
+                    expect(err).to.be.an('object');
+                    expect(err.message).to.equal('NOPE');
+                    next();
+                } catch (err2) {
+                    next(err2);
+                }
+            });
+        });
     });
 
 
