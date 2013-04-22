@@ -777,7 +777,10 @@ describe('BundleLocator', function () {
                 applicationDirectory: fixture
             });
 
-            locator.plug({types: 'configs'}, {
+            locator.plug({
+                describe: {
+                    types: 'configs'
+                },
                 resourceUpdated: function (evt, api) {
                     throw new Error('NOPE');
                 }
@@ -808,7 +811,10 @@ describe('BundleLocator', function () {
                 applicationDirectory: fixture
             });
 
-            locator.plug({types: 'configs'}, {
+            locator.plug({
+                describe: {
+                    types: 'configs'
+                },
                 resourceUpdated: function (evt, api) {
                     return api.promise(function (fulfill, reject) {
                         reject(new Error('NOPE'));
