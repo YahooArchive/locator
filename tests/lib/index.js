@@ -286,6 +286,9 @@ describe('BundleLocator', function () {
             pluginJSON = {
                 fileCalls: 0,
                 resourceCalls: 0,
+                describe: {
+                    extensions: 'js'
+                },
                 fileUpdated: function (evt, api) {
                     pluginJSON.fileCalls += 1;
                     if (!fileCalls[evt.file.relativePath]) {
@@ -301,7 +304,7 @@ describe('BundleLocator', function () {
                     resourceCalls[evt.resource.relativePath].push('js');
                 }
             };
-            locator.plug({extensions: 'js'}, pluginJSON);
+            locator.plug(pluginJSON);
 
             pluginDefault = {
                 calls: 0,
@@ -325,7 +328,7 @@ describe('BundleLocator', function () {
                     bundleCalls[evt.bundle.name] += 1;
                 }
             };
-            locator.plug(pluginDefault.describe, pluginDefault);
+            locator.plug(pluginDefault);
 
             pluginAll = {
                 calls: 0,
@@ -340,7 +343,7 @@ describe('BundleLocator', function () {
                     });
                 }
             };
-            locator.plug({}, pluginAll);
+            locator.plug(pluginAll);
 
             locator.parseBundle(fixture, options).then(function (have) {
                 var want = require(fixture + '/expected-locator.js');
@@ -412,7 +415,10 @@ describe('BundleLocator', function () {
                 buildDirectory: 'build'
             });
 
-            locator.plug({extensions: 'dust'}, {
+            locator.plug({
+                describe: {
+                    extensions: 'dust'
+                },
                 resourceUpdated: function (evt, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(evt.resource.bundleName, path, '// just testing', {encoding: 'utf8'});
@@ -425,7 +431,10 @@ describe('BundleLocator', function () {
                 }
             });
 
-            locator.plug({extensions: 'less'}, {
+            locator.plug({
+                describe: {
+                    extensions: 'less'
+                },
                 resourceUpdated: function (evt, api) {
                     updates.push([evt.resource.bundleName, evt.resource.relativePath].join(' '));
                 }
@@ -511,7 +520,10 @@ describe('BundleLocator', function () {
                 buildDirectory: 'build'
             });
 
-            locator.plug({extensions: 'dust'}, {
+            locator.plug({
+                describe: {
+                    extensions: 'dust'
+                },
                 resourceUpdated: function (evt, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(evt.resource.bundleName, path, 'AAA-BBB-AAA', {encoding: 'utf8'});
@@ -524,7 +536,10 @@ describe('BundleLocator', function () {
                 }
             });
 
-            locator.plug({extensions: 'less'}, {
+            locator.plug({
+                describe: {
+                    extensions: 'less'
+                },
                 resourceUpdated: function (evt, api) {
                     updates.push([evt.resource.bundleName, evt.resource.relativePath].join(' '));
                 }
@@ -605,14 +620,20 @@ describe('BundleLocator', function () {
                 buildDirectory: 'build'
             });
 
-            locator.plug({extensions: 'dust'}, {
+            locator.plug({
+                describe: {
+                    extensions: 'dust'
+                },
                 resourceUpdated: function (evt, api) {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(evt.resource.bundleName, path, '// just testing', {encoding: 'utf8'});
                 }
             });
 
-            locator.plug({extensions: 'less'}, {
+            locator.plug({
+                describe: {
+                    extensions: 'less'
+                },
                 resourceUpdated: function (evt, api) {
                     updates.push(evt.resource.fullPath);
                 }
@@ -689,7 +710,10 @@ describe('BundleLocator', function () {
                 buildDirectory: 'build'
             });
 
-            locator.plug({types: 'configs'}, {
+            locator.plug({
+                describe: {
+                    types: 'configs'
+                },
                 bundleUpdated: function (evt, api) {
                     if ('roster' === evt.bundle.name) {
                         bundleCalls += 1;
@@ -789,7 +813,10 @@ describe('BundleLocator', function () {
                     fileUpdatedCalls = 0,
                     fileDeletedCalls = 0,
                     resUpdatedCalls = 0;
-                locator.plug({extensions: 'js'}, {
+                locator.plug({
+                    describe: {
+                        extensions: 'js'
+                    },
                     fileUpdated: function (evt, api) {
                         fileUpdatedCalls += 1;
                     },
@@ -888,7 +915,10 @@ describe('BundleLocator', function () {
             });
 
             locator.parseBundle(fixture).then(function () {
-                locator.plug({extensions: 'js'}, {
+                locator.plug({
+                    describe: {
+                        extensions: 'js'
+                    },
                     fileUpdated: function (evt, api) {
                         fileUpdatedCalls += 1;
                     },
