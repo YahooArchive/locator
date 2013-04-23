@@ -1010,6 +1010,108 @@ describe('BundleLocator', function () {
             });
         });
 
+        it('reports errors from plugins', function (next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                locator,
+                mockwatch,
+                logCalls = 0;
+
+            mockery.enable({
+                useCleanCache: true,
+                warnOnReplace: false,
+                warnOnUnregistered: false
+            });
+
+            mockwatch = {
+                _handlers: {},
+                createMonitor: function (dir, options, callback) {
+                    callback({
+                        on: function (evt, handler) {
+                            mockwatch._handlers[evt] = handler;
+                        }
+                    });
+                    // fire one event per tick
+                    setTimeout(function () {
+                        mockwatch._handlers.created(libpath.resolve(fixture, 'controllers/x.js'));
+                        setTimeout(function () {
+                            mockwatch._handlers.changed(libpath.resolve(fixture, 'controllers/x.js'));
+                            setTimeout(function () {
+                                mockwatch._handlers.removed(libpath.resolve(fixture, 'controllers/x.js'));
+                            }, 0);
+                        }, 0);
+                    }, 0);
+                }
+            };
+            mockery.registerMock('watch', mockwatch);
+
+            mockery.registerMock('watch', mockwatch);
+            BundleLocator = require('../../lib/bundleLocator.js');
+            locator = new BundleLocator({
+                applicationDirectory: fixture
+            });
+
+            locator.parseBundle(fixture, {}).then(function () {
+                try {
+                    locator.plug({
+                        describe: {
+                            extensions: 'js'
+                        },
+                        fileUpdated: function (evt, api) {
+                            throw new Error('NOPE');
+                        },
+                        fileDeleted: function (evt, api) {
+                            throw new Error('NOPE');
+                        }
+                    });
+                    BundleLocator.test.imports.log = function (msg) {
+                        logCalls += 1;
+                        try {
+                            switch (logCalls) {
+                            case 1:
+                                expect(msg).to.equal('Error processing file ' + libpath.join(fixture + '/controllers/x.js'));
+                                break;
+                            case 2:
+                                expect(msg.indexOf('Error: NOPE')).to.equal(0);
+                                break;
+                            case 3:
+                                expect(msg).to.equal('Error processing file ' + libpath.join(fixture + '/controllers/x.js'));
+                                break;
+                            case 4:
+                                expect(msg.indexOf('Error: NOPE')).to.equal(0);
+                                break;
+                            case 5:
+                                expect(msg).to.equal('Error processing file ' + libpath.join(fixture + '/controllers/x.js'));
+                                break;
+                            case 6:
+                                expect(msg.indexOf('Error: NOPE')).to.equal(0);
+                                mockery.deregisterAll();
+                                mockery.disable();
+                                next();
+                                break;
+                            }
+                        } catch (err) {
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next(err);
+                        }
+                    };
+                    locator.watch(fixture).then(null, function (err) {
+                        mockery.deregisterAll();
+                        mockery.disable();
+                        next(err);
+                    });
+                } catch (err) {
+                    mockery.deregisterAll();
+                    mockery.disable();
+                    next(err);
+                }
+            }, function (err) {
+                mockery.deregisterAll();
+                mockery.disable();
+                next(err);
+            });
+        });
     });
 
 
