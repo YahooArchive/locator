@@ -2,6 +2,7 @@
 module.exports = {
     options: {},
     name: 'modown-newsboxes',
+    version: '0.0.2',
     baseDirectory: __dirname,
     type: 'mojito-package',
     files: {},
@@ -228,6 +229,7 @@ module.exports = {
         modown: {
             options: {},
             name: 'modown',
+            version: '0.0.1',
             baseDirectory: __dirname + '/node_modules/modown/lib/app',
             type: 'mojito-package',
             files: {},
@@ -261,6 +263,7 @@ module.exports = {
         'modown-lib-read': {
             options: {},
             name: 'modown-lib-read',
+            version: '0.0.2',
             baseDirectory: __dirname + '/node_modules/modown-lib-read',
             type: 'mojito-package',
             files: {},
