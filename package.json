@@ -1,6 +1,6 @@
 {
     "name": "modown-locator",
-    "version": "0.1.0-1",
+    "version": "0.1.0-2",
     "description": "modown resource locator",
     "author": "Drew Folta <folta@yahoo-inc.com>",
     "contributors": [
@@ -16,9 +16,9 @@
         "npm": ">1.0"
     },
     "homepage": "yo/modown",
-    "repository" : {
-        "type" : "git",
-        "url" : "https://git.corp.yahoo.com/modown/modown-locator.git"
+    "repository": {
+        "type": "git",
+        "url": "https://git.corp.yahoo.com/modown/modown-locator.git"
     },
     "dependencies": {
         "async": "*",
