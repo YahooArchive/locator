@@ -16,6 +16,10 @@
         "npm": ">1.0"
     },
     "homepage": "yo/modown",
+    "repository" : {
+        "type" : "git",
+        "url" : "https://git.corp.yahoo.com/modown/modown-locator.git"
+    },
     "dependencies": {
         "async": "*",
         "dive": "*",
