@@ -87,7 +87,7 @@ The following rulesets ship with `modown-locator`:
 
 
 ## Plugins
-Called with "events" (really just methods) at different points of the processing
+Plugins are called with "events" (really just methods) at different points of the processing.
 
 * `fileUpdated(evt, api)`
     * called when a file is added or updated
