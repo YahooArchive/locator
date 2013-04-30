@@ -5,7 +5,8 @@
         "build_container": "node8",
         "compilers": {
             "updateversion": {
-                "compiler": "updateversion"
+                "compiler": "updateversion",
+                "config": { "type": "patch" }
             }
         }
     },
