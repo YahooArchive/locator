@@ -111,6 +111,13 @@ describe('BundleLocator', function () {
             });
         });
 
+        it('listBundleNames()', function () {
+            var have = locator.listBundleNames(),
+                want = ['Read', 'Shelf', 'Weather', 'modown', 'modown-lib-read', 'modown-newsboxes'];
+            have.sort();
+            expect(have).to.deep.equal(want);
+        });
+
         it('_getBundleNameByPath', function () {
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather'))).to.equal('Weather');
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather/x'))).to.equal('Weather');
