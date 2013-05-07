@@ -63,6 +63,8 @@ Both `locator.getBundle(bundleName)` and `locator.getRootBundle()` return a Bund
 ### Rulesets
 The following rulesets ship with `modown-locator`:
 
+* `files`
+    * used for packages whose files should be walked by plugins, but which don't otherwise contain resources
 * `touchdown-package`
     * used to interpret the layout of a touchdown application or extension package
 * `mojito-package`
