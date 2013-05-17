@@ -118,6 +118,40 @@ describe('BundleLocator', function () {
             expect(have).to.deep.equal(want);
         });
 
+        it('listBundleNames() : filter by bundleName', function () {
+            var have,
+                want = ['modown-lib-read', 'modown-newsboxes'];
+
+            have = locator.listBundleNames(function (bundleName, pkgJSON) {
+                if (/^modown-/.test(bundleName)) {
+                    return true;
+                }
+                return false;
+            });
+
+            have.sort();
+            expect(have).to.deep.equal(want);
+        });
+
+        // for use case where application need to filter on a specific
+        // property of package.json
+        it('listBundleNames() : filter by pkgJSON property', function () {
+            var have,
+                want = ['modown-lib-read'];
+
+            have = locator.listBundleNames(function (bundleName, pkgJSON) {
+                var match = false;
+                if (/^Not A One/.test(pkgJSON.author) &&
+                        "modown-lib-read" === pkgJSON.name) {
+                    match = true;
+                }
+                return match;
+            });
+
+            have.sort();
+            expect(have).to.deep.equal(want);
+        });
+
         it('_getBundleNameByPath', function () {
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather'))).to.equal('Weather');
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather/x'))).to.equal('Weather');
