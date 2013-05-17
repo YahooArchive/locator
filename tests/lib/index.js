@@ -122,7 +122,7 @@ describe('BundleLocator', function () {
             var have,
                 want = ['modown-lib-read', 'modown-newsboxes'];
 
-            have = locator.listBundleNames(function (bundle, pkgJSON) {
+            have = locator.listBundleNames(function (bundle) {
                 if (bundle.name && /^modown-/.test(bundle.name)) {
                     return true;
                 }
@@ -139,8 +139,18 @@ describe('BundleLocator', function () {
             var have,
                 want = ['modown-lib-read'];
 
-            have = locator.listBundleNames(function (bundle, pkgJSON) {
-                var match = false;
+            have = locator.listBundleNames(function (bundle) {
+                var match = false,
+                    pkgJSON;
+
+                try {
+                    pkgJSON = require(libpath.resolve(
+                        bundle.baseDirectory,
+                        'package.json'
+                    ));
+                } catch (e) {
+                    pkgJSON = undefined;
+                }
                 if (pkgJSON && /^Not A One/.test(pkgJSON.author) &&
                         "modown-lib-read" === pkgJSON.name) {
                     match = true;
