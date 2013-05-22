@@ -8,13 +8,6 @@
                 "compiler": "updateversion",
                 "config": { "type": "patch" }
             }
-        },
-        "build": {
-            "lint": {
-                "task": "script",
-                "command": "ynpm run pretest",
-                "after": "echo 'No Errors' >${LINT_OUTPUT_DIR}/jslint.html"
-            }
         }
     },
     "jobs": {
