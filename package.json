@@ -30,14 +30,16 @@
     "devDependencies": {
         "chai": "*",
         "istanbul": "*",
-        "jslint": "*",
+        "jshint": "~0.9.0",
         "mocha": "*",
         "mockery": "1.4.x",
-        "xunit-file": "*"
+        "xunit-file": "*",
+        "yui-lint": "~0.1.3"
     },
     "scripts": {
-        "cover": "./node_modules/istanbul/lib/cli.js cover -- ./node_modules/mocha/bin/_mocha tests/lib/*.js --reporter spec",
-        "test": "./node_modules/.bin/jslint lib/*.js tests/lib/*.js && ./node_modules/.bin/_mocha tests/lib/*.js --reporter spec"
+        "cover": "node node_modules/istanbul/lib/cli.js cover -- ./node_modules/mocha/bin/_mocha tests/lib/*.js --reporter spec",
+        "pretest": "node node_modules/.bin/jshint --config ./node_modules/yui-lint/jshint.json ./lib/*.js tests/lib/*.js",
+        "test": "./node_modules/.bin/_mocha tests/lib/*.js --reporter spec"
     },
     "license": "BSD",
     "yahoo": {

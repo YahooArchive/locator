@@ -6,7 +6,7 @@
 
 
 /*jslint nomen:true, node:true */
-/*globals describe,it,before */
+/*global describe,it,before */
 "use strict";
 
 
@@ -241,7 +241,7 @@ describe('BundleLocator', function () {
         it('api.getBundle()', function (next) {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
-            locator.parseBundle(fixture).then(function (have) {
+            locator.parseBundle(fixture).then(function () {
                 var bundle;
                 try {
                     bundle = locator._pluginAPI.getBundle('Shelf');
@@ -258,7 +258,7 @@ describe('BundleLocator', function () {
         it('api.getBundleFiles()', function (next) {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
-            locator.parseBundle(fixture).then(function (have) {
+            locator.parseBundle(fixture).then(function () {
                 var files;
                 try {
                     files = locator._pluginAPI.getBundleFiles('Shelf', {extensions: 'js'});
@@ -286,7 +286,7 @@ describe('BundleLocator', function () {
         it('api.getBundleResources()', function (next) {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
-            locator.parseBundle(fixture).then(function (have) {
+            locator.parseBundle(fixture).then(function () {
                 var ress;
                 try {
                     ress = locator._pluginAPI.getBundleResources('Shelf', {types: 'templates'});
@@ -346,14 +346,14 @@ describe('BundleLocator', function () {
                 describe: {
                     extensions: 'js'
                 },
-                fileUpdated: function (evt, api) {
+                fileUpdated: function (evt) {
                     pluginJSON.fileCalls += 1;
                     if (!fileCalls[evt.file.relativePath]) {
                         fileCalls[evt.file.relativePath] = [];
                     }
                     fileCalls[evt.file.relativePath].push('js');
                 },
-                resourceUpdated: function (evt, api) {
+                resourceUpdated: function (evt) {
                     pluginJSON.resourceCalls += 1;
                     if (!resourceCalls[evt.resource.relativePath]) {
                         resourceCalls[evt.resource.relativePath] = [];
@@ -374,11 +374,11 @@ describe('BundleLocator', function () {
                         resourceCalls[evt.resource.relativePath] = [];
                     }
                     resourceCalls[evt.resource.relativePath].push('default');
-                    return api.promise(function (fulfill, reject) {
+                    return api.promise(function (fulfill) {
                         fulfill();
                     });
                 },
-                bundleUpdated: function (evt, api) {
+                bundleUpdated: function (evt) {
                     if (!bundleCalls[evt.bundle.name]) {
                         bundleCalls[evt.bundle.name] = 0;
                     }
@@ -395,7 +395,7 @@ describe('BundleLocator', function () {
                         resourceCalls[evt.resource.relativePath] = [];
                     }
                     resourceCalls[evt.resource.relativePath].push('all');
-                    return api.promise(function (fulfill, reject) {
+                    return api.promise(function (fulfill) {
                         fulfill();
                     });
                 }
@@ -480,7 +480,7 @@ describe('BundleLocator', function () {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(evt.resource.bundleName, path, '// just testing', {encoding: 'utf8'});
                 },
-                bundleUpdated: function (evt, api) {
+                bundleUpdated: function (evt) {
                     if (!bundleCalls[evt.bundle.name]) {
                         bundleCalls[evt.bundle.name] = 0;
                     }
@@ -492,12 +492,12 @@ describe('BundleLocator', function () {
                 describe: {
                     extensions: 'less'
                 },
-                resourceUpdated: function (evt, api) {
+                resourceUpdated: function (evt) {
                     updates.push([evt.resource.bundleName, evt.resource.relativePath].join(' '));
                 }
             });
 
-            locator.parseBundle(fixture, options).then(function (have) {
+            locator.parseBundle(fixture, options).then(function () {
                 try {
                     expect(mkdirs.length).to.equal(2);
                     expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
@@ -585,7 +585,7 @@ describe('BundleLocator', function () {
                     var path = 'styles/css/plugin.sel' + writes.length + '.less';
                     return api.writeFileInBundle(evt.resource.bundleName, path, 'AAA-BBB-AAA', {encoding: 'utf8'});
                 },
-                bundleUpdated: function (evt, api) {
+                bundleUpdated: function (evt) {
                     if (!bundleCalls[evt.bundle.name]) {
                         bundleCalls[evt.bundle.name] = 0;
                     }
@@ -597,12 +597,12 @@ describe('BundleLocator', function () {
                 describe: {
                     extensions: 'less'
                 },
-                resourceUpdated: function (evt, api) {
+                resourceUpdated: function (evt) {
                     updates.push([evt.resource.bundleName, evt.resource.relativePath].join(' '));
                 }
             });
 
-            locator.parseBundle(fixture, options).then(function (have) {
+            locator.parseBundle(fixture, options).then(function () {
                 try {
                     expect(reads.length).to.equal(2);
                     expect(reads[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
@@ -691,7 +691,7 @@ describe('BundleLocator', function () {
                 describe: {
                     extensions: 'less'
                 },
-                resourceUpdated: function (evt, api) {
+                resourceUpdated: function (evt) {
                     updates.push(evt.resource.fullPath);
                 }
             });
@@ -701,7 +701,7 @@ describe('BundleLocator', function () {
                 locator.parseBundle(libpath.resolve(fixture, 'build')).then(function () {
                     return have;
                 });
-            }).then(function (have) {
+            }).then(function () {
                 try {
                     expect(mkdirs.length).to.equal(2);
                     expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
@@ -775,16 +775,17 @@ describe('BundleLocator', function () {
                     if ('roster' === evt.bundle.name) {
                         bundleCalls += 1;
                         if (1 === bundleCalls) {
-                            return api.writeFileInBundle(evt.bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'}).then(function (pathToNewFile) {
-                                try {
-                                    expect(pathToNewFile).to.equal(libpath.join(evt.bundle.buildDirectory, 'configs/foo.json'));
-                                } catch (err) {
-                                    mockery.deregisterAll();
-                                    mockery.disable();
-                                    next(err);
-                                }
-                                return api.writeFileInBundle(evt.bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
-                            });
+                            return api.writeFileInBundle(evt.bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'})
+                                .then(function (pathToNewFile) {
+                                    try {
+                                        expect(pathToNewFile).to.equal(libpath.join(evt.bundle.buildDirectory, 'configs/foo.json'));
+                                    } catch (err) {
+                                        mockery.deregisterAll();
+                                        mockery.disable();
+                                        next(err);
+                                    }
+                                    return api.writeFileInBundle(evt.bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
+                                });
                         }
                         if (2 === bundleCalls) {
                             try {
@@ -804,7 +805,7 @@ describe('BundleLocator', function () {
                 }
             });
 
-            locator.parseBundle(fixture, options).then(function (have) {
+            locator.parseBundle(fixture, options).then(function () {
                 try {
                     expect(bundleCalls).to.equal(2);
                     mockery.deregisterAll();
@@ -838,7 +839,7 @@ describe('BundleLocator', function () {
                 describe: {
                     types: 'configs'
                 },
-                resourceUpdated: function (evt, api) {
+                resourceUpdated: function () {
                     throw new Error('NOPE');
                 }
             });
@@ -944,13 +945,13 @@ describe('BundleLocator', function () {
                     describe: {
                         extensions: 'js'
                     },
-                    fileUpdated: function (evt, api) {
+                    fileUpdated: function () {
                         fileUpdatedCalls += 1;
                     },
-                    fileDeleted: function (evt, api) {
+                    fileDeleted: function () {
                         fileDeletedCalls += 1;
                     },
-                    resourceUpdated: function (evt, api) {
+                    resourceUpdated: function (evt) {
                         resUpdatedCalls += 1;
                         try {
                             expect(bundle.resources.sel.controllers.x.relativePath).to.equal(evt.resource.relativePath);
@@ -960,7 +961,7 @@ describe('BundleLocator', function () {
                             next(err);
                         }
                     },
-                    resourceDeleted: function (evt, api) {
+                    resourceDeleted: function () {
                         try {
                             expect(fileUpdatedCalls).to.equal(2);
                             expect(resUpdatedCalls).to.equal(2);
@@ -1046,16 +1047,16 @@ describe('BundleLocator', function () {
                     describe: {
                         extensions: 'js'
                     },
-                    fileUpdated: function (evt, api) {
+                    fileUpdated: function () {
                         fileUpdatedCalls += 1;
                     },
-                    fileDeleted: function (evt, api) {
+                    fileDeleted: function () {
                         fileDeletedCalls += 1;
                     },
-                    resourceUpdated: function (evt, api) {
+                    resourceUpdated: function () {
                         resUpdatedCalls += 1;
                     },
-                    resourceDeleted: function (evt, api) {
+                    resourceDeleted: function () {
                         resDeletedCalls += 1;
                     }
                 });
@@ -1114,10 +1115,10 @@ describe('BundleLocator', function () {
                         describe: {
                             extensions: 'js'
                         },
-                        fileUpdated: function (evt, api) {
+                        fileUpdated: function () {
                             throw new Error('NOPE');
                         },
-                        fileDeleted: function (evt, api) {
+                        fileDeleted: function () {
                             throw new Error('NOPE');
                         }
                     });
