@@ -113,6 +113,15 @@ module.exports = {
                             "name": "roster",
                             "type": "configs",
                             "selector": "{}"
+                        },
+                        "test/test": {
+                            "bundleName": "roster",
+                            "fullPath": __dirname + "/node_modules/roster/configs/test/test.json",
+                            "relativePath": "configs/test/test.json",
+                            "ext": "json",
+                            "name": "test/test",
+                            "type": "configs",
+                            "selector": "{}"
                         }
                     },
                     "controllers": {
@@ -214,6 +223,7 @@ module.exports.files[__dirname + '/controllers/teamManager.smartphone.js'] = tru
 module.exports.files[__dirname + '/models/player.js'] = true;
 module.exports.files[__dirname + '/models/roster.js'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/configs'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/configs/test'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/controllers'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/lang'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/package.json'] = true;
@@ -221,6 +231,7 @@ module.exports.bundles.roster.files[__dirname + '/node_modules/roster/styles'] =
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/templates'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/views'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/configs/roster.json'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster/configs/test/test.json'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/controllers/roster.js'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/lang/roster.json'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/lang/roster.en-US.json'] = true;

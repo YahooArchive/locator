@@ -23,11 +23,10 @@ function compareObjects(have, want) {
     if ('object' === typeof want) {
         // order of keys doesn't matter
         if (Object.keys(want).length) {
-            expect(have).to.have.keys(Object.keys(want));
+            expect(Object.keys(have).sort()).to.deep.equal(Object.keys(want).sort());
         }
-        if (Object.keys(have).length) {
-            expect(want).to.have.keys(Object.keys(have));
-        }
+        // handles case of having empty want object but have has keys
+        expect(Object.keys(have).length).to.equal(Object.keys(want).length);
 
         Object.keys(want).forEach(function (key) {
             compareObjects(have[key], want[key]);
