@@ -10,26 +10,23 @@
 "use strict";
 
 
-var libpath = require('path'),
-    libfs = require('fs'),
+var libpath     = require('path'),
+    libfs       = require('fs'),
     mockery = require('mockery'),
     expect = require('chai').expect,
     BundleLocator = require('../../lib/bundleLocator.js'),
     fixturesPath = libpath.join(__dirname, '../fixtures');
 
 
-function compareObjects(have, want) {
+function compareObjects(have, want, path) {
+    path = path || 'obj';
     expect(typeof have).to.equal(typeof want);
     if ('object' === typeof want) {
         // order of keys doesn't matter
-        if (Object.keys(want).length) {
-            expect(Object.keys(have).sort()).to.deep.equal(Object.keys(want).sort());
-        }
-        // handles case of having empty want object but have has keys
-        expect(Object.keys(have).length).to.equal(Object.keys(want).length);
+        expect(Object.keys(have).sort()).to.deep.equal(Object.keys(want).sort());
 
         Object.keys(want).forEach(function (key) {
-            compareObjects(have[key], want[key]);
+            compareObjects(have[key], want[key], path+'.'+key);
         });
     } else {
         expect(have).to.deep.equal(want);
@@ -442,12 +439,12 @@ describe('BundleLocator', function () {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                stat: function (path, callback) {
+                lstat: function (path, callback) {
                     if (path.indexOf('plugin.sel') > 0) {
-                        callback(null, {fake: 'stat'});
+                        callback(null, {fake: 'lstat'});
                         return;
                     }
-                    return libfs.stat(path, callback);
+                    return libfs.lstat(path, callback);
                 },
                 mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
@@ -546,12 +543,12 @@ describe('BundleLocator', function () {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                stat: function (path, callback) {
+                lstat: function (path, callback) {
                     if (path.indexOf('plugin.sel') > 0) {
-                        callback(null, {fake: 'stat'});
+                        callback(null, {fake: 'lstat'});
                         return;
                     }
-                    return libfs.stat(path, callback);
+                    return libfs.lstat(path, callback);
                 },
                 mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
@@ -647,12 +644,12 @@ describe('BundleLocator', function () {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                stat: function (path, callback) {
+                lstat: function (path, callback) {
                     if (path.indexOf('plugin.sel') > 0) {
-                        callback(null, {fake: 'stat'});
+                        callback(null, {fake: 'lstat'});
                         return;
                     }
-                    return libfs.stat(path, callback);
+                    return libfs.lstat(path, callback);
                 },
                 mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
@@ -743,8 +740,8 @@ describe('BundleLocator', function () {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                stat: function (path, callback) {
-                    return libfs.stat(path, callback);
+                lstat: function (path, callback) {
+                    return libfs.lstat(path, callback);
                 },
                 mkdir: function (path, mode, callback) {
                     callback();
@@ -1174,12 +1171,12 @@ describe('BundleLocator', function () {
 
     describe('package handling', function () {
 
-        it('_walkPackages()', function (next) {
+        it('_walkNPMTree()', function (next) {
             var fixture = libpath.join(fixturesPath, 'walk-packages'),
                 locator = new BundleLocator({
                     maxPackageDepth: 2
                 });
-            locator._walkPackages(fixture).then(function (have) {
+            locator._walkNPMTree(fixture).then(function (have) {
                 try {
                     expect(have).to.be.an('array');
                     expect(have.length).to.equal(6);
@@ -1242,12 +1239,12 @@ describe('BundleLocator', function () {
             }, next);
         });
 
-        it('_resolvePackages()', function (next) {
+        it('_filterNPMPackages()', function (next) {
             var fixture = libpath.join(fixturesPath, 'walk-packages'),
                 locator = new BundleLocator({
                     maxPackageDepth: 2
                 });
-            locator._walkPackages(fixture).then(function (have) {
+            locator._walkNPMTree(fixture).then(function (have) {
                 var logCalls = 0;
                 BundleLocator.test.imports.log = function (msg) {
                     var matches = msg.match(/multiple "([^"]+)" packages found, using (.+)/);
@@ -1269,7 +1266,7 @@ describe('BundleLocator', function () {
                         next(err);
                     }
                 };
-                have = locator._resolvePackages(have);
+                have = locator._filterNPMPackages(have);
                 try {
                     expect(logCalls).to.equal(2);
                     expect(have).to.be.an('array');

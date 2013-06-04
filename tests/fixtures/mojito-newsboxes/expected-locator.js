@@ -1,6 +1,8 @@
 /*jslint nomen:true, white:true, node:true */
 module.exports = {
-    options: {},
+    options: {
+        ruleset: 'mojito-package'
+    },
     name: 'modown-newsboxes',
     version: '0.0.2',
     baseDirectory: __dirname,
@@ -227,7 +229,10 @@ module.exports = {
             }
         },
         modown: {
-            options: {},
+            options: {
+                ruleset: 'mojito-package',
+                location: 'lib/app'
+            },
             name: 'modown',
             version: '0.0.1',
             baseDirectory: __dirname + '/node_modules/modown/lib/app',
@@ -261,7 +266,9 @@ module.exports = {
             }
         },
         'modown-lib-read': {
-            options: {},
+            options: {
+                ruleset: 'mojito-package'
+            },
             name: 'modown-lib-read',
             version: '0.0.2',
             baseDirectory: __dirname + '/node_modules/modown-lib-read',
@@ -414,7 +421,6 @@ module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/models'] = tru
 module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/templates'] = true;
 module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/models/YqlWeatherModel.common.js'] = true;
 module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/templates/index.hb.html'] = true;
-module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/dimensions.json'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware/modown-contextualizer.js'] = true;

@@ -1,6 +1,8 @@
 /*jslint nomen:true, white:true, node:true */
 module.exports = {
-    options: {},
+    options: {
+        ruleset: 'touchdown-package'
+    },
     name: 'simple',
     version: '0.0.2',
     baseDirectory: __dirname,
@@ -95,7 +97,9 @@ module.exports = {
     },
     bundles: {
         roster: {
-            options: {},
+            options: {
+                ruleset: 'touchdown-package'
+            },
             name: 'roster',
             version: '0.0.1',
             baseDirectory: __dirname + '/node_modules/roster',
