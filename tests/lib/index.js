@@ -12,6 +12,7 @@
 
 var libpath     = require('path'),
     libfs       = require('fs'),
+    libasync    = require('async'),
     mockery = require('mockery'),
     expect = require('chai').expect,
     BundleLocator = require('../../lib/bundleLocator.js'),
@@ -1033,6 +1034,125 @@ describe('BundleLocator', function () {
             mockery.registerMock('watch', mockwatch);
 
             BundleLocator = require('../../lib/bundleLocator.js');
+            locator = new BundleLocator({
+                applicationDirectory: fixture,
+                buildDirectory: libpath.join(fixture, 'build')
+            });
+
+            locator.parseBundle(fixture).then(function () {
+                locator.plug({
+                    describe: {
+                        extensions: 'js'
+                    },
+                    fileUpdated: function () {
+                        fileUpdatedCalls += 1;
+                    },
+                    fileDeleted: function () {
+                        fileDeletedCalls += 1;
+                    },
+                    resourceUpdated: function () {
+                        resUpdatedCalls += 1;
+                    },
+                    resourceDeleted: function () {
+                        resDeletedCalls += 1;
+                    }
+                });
+                return locator.watch(fixture);
+            }).then(null, function (err) {
+                mockery.deregisterAll();
+                mockery.disable();
+                next(err);
+            });
+        });
+
+        it('warn on NPM packages added or deleted during watch()', function (next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                logs = [],
+                locator,
+                mockwatch,
+                fileUpdatedCalls = 0,
+                fileDeletedCalls = 0,
+                resUpdatedCalls = 0,
+                resDeletedCalls = 0;
+
+            mockery.enable({
+                useCleanCache: true,
+                warnOnReplace: false,
+                warnOnUnregistered: false
+            });
+
+            mockwatch = {
+                _handlers: {},
+                createMonitor: function (dir, options, callback) {
+                    callback({
+                        on: function (evt, handler) {
+                            mockwatch._handlers[evt] = handler;
+                        }
+                    });
+
+                    // fire one event per tick
+                    libasync.series([
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.created(libpath.resolve(fixture, 'node_modules/x'));
+                                callback();
+                            }, 0);
+                        },
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.created(libpath.resolve(fixture, 'node_modules/x/package.json'));
+                                callback();
+                            }, 0);
+                        },
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.changed(libpath.resolve(fixture, 'node_modules/x/package.json'));
+                                callback();
+                            }, 0);
+                        },
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.removed(libpath.resolve(fixture, 'node_modules/x/package.json'));
+                                callback();
+                            }, 0);
+                        },
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.removed(libpath.resolve(fixture, 'node_modules/x'));
+                                callback();
+                            }, 0);
+                        }
+                    ], function (err) {
+                        if (err) {
+                            next(err);
+                            return;
+                        }
+                        try {
+                            expect(fileUpdatedCalls).to.equal(0);
+                            expect(fileDeletedCalls).to.equal(0);
+                            expect(resUpdatedCalls).to.equal(0);
+                            expect(resDeletedCalls).to.equal(0);
+                            expect(logs.length).to.equal(2);
+                            expect(logs[0]).to.equal('NPM package "x" added during watch().');
+                            expect(logs[1]).to.equal('NPM package "x" deleted during watch().');
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next();
+                        } catch (err) {
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next(err);
+                        }
+                    });
+                }
+            };
+            mockery.registerMock('watch', mockwatch);
+
+            BundleLocator = require('../../lib/bundleLocator.js');
+            BundleLocator.test.imports.log = function (msg) {
+                logs.push(msg);
+            };
             locator = new BundleLocator({
                 applicationDirectory: fixture,
                 buildDirectory: libpath.join(fixture, 'build')
