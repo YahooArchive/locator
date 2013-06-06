@@ -212,6 +212,7 @@ module.exports = {
         }
     }
 };
+module.exports.files[__dirname] = true;
 module.exports.files[__dirname + '/app.js'] = true;
 module.exports.files[__dirname + '/configs'] = true;
 module.exports.files[__dirname + '/expected-locator.js'] = true;
@@ -226,6 +227,7 @@ module.exports.files[__dirname + '/controllers/teamManager.js'] = true;
 module.exports.files[__dirname + '/controllers/teamManager.smartphone.js'] = true;
 module.exports.files[__dirname + '/models/player.js'] = true;
 module.exports.files[__dirname + '/models/roster.js'] = true;
+module.exports.bundles.roster.files[__dirname + '/node_modules/roster'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/configs'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/configs/test'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/controllers'] = true;

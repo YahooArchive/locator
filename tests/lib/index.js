@@ -440,12 +440,12 @@ describe('BundleLocator', function () {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                lstat: function (path, callback) {
+                stat: function (path, callback) {
                     if (path.indexOf('plugin.sel') > 0) {
-                        callback(null, {fake: 'lstat'});
+                        callback(null, {fake: 'stat'});
                         return;
                     }
-                    return libfs.lstat(path, callback);
+                    return libfs.stat(path, callback);
                 },
                 mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
@@ -544,12 +544,12 @@ describe('BundleLocator', function () {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                lstat: function (path, callback) {
+                stat: function (path, callback) {
                     if (path.indexOf('plugin.sel') > 0) {
-                        callback(null, {fake: 'lstat'});
+                        callback(null, {fake: 'stat'});
                         return;
                     }
-                    return libfs.lstat(path, callback);
+                    return libfs.stat(path, callback);
                 },
                 mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
@@ -645,12 +645,12 @@ describe('BundleLocator', function () {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                lstat: function (path, callback) {
+                stat: function (path, callback) {
                     if (path.indexOf('plugin.sel') > 0) {
-                        callback(null, {fake: 'lstat'});
+                        callback(null, {fake: 'stat'});
                         return;
                     }
-                    return libfs.lstat(path, callback);
+                    return libfs.stat(path, callback);
                 },
                 mkdir: function (path, mode, callback) {
                     mkdirs.push(path);
@@ -741,8 +741,8 @@ describe('BundleLocator', function () {
             });
             mockfs = {
                 readdir: libfs.readdir,
-                lstat: function (path, callback) {
-                    return libfs.lstat(path, callback);
+                stat: function (path, callback) {
+                    return libfs.stat(path, callback);
                 },
                 mkdir: function (path, mode, callback) {
                     callback();

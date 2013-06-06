@@ -394,6 +394,7 @@ module.exports = {
         }
     }
 };
+module.exports.files[__dirname] = true;
 module.exports.files[__dirname + '/application.json'] = true;
 module.exports.files[__dirname + '/assets'] = true;
 module.exports.files[__dirname + '/assets/favicon.ico'] = true;
@@ -421,9 +422,11 @@ module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/models'] = tru
 module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/templates'] = true;
 module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/models/YqlWeatherModel.common.js'] = true;
 module.exports.bundles.Weather.files[__dirname + '/mojits/Weather/templates/index.hb.html'] = true;
+module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/dimensions.json'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware/modown-contextualizer.js'] = true;
+module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read'] = true;
 module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read/mojits'] = true;
 module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read/package.json'] = true;
 module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/assets'] = true;

@@ -23,8 +23,8 @@
     "dependencies": {
         "async": "*",
         "mkdirp": "0.3.x",
+        "scanfs": "~0.1.0",
         "semver": "~1.1.4",
-        "tromp": "~0.10.1",
         "watch": "0.6.x",
         "yui": "3.10.x"
     },
