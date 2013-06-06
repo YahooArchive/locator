@@ -1,6 +1,8 @@
 /*jslint nomen:true, white:true, node:true */
 module.exports = {
-    options: {},
+    options: {
+        ruleset: 'mojito-package'
+    },
     name: 'modown-newsboxes',
     version: '0.0.2',
     baseDirectory: __dirname,
@@ -227,7 +229,10 @@ module.exports = {
             }
         },
         modown: {
-            options: {},
+            options: {
+                ruleset: 'mojito-package',
+                location: 'lib/app'
+            },
             name: 'modown',
             version: '0.0.1',
             baseDirectory: __dirname + '/node_modules/modown/lib/app',
@@ -261,7 +266,9 @@ module.exports = {
             }
         },
         'modown-lib-read': {
-            options: {},
+            options: {
+                ruleset: 'mojito-package'
+            },
             name: 'modown-lib-read',
             version: '0.0.2',
             baseDirectory: __dirname + '/node_modules/modown-lib-read',
@@ -387,6 +394,7 @@ module.exports = {
         }
     }
 };
+module.exports.files[__dirname] = true;
 module.exports.files[__dirname + '/application.json'] = true;
 module.exports.files[__dirname + '/assets'] = true;
 module.exports.files[__dirname + '/assets/favicon.ico'] = true;
@@ -418,6 +426,7 @@ module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app'] 
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/dimensions.json'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware/modown-contextualizer.js'] = true;
+module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read'] = true;
 module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read/mojits'] = true;
 module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read/package.json'] = true;
 module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/assets'] = true;

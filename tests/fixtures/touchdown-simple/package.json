@@ -1,15 +1,14 @@
 {
-  "name": "simple",
-  "description": "not a real app",
-  "version": "0.0.2",
-  "author": "Not A One <notaone@yahoo-inc.com>",
-  "engines": {
-    "node": "> 0.8",
-    "npm": "> 1.0"
-  },
-  "dependencies": {
-  },
-  "modown": {
-    "ruleset": "touchdown-package"
-  }
+    "name": "simple",
+    "description": "not a real app",
+    "version": "0.0.2",
+    "author": "Not A One <notaone@yahoo-inc.com>",
+    "engines": {
+        "node": "> 0.8",
+        "npm": "> 1.0"
+    },
+    "dependencies": {},
+    "modown": {
+        "ruleset": "touchdown-package"
+    }
 }

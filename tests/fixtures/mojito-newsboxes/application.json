@@ -1,7 +1,10 @@
 [
     {
-        "settings": ["master"],
+        "settings": [ "master" ],
         "TODO": "TODO"
     },
-    { "settings": [ "device:opera-mini" ], "selector": "opera-mini" }
+    {
+        "settings": [ "device:opera-mini" ],
+        "selector": "opera-mini"
+    }
 ]

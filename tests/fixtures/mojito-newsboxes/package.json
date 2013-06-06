@@ -7,8 +7,7 @@
         "node": "> 0.8",
         "npm": "> 1.0"
     },
-    "dependencies": {
-    },
+    "dependencies": {},
     "modown": {
         "ruleset": "mojito-package"
     }

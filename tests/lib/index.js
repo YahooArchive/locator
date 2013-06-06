@@ -10,26 +10,24 @@
 "use strict";
 
 
-var libpath = require('path'),
-    libfs = require('fs'),
+var libpath     = require('path'),
+    libfs       = require('fs'),
+    libasync    = require('async'),
     mockery = require('mockery'),
     expect = require('chai').expect,
     BundleLocator = require('../../lib/bundleLocator.js'),
     fixturesPath = libpath.join(__dirname, '../fixtures');
 
 
-function compareObjects(have, want) {
+function compareObjects(have, want, path) {
+    path = path || 'obj';
     expect(typeof have).to.equal(typeof want);
     if ('object' === typeof want) {
         // order of keys doesn't matter
-        if (Object.keys(want).length) {
-            expect(Object.keys(have).sort()).to.deep.equal(Object.keys(want).sort());
-        }
-        // handles case of having empty want object but have has keys
-        expect(Object.keys(have).length).to.equal(Object.keys(want).length);
+        expect(Object.keys(have).sort()).to.deep.equal(Object.keys(want).sort());
 
         Object.keys(want).forEach(function (key) {
-            compareObjects(have[key], want[key]);
+            compareObjects(have[key], want[key], path+'.'+key);
         });
     } else {
         expect(have).to.deep.equal(want);
@@ -1067,6 +1065,125 @@ describe('BundleLocator', function () {
             });
         });
 
+        it('warn on NPM packages added or deleted during watch()', function (next) {
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
+                BundleLocator,
+                logs = [],
+                locator,
+                mockwatch,
+                fileUpdatedCalls = 0,
+                fileDeletedCalls = 0,
+                resUpdatedCalls = 0,
+                resDeletedCalls = 0;
+
+            mockery.enable({
+                useCleanCache: true,
+                warnOnReplace: false,
+                warnOnUnregistered: false
+            });
+
+            mockwatch = {
+                _handlers: {},
+                createMonitor: function (dir, options, callback) {
+                    callback({
+                        on: function (evt, handler) {
+                            mockwatch._handlers[evt] = handler;
+                        }
+                    });
+
+                    // fire one event per tick
+                    libasync.series([
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.created(libpath.resolve(fixture, 'node_modules/x'));
+                                callback();
+                            }, 0);
+                        },
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.created(libpath.resolve(fixture, 'node_modules/x/package.json'));
+                                callback();
+                            }, 0);
+                        },
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.changed(libpath.resolve(fixture, 'node_modules/x/package.json'));
+                                callback();
+                            }, 0);
+                        },
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.removed(libpath.resolve(fixture, 'node_modules/x/package.json'));
+                                callback();
+                            }, 0);
+                        },
+                        function (callback) {
+                            setTimeout(function () {
+                                mockwatch._handlers.removed(libpath.resolve(fixture, 'node_modules/x'));
+                                callback();
+                            }, 0);
+                        }
+                    ], function (err) {
+                        if (err) {
+                            next(err);
+                            return;
+                        }
+                        try {
+                            expect(fileUpdatedCalls).to.equal(0);
+                            expect(fileDeletedCalls).to.equal(0);
+                            expect(resUpdatedCalls).to.equal(0);
+                            expect(resDeletedCalls).to.equal(0);
+                            expect(logs.length).to.equal(2);
+                            expect(logs[0]).to.equal('NPM package "x" added during watch().');
+                            expect(logs[1]).to.equal('NPM package "x" deleted during watch().');
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next();
+                        } catch (err) {
+                            mockery.deregisterAll();
+                            mockery.disable();
+                            next(err);
+                        }
+                    });
+                }
+            };
+            mockery.registerMock('watch', mockwatch);
+
+            BundleLocator = require('../../lib/bundleLocator.js');
+            BundleLocator.test.imports.log = function (msg) {
+                logs.push(msg);
+            };
+            locator = new BundleLocator({
+                applicationDirectory: fixture,
+                buildDirectory: libpath.join(fixture, 'build')
+            });
+
+            locator.parseBundle(fixture).then(function () {
+                locator.plug({
+                    describe: {
+                        extensions: 'js'
+                    },
+                    fileUpdated: function () {
+                        fileUpdatedCalls += 1;
+                    },
+                    fileDeleted: function () {
+                        fileDeletedCalls += 1;
+                    },
+                    resourceUpdated: function () {
+                        resUpdatedCalls += 1;
+                    },
+                    resourceDeleted: function () {
+                        resDeletedCalls += 1;
+                    }
+                });
+                return locator.watch(fixture);
+            }).then(null, function (err) {
+                mockery.deregisterAll();
+                mockery.disable();
+                next(err);
+            });
+        });
+
         it('reports errors from plugins', function (next) {
             var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
@@ -1169,6 +1286,158 @@ describe('BundleLocator', function () {
                 next(err);
             });
         });
+    });
+
+
+    describe('package handling', function () {
+
+        it('_walkNPMTree()', function (next) {
+            var fixture = libpath.join(fixturesPath, 'walk-packages'),
+                locator = new BundleLocator({
+                    maxPackageDepth: 2
+                });
+            locator._walkNPMTree(fixture).then(function (have) {
+                try {
+                    expect(have).to.be.an('array');
+                    expect(have.length).to.equal(6);
+                    have.forEach(function (pkg) {
+                        expect(pkg.options).to.be.an('object');
+                        expect(pkg.options.ruleset).to.equal('foo');
+                        switch (pkg.dir) {
+                            case fixture:
+                                expect(pkg.depth).to.equal(0);
+                                expect(pkg.name).to.equal('app');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'depth-different'):
+                                expect(pkg.depth).to.equal(1);
+                                expect(pkg.name).to.equal('depth-different');
+                                expect(pkg.version).to.equal('0.1.0');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'middle'):
+                                expect(pkg.depth).to.equal(1);
+                                expect(pkg.name).to.equal('middle');
+                                expect(pkg.version).to.equal('0.0.1');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'skip-a'):
+                                throw new Error('FAILURE -- should skip "skip-a"');
+
+                            case libpath.join(fixture, 'node_modules', 'skip-b'):
+                                throw new Error('FAILURE -- should skip "skip-b"');
+
+                            case libpath.join(fixture, 'node_modules', 'middle', 'node_modules', 'depth-different'):
+                                expect(pkg.depth).to.equal(2);
+                                expect(pkg.name).to.equal('depth-different');
+                                expect(pkg.version).to.equal('0.2.0');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'skip-a', 'node_modules', 'depth-same'):
+                                expect(pkg.depth).to.equal(2);
+                                expect(pkg.name).to.equal('depth-same');
+                                expect(pkg.version).to.equal('0.1.0');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
+                                expect(pkg.depth).to.equal(2);
+                                expect(pkg.name).to.equal('depth-same');
+                                expect(pkg.version).to.equal('0.2.0');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
+                                throw new Error('FAILURE -- did not honor maxPackageDepth');
+
+                            default:
+                                throw new Error('FAILURE -- extra package ' + pkg.dir);
+                        }
+                    });
+                    next();
+                } catch (err) {
+                    next(err);
+                }
+            }, next);
+        });
+
+        it('_filterNPMPackages()', function (next) {
+            var fixture = libpath.join(fixturesPath, 'walk-packages'),
+                locator = new BundleLocator({
+                    maxPackageDepth: 2
+                });
+            locator._walkNPMTree(fixture).then(function (have) {
+                var logCalls = 0;
+                BundleLocator.test.imports.log = function (msg) {
+                    var matches = msg.match(/multiple "([^"]+)" packages found, using (.+)/);
+                    if (matches) {
+                        logCalls += 1;
+                    }
+                    try {
+                        switch (matches[1]) {
+                            case 'depth-different':
+                                expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'depth-different'));
+                                break;
+                            case 'depth-same':
+                                expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'));
+                                break;
+                            default:
+                                throw new Error('FAILURE -- unexpected log for ' + matches[1]);
+                        }
+                    } catch (err) {
+                        next(err);
+                    }
+                };
+                have = locator._filterNPMPackages(have);
+                try {
+                    expect(logCalls).to.equal(2);
+                    expect(have).to.be.an('array');
+                    expect(have.length).to.equal(4);
+                    have.forEach(function (pkg) {
+                        expect(pkg.options).to.be.an('object');
+                        expect(pkg.options.ruleset).to.equal('foo');
+                        switch (pkg.dir) {
+                            case fixture:
+                                expect(pkg.depth).to.equal(0);
+                                expect(pkg.name).to.equal('app');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'depth-different'):
+                                expect(pkg.depth).to.equal(1);
+                                expect(pkg.name).to.equal('depth-different');
+                                expect(pkg.version).to.equal('0.1.0');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'middle'):
+                                expect(pkg.depth).to.equal(1);
+                                expect(pkg.name).to.equal('middle');
+                                expect(pkg.version).to.equal('0.0.1');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'skip-a'):
+                                throw new Error('FAILURE -- should skip "skip-a"');
+
+                            case libpath.join(fixture, 'node_modules', 'skip-b'):
+                                throw new Error('FAILURE -- should skip "skip-b"');
+
+                            case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
+                                expect(pkg.depth).to.equal(2);
+                                expect(pkg.name).to.equal('depth-same');
+                                expect(pkg.version).to.equal('0.2.0');
+                                break;
+
+                            case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
+                                throw new Error('FAILURE -- did not honor maxPackageDepth');
+
+                            default:
+                                throw new Error('FAILURE -- extra package ' + pkg.dir);
+                        }
+                    });
+                    next();
+                } catch (err) {
+                    next(err);
+                }
+            }, next);
+        });
+
     });
 
 
