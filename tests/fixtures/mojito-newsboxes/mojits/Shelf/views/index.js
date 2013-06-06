@@ -9,7 +9,7 @@
 /*global YUI*/
 
 
-YUI.add('ShelfIndexBinder', function(Y, NAME) {
+YUI.add('ShelfIndexBinder', function (Y, NAME) {
 
     function someColor(color) {
         var somenum = Math.floor(Math.random() * 9);
@@ -20,7 +20,7 @@ YUI.add('ShelfIndexBinder', function(Y, NAME) {
     }
 
     function colorize(node) {
-        setTimeout(function() {
+        setTimeout(function () {
             node.setStyles({
                 'backgroundColor': someColor(),
                 'color': '#eee'
@@ -30,12 +30,12 @@ YUI.add('ShelfIndexBinder', function(Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 
-        init: function(mojitProxy) {
+        init: function (mojitProxy) {
             this.mp = mojitProxy;
         },
 
-        bind: function(node) {
-            node.all('div.toc ul li a').each(function(el) {
+        bind: function (node) {
+            node.all('div.toc ul li a').each(function (el) {
                 colorize(el);
             });
         }

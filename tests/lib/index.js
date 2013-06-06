@@ -5,7 +5,7 @@
  */
 
 
-/*jslint nomen:true, node:true */
+/*jslint nomen:true, node:true, rexexp:true */
 /*global describe,it,before */
 "use strict";
 
@@ -27,7 +27,7 @@ function compareObjects(have, want, path) {
         expect(Object.keys(have).sort()).to.deep.equal(Object.keys(want).sort());
 
         Object.keys(want).forEach(function (key) {
-            compareObjects(have[key], want[key], path+'.'+key);
+            compareObjects(have[key], want[key], path + '.' + key);
         });
     } else {
         expect(have).to.deep.equal(want);
@@ -1123,9 +1123,9 @@ describe('BundleLocator', function () {
                                 callback();
                             }, 0);
                         }
-                    ], function (err) {
-                        if (err) {
-                            next(err);
+                    ], function (asyncErr) {
+                        if (asyncErr) {
+                            next(asyncErr);
                             return;
                         }
                         try {
@@ -1304,52 +1304,52 @@ describe('BundleLocator', function () {
                         expect(pkg.options).to.be.an('object');
                         expect(pkg.options.ruleset).to.equal('foo');
                         switch (pkg.dir) {
-                            case fixture:
-                                expect(pkg.depth).to.equal(0);
-                                expect(pkg.name).to.equal('app');
-                                break;
+                        case fixture:
+                            expect(pkg.depth).to.equal(0);
+                            expect(pkg.name).to.equal('app');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'depth-different'):
-                                expect(pkg.depth).to.equal(1);
-                                expect(pkg.name).to.equal('depth-different');
-                                expect(pkg.version).to.equal('0.1.0');
-                                break;
+                        case libpath.join(fixture, 'node_modules', 'depth-different'):
+                            expect(pkg.depth).to.equal(1);
+                            expect(pkg.name).to.equal('depth-different');
+                            expect(pkg.version).to.equal('0.1.0');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'middle'):
-                                expect(pkg.depth).to.equal(1);
-                                expect(pkg.name).to.equal('middle');
-                                expect(pkg.version).to.equal('0.0.1');
-                                break;
+                        case libpath.join(fixture, 'node_modules', 'middle'):
+                            expect(pkg.depth).to.equal(1);
+                            expect(pkg.name).to.equal('middle');
+                            expect(pkg.version).to.equal('0.0.1');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'skip-a'):
-                                throw new Error('FAILURE -- should skip "skip-a"');
+                        case libpath.join(fixture, 'node_modules', 'skip-a'):
+                            throw new Error('FAILURE -- should skip "skip-a"');
 
-                            case libpath.join(fixture, 'node_modules', 'skip-b'):
-                                throw new Error('FAILURE -- should skip "skip-b"');
+                        case libpath.join(fixture, 'node_modules', 'skip-b'):
+                            throw new Error('FAILURE -- should skip "skip-b"');
 
-                            case libpath.join(fixture, 'node_modules', 'middle', 'node_modules', 'depth-different'):
-                                expect(pkg.depth).to.equal(2);
-                                expect(pkg.name).to.equal('depth-different');
-                                expect(pkg.version).to.equal('0.2.0');
-                                break;
+                        case libpath.join(fixture, 'node_modules', 'middle', 'node_modules', 'depth-different'):
+                            expect(pkg.depth).to.equal(2);
+                            expect(pkg.name).to.equal('depth-different');
+                            expect(pkg.version).to.equal('0.2.0');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'skip-a', 'node_modules', 'depth-same'):
-                                expect(pkg.depth).to.equal(2);
-                                expect(pkg.name).to.equal('depth-same');
-                                expect(pkg.version).to.equal('0.1.0');
-                                break;
+                        case libpath.join(fixture, 'node_modules', 'skip-a', 'node_modules', 'depth-same'):
+                            expect(pkg.depth).to.equal(2);
+                            expect(pkg.name).to.equal('depth-same');
+                            expect(pkg.version).to.equal('0.1.0');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
-                                expect(pkg.depth).to.equal(2);
-                                expect(pkg.name).to.equal('depth-same');
-                                expect(pkg.version).to.equal('0.2.0');
-                                break;
+                        case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
+                            expect(pkg.depth).to.equal(2);
+                            expect(pkg.name).to.equal('depth-same');
+                            expect(pkg.version).to.equal('0.2.0');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
-                                throw new Error('FAILURE -- did not honor maxPackageDepth');
+                        case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
+                            throw new Error('FAILURE -- did not honor maxPackageDepth');
 
-                            default:
-                                throw new Error('FAILURE -- extra package ' + pkg.dir);
+                        default:
+                            throw new Error('FAILURE -- extra package ' + pkg.dir);
                         }
                     });
                     next();
@@ -1367,20 +1367,20 @@ describe('BundleLocator', function () {
             locator._walkNPMTree(fixture).then(function (have) {
                 var logCalls = 0;
                 BundleLocator.test.imports.log = function (msg) {
-                    var matches = msg.match(/multiple "([^"]+)" packages found, using (.+)/);
+                    var matches = msg.match(/multiple "([a-zA-Z0-9\-]+)" packages found, using (\S+)/);
                     if (matches) {
                         logCalls += 1;
                     }
                     try {
                         switch (matches[1]) {
-                            case 'depth-different':
-                                expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'depth-different'));
-                                break;
-                            case 'depth-same':
-                                expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'));
-                                break;
-                            default:
-                                throw new Error('FAILURE -- unexpected log for ' + matches[1]);
+                        case 'depth-different':
+                            expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'depth-different'));
+                            break;
+                        case 'depth-same':
+                            expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'));
+                            break;
+                        default:
+                            throw new Error('FAILURE -- unexpected log for ' + matches[1]);
                         }
                     } catch (err) {
                         next(err);
@@ -1395,40 +1395,40 @@ describe('BundleLocator', function () {
                         expect(pkg.options).to.be.an('object');
                         expect(pkg.options.ruleset).to.equal('foo');
                         switch (pkg.dir) {
-                            case fixture:
-                                expect(pkg.depth).to.equal(0);
-                                expect(pkg.name).to.equal('app');
-                                break;
+                        case fixture:
+                            expect(pkg.depth).to.equal(0);
+                            expect(pkg.name).to.equal('app');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'depth-different'):
-                                expect(pkg.depth).to.equal(1);
-                                expect(pkg.name).to.equal('depth-different');
-                                expect(pkg.version).to.equal('0.1.0');
-                                break;
+                        case libpath.join(fixture, 'node_modules', 'depth-different'):
+                            expect(pkg.depth).to.equal(1);
+                            expect(pkg.name).to.equal('depth-different');
+                            expect(pkg.version).to.equal('0.1.0');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'middle'):
-                                expect(pkg.depth).to.equal(1);
-                                expect(pkg.name).to.equal('middle');
-                                expect(pkg.version).to.equal('0.0.1');
-                                break;
+                        case libpath.join(fixture, 'node_modules', 'middle'):
+                            expect(pkg.depth).to.equal(1);
+                            expect(pkg.name).to.equal('middle');
+                            expect(pkg.version).to.equal('0.0.1');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'skip-a'):
-                                throw new Error('FAILURE -- should skip "skip-a"');
+                        case libpath.join(fixture, 'node_modules', 'skip-a'):
+                            throw new Error('FAILURE -- should skip "skip-a"');
 
-                            case libpath.join(fixture, 'node_modules', 'skip-b'):
-                                throw new Error('FAILURE -- should skip "skip-b"');
+                        case libpath.join(fixture, 'node_modules', 'skip-b'):
+                            throw new Error('FAILURE -- should skip "skip-b"');
 
-                            case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
-                                expect(pkg.depth).to.equal(2);
-                                expect(pkg.name).to.equal('depth-same');
-                                expect(pkg.version).to.equal('0.2.0');
-                                break;
+                        case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
+                            expect(pkg.depth).to.equal(2);
+                            expect(pkg.name).to.equal('depth-same');
+                            expect(pkg.version).to.equal('0.2.0');
+                            break;
 
-                            case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
-                                throw new Error('FAILURE -- did not honor maxPackageDepth');
+                        case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
+                            throw new Error('FAILURE -- did not honor maxPackageDepth');
 
-                            default:
-                                throw new Error('FAILURE -- extra package ' + pkg.dir);
+                        default:
+                            throw new Error('FAILURE -- extra package ' + pkg.dir);
                         }
                     });
                     next();

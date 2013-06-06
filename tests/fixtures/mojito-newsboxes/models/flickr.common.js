@@ -3,14 +3,14 @@
  */
 /*jslint nomen:true, white:true, node:true */
 /*globals YUI */
-YUI.add('ModelFlickr', function(Y) {
+YUI.add('ModelFlickr', function (Y) {
 
     Y.mojito.models.flickr = {
 
-        getFlickrImages: function(queryString, start, count, callback) {
+        getFlickrImages: function (queryString, start, count, callback) {
         },
 
-        getFlickrDetail: function(imageId, callback) {
+        getFlickrDetail: function (imageId, callback) {
         }
 
     };

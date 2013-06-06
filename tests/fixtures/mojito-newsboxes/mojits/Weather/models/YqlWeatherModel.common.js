@@ -9,11 +9,11 @@
 /*global YUI*/
 
 
-YUI.add('YqlWeatherModel', function(Y, NAME) {
+YUI.add('YqlWeatherModel', function (Y, NAME) {
 
     Y.mojito.models[NAME] = {
 
-        fetch: function(location, callback) {
+        fetch: function (location, callback) {
             var self = this,
                 query =
                     'SELECT item.condition, item.description' +
