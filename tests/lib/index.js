@@ -497,11 +497,11 @@ describe('BundleLocator', function () {
             locator.parseBundle(fixture, options).then(function () {
                 try {
                     expect(mkdirs.length).to.equal(2);
-                    expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
-                    expect(mkdirs[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
+                    expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css'));
+                    expect(mkdirs[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css'));
                     expect(writes.length).to.equal(2);
-                    expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
-                    expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel1.less'));
+                    expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
+                    expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
                     expect(updates.length).to.equal(2);
                     expect(updates[0]).to.equal('roster styles/css/plugin.sel0.less');
                     expect(updates[1]).to.equal('roster styles/css/plugin.sel1.less');
@@ -602,8 +602,8 @@ describe('BundleLocator', function () {
             locator.parseBundle(fixture, options).then(function () {
                 try {
                     expect(reads.length).to.equal(2);
-                    expect(reads[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
-                    expect(reads[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
+                    expect(reads[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
+                    expect(reads[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
                     expect(mkdirs.length).to.equal(0);
                     expect(writes.length).to.equal(0);
                     expect(updates.length).to.equal(2);
@@ -701,14 +701,14 @@ describe('BundleLocator', function () {
             }).then(function () {
                 try {
                     expect(mkdirs.length).to.equal(2);
-                    expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
-                    expect(mkdirs[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css'));
+                    expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css'));
+                    expect(mkdirs[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css'));
                     expect(writes.length).to.equal(2);
-                    expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
-                    expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel1.less'));
+                    expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
+                    expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
                     expect(updates.length).to.equal(2);
-                    expect(updates[0]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel0.less'));
-                    expect(updates[1]).to.equal(libpath.join(fixture, 'build/roster/styles/css/plugin.sel1.less'));
+                    expect(updates[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
+                    expect(updates[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
                     mockery.deregisterAll();
                     mockery.disable();
                     next();
