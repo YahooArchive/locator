@@ -6,7 +6,7 @@ module.exports = {
     name: 'simple',
     version: '0.0.2',
     baseDirectory: __dirname,
-    buildDirectory: __dirname + '/build/simple',
+    buildDirectory: __dirname + '/build/simple-0.0.2',
     type: 'touchdown-package',
     files: {},
     resources: {
@@ -103,7 +103,7 @@ module.exports = {
             name: 'roster',
             version: '0.0.1',
             baseDirectory: __dirname + '/node_modules/roster',
-            buildDirectory: __dirname + '/build/roster',
+            buildDirectory: __dirname + '/build/roster-0.0.1',
             type: 'touchdown-package',
             files: {},
             resources: {
