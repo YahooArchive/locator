@@ -85,6 +85,7 @@ module.exports = {
                 ruleset: 'mojito-mojit'
             },
             name: 'Shelf',
+            version: '0.0.2',
             baseDirectory: __dirname + '/mojits/Shelf',
             type: 'mojito-mojit',
             files: {},
@@ -185,6 +186,7 @@ module.exports = {
                 ruleset: 'mojito-mojit'
             },
             name: 'Weather',
+            version: '0.0.2',
             baseDirectory: __dirname + '/mojits/Weather',
             type: 'mojito-mojit',
             files: {},
@@ -270,7 +272,7 @@ module.exports = {
                 ruleset: 'mojito-package'
             },
             name: 'modown-lib-read',
-            version: '0.0.2',
+            version: '0.0.3',
             baseDirectory: __dirname + '/node_modules/modown-lib-read',
             type: 'mojito-package',
             files: {},
@@ -295,6 +297,7 @@ module.exports = {
                         ruleset: 'mojito-mojit'
                     },
                     name: 'Read',
+                    version: '0.0.3',
                     baseDirectory: __dirname + '/node_modules/modown-lib-read/mojits/Read',
                     type: 'mojito-mojit',
                     files: {},
