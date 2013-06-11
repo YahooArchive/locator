@@ -1,7 +1,8 @@
 /*jslint nomen:true, white:true, node:true */
 module.exports = {
     options: {
-        ruleset: 'touchdown-package'
+        ruleset: 'touchdown-package',
+        rulesets: '../rulesets/touchdown.js'
     },
     name: 'simple',
     version: '0.0.2',
@@ -98,7 +99,8 @@ module.exports = {
     bundles: {
         roster: {
             options: {
-                ruleset: 'touchdown-package'
+                ruleset: 'touchdown-package',
+                rulesets: '../../../rulesets/touchdown.js'
             },
             name: 'roster',
             version: '0.0.1',

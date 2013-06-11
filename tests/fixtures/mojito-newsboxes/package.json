@@ -9,6 +9,7 @@
     },
     "dependencies": {},
     "modown": {
-        "ruleset": "mojito-package"
+        "ruleset": "mojito-package",
+        "rulesets": "../rulesets/mojito.js"
     }
 }

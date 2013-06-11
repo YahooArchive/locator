@@ -1,7 +1,8 @@
 /*jslint nomen:true, white:true, node:true */
 module.exports = {
     options: {
-        ruleset: 'mojito-package'
+        ruleset: 'mojito-package',
+        rulesets: '../rulesets/mojito.js'
     },
     name: 'modown-newsboxes',
     version: '0.0.2',
@@ -233,6 +234,7 @@ module.exports = {
         modown: {
             options: {
                 ruleset: 'mojito-package',
+                rulesets: '../../../rulesets/mojito.js',
                 location: 'lib/app'
             },
             name: 'modown',
@@ -269,7 +271,8 @@ module.exports = {
         },
         'modown-lib-read': {
             options: {
-                ruleset: 'mojito-package'
+                ruleset: 'mojito-package',
+                rulesets: '../../../rulesets/mojito.js',
             },
             name: 'modown-lib-read',
             version: '0.0.3',
