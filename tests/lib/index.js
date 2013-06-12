@@ -1297,14 +1297,14 @@ describe('BundleLocator', function () {
 
             seed = locator._makeBundleSeed('foo', 'bar', 'baz');
             expect(seed).to.be.an('object');
-            expect(seed.dir).to.equal('foo');
+            expect(seed.baseDirectory).to.equal('foo');
             expect(seed.name).to.equal('bar');
             expect(seed.version).to.equal('baz');
             expect(seed.options).to.be.an('undefined');
 
             seed = locator._makeBundleSeed('foo', 'bar', 'baz', {name: 'orange', version: 'red'});
             expect(seed).to.be.an('object');
-            expect(seed.dir).to.equal('foo');
+            expect(seed.baseDirectory).to.equal('foo');
             expect(seed.name).to.equal('orange');
             expect(seed.version).to.equal('red');
             expect(seed.options).to.be.an('undefined');
@@ -1317,7 +1317,7 @@ describe('BundleLocator', function () {
                 }
             });
             expect(seed).to.be.an('object');
-            expect(seed.dir).to.equal('foo');
+            expect(seed.baseDirectory).to.equal('foo');
             expect(seed.name).to.equal('orange');
             expect(seed.version).to.equal('red');
             expect(seed.options).to.be.an('object');
@@ -1333,7 +1333,7 @@ describe('BundleLocator', function () {
                 ruleset: 'y'
             });
             expect(seed).to.be.an('object');
-            expect(seed.dir).to.equal('foo');
+            expect(seed.baseDirectory).to.equal('foo');
             expect(seed.name).to.equal('orange');
             expect(seed.version).to.equal('red');
             expect(seed.options).to.be.an('object');
@@ -1343,7 +1343,7 @@ describe('BundleLocator', function () {
                 ruleset: 'y'
             });
             expect(seed).to.be.an('object');
-            expect(seed.dir).to.equal('foo');
+            expect(seed.baseDirectory).to.equal('foo');
             expect(seed.name).to.equal('bar');
             expect(seed.version).to.equal('baz');
             expect(seed.options).to.be.an('object');
@@ -1362,7 +1362,7 @@ describe('BundleLocator', function () {
                     have.forEach(function (seed) {
                         expect(seed.options).to.be.an('object');
                         expect(seed.options.ruleset).to.equal('foo');
-                        switch (seed.dir) {
+                        switch (seed.baseDirectory) {
                         case fixture:
                             expect(seed.npmDepth).to.equal(0);
                             expect(seed.name).to.equal('app');
@@ -1408,7 +1408,7 @@ describe('BundleLocator', function () {
                             throw new Error('FAILURE -- did not honor maxPackageDepth');
 
                         default:
-                            throw new Error('FAILURE -- extra package ' + seed.dir);
+                            throw new Error('FAILURE -- extra package ' + seed.baseDirectory);
                         }
                     });
                     next();
@@ -1453,7 +1453,7 @@ describe('BundleLocator', function () {
                     have.forEach(function (seed) {
                         expect(seed.options).to.be.an('object');
                         expect(seed.options.ruleset).to.equal('foo');
-                        switch (seed.dir) {
+                        switch (seed.baseDirectory) {
                         case fixture:
                             expect(seed.npmDepth).to.equal(0);
                             expect(seed.name).to.equal('app');
@@ -1487,7 +1487,7 @@ describe('BundleLocator', function () {
                             throw new Error('FAILURE -- did not honor maxPackageDepth');
 
                         default:
-                            throw new Error('FAILURE -- extra package ' + seed.dir);
+                            throw new Error('FAILURE -- extra package ' + seed.baseDirectory);
                         }
                     });
                     next();
