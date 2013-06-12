@@ -10,6 +10,6 @@
     "dependencies": {},
     "modown": {
         "ruleset": "mojito-package",
-        "rulesets": "rulesets-mojito.js"
+        "rulesets": "modown/rulesets.js"
     }
 }

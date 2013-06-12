@@ -2,7 +2,7 @@
 module.exports = {
     options: {
         ruleset: 'mojito-package',
-        rulesets: 'rulesets-mojito.js'
+        rulesets: 'modown/rulesets.js'
     },
     name: 'modown-newsboxes',
     version: '0.0.2',
@@ -83,7 +83,8 @@ module.exports = {
     bundles: {
         Shelf: {
             options: {
-                ruleset: 'mojito-mojit'
+                ruleset: 'mojito-mojit',
+                rulesets: 'modown/rulesets'
             },
             name: 'Shelf',
             version: '0.0.2',
@@ -184,7 +185,8 @@ module.exports = {
         },
         Weather: {
             options: {
-                ruleset: 'mojito-mojit'
+                ruleset: 'mojito-mojit',
+                rulesets: 'modown/rulesets'
             },
             name: 'Weather',
             version: '0.0.2',
@@ -234,7 +236,7 @@ module.exports = {
         modown: {
             options: {
                 ruleset: 'mojito-package',
-                rulesets: '../../rulesets-mojito.js',
+                rulesets: 'rulesets.js',
                 location: 'lib/app'
             },
             name: 'modown',
@@ -272,7 +274,7 @@ module.exports = {
         'modown-lib-read': {
             options: {
                 ruleset: 'mojito-package',
-                rulesets: '../../rulesets-mojito.js',
+                rulesets: 'modown/rulesets',
             },
             name: 'modown-lib-read',
             version: '0.0.3',
@@ -297,7 +299,8 @@ module.exports = {
             bundles: {
                 Read: {
                     options: {
-                        ruleset: 'mojito-mojit'
+                        ruleset: 'mojito-mojit',
+                        rulesets: 'modown/rulesets'
                     },
                     name: 'Read',
                     version: '0.0.3',
@@ -412,7 +415,6 @@ module.exports.files[__dirname + '/models/flickr.common.js'] = true;
 module.exports.files[__dirname + '/mojits'] = true;
 module.exports.files[__dirname + '/package.json'] = true;
 module.exports.files[__dirname + '/routes.json'] = true;
-module.exports.files[__dirname + '/rulesets-mojito.js'] = true;
 module.exports.files[__dirname + '/server.js'] = true;
 module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/assets'] = true;
 module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/controller.common.js'] = true;
