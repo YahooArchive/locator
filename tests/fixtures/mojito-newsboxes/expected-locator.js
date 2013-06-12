@@ -2,7 +2,7 @@
 module.exports = {
     options: {
         ruleset: 'mojito-package',
-        rulesets: '../rulesets/mojito.js'
+        rulesets: 'rulesets-mojito.js'
     },
     name: 'modown-newsboxes',
     version: '0.0.2',
@@ -234,7 +234,7 @@ module.exports = {
         modown: {
             options: {
                 ruleset: 'mojito-package',
-                rulesets: '../../../rulesets/mojito.js',
+                rulesets: '../../rulesets-mojito.js',
                 location: 'lib/app'
             },
             name: 'modown',
@@ -272,7 +272,7 @@ module.exports = {
         'modown-lib-read': {
             options: {
                 ruleset: 'mojito-package',
-                rulesets: '../../../rulesets/mojito.js',
+                rulesets: '../../rulesets-mojito.js',
             },
             name: 'modown-lib-read',
             version: '0.0.3',
@@ -412,6 +412,7 @@ module.exports.files[__dirname + '/models/flickr.common.js'] = true;
 module.exports.files[__dirname + '/mojits'] = true;
 module.exports.files[__dirname + '/package.json'] = true;
 module.exports.files[__dirname + '/routes.json'] = true;
+module.exports.files[__dirname + '/rulesets-mojito.js'] = true;
 module.exports.files[__dirname + '/server.js'] = true;
 module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/assets'] = true;
 module.exports.bundles.Shelf.files[__dirname + '/mojits/Shelf/controller.common.js'] = true;

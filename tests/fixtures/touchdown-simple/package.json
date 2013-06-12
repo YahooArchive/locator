@@ -10,6 +10,6 @@
     "dependencies": {},
     "modown": {
         "ruleset": "touchdown-package",
-        "rulesets": "../rulesets/touchdown.js"
+        "rulesets": "rulesets-touchdown.js"
     }
 }

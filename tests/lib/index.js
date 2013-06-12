@@ -403,7 +403,7 @@ describe('BundleLocator', function () {
                 var want = require(fixture + '/expected-locator.js');
                 try {
                     compareObjects(have, want);
-                    expect(pluginJSON.fileCalls).to.equal(10);
+                    expect(pluginJSON.fileCalls).to.equal(11);
                     expect(pluginJSON.resourceCalls).to.equal(8);
                     expect(pluginDefault.calls).to.equal(2);
                     expect(pluginAll.calls).to.equal(0);
@@ -1498,17 +1498,72 @@ describe('BundleLocator', function () {
         });
 
         it('_loadRuleset()', function () {
-            var locator = new BundleLocator(),
+            var fixture = libpath.join(fixturesPath, 'rulesets'),
+                locator = new BundleLocator(),
                 ruleset;
 
+            locator._rootDirectory = fixture;
+
             ruleset = locator._loadRuleset({});
+            expect(ruleset).to.be.an('object');
             expect(ruleset._name).to.equal('files');
 
             ruleset = locator._loadRuleset({options: {ruleset: 'files'}});
+            expect(ruleset).to.be.an('object');
             expect(ruleset._name).to.equal('files');
 
             ruleset = locator._loadRuleset({options: {ruleset: 'foo'}});
             expect(ruleset).to.be.an('undefined');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-local'),
+                options: {
+                    ruleset: 'rules-local-foo',
+                    rulesets: 'rules-local'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-local-foo');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-app'),
+                options: {
+                    ruleset: 'rules-app-foo',
+                    rulesets: 'rules-app'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-app-foo');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-dep'),
+                options: {
+                    ruleset: 'rules-dep-foo',
+                    rulesets: 'dep/rules-dep'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-dep-foo');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-fw-a'),
+                options: {
+                    ruleset: 'rules-fw-foo',
+                    rulesets: 'fw/rules-fw'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-fw-foo');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'skip', 'node_modules', 'pkg-fw-b'),
+                options: {
+                    ruleset: 'rules-fw-foo',
+                    rulesets: 'fw/rules-fw'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-fw-foo');
         });
 
     });
