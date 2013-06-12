@@ -159,7 +159,7 @@ describe('BundleLocator', function () {
             expect(have).to.deep.equal(want);
         });
 
-        it('_getBundleNameByPath', function () {
+        it('_getBundleNameByPath()', function () {
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather'))).to.equal('Weather');
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather/x'))).to.equal('Weather');
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather2'))).to.equal('modown-newsboxes');
@@ -1495,6 +1495,20 @@ describe('BundleLocator', function () {
                     next(err);
                 }
             }, next);
+        });
+
+        it('_loadRuleset()', function () {
+            var locator = new BundleLocator(),
+                ruleset;
+
+            ruleset = locator._loadRuleset({});
+            expect(ruleset._name).to.equal('files');
+
+            ruleset = locator._loadRuleset({options: {ruleset: 'files'}});
+            expect(ruleset._name).to.equal('files');
+
+            ruleset = locator._loadRuleset({options: {ruleset: 'foo'}});
+            expect(ruleset).to.be.an('undefined');
         });
 
     });
