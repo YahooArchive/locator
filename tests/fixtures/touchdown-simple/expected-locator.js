@@ -1,7 +1,8 @@
 /*jslint nomen:true, white:true, node:true */
 module.exports = {
     options: {
-        ruleset: 'touchdown-package'
+        ruleset: 'touchdown-package',
+        rulesets: 'rulesets-touchdown.js'
     },
     name: 'simple',
     version: '0.0.2',
@@ -98,7 +99,8 @@ module.exports = {
     bundles: {
         roster: {
             options: {
-                ruleset: 'touchdown-package'
+                ruleset: 'touchdown-package',
+                rulesets: '../../rulesets-touchdown.js'
             },
             name: 'roster',
             version: '0.0.1',
@@ -219,6 +221,7 @@ module.exports.files[__dirname + '/expected-locator.js'] = true;
 module.exports.files[__dirname + '/controllers'] = true;
 module.exports.files[__dirname + '/models'] = true;
 module.exports.files[__dirname + '/package.json'] = true;
+module.exports.files[__dirname + '/rulesets-touchdown.js'] = true;
 module.exports.files[__dirname + '/configs/app.json'] = true;
 module.exports.files[__dirname + '/configs/dimensions.json'] = true;
 module.exports.files[__dirname + '/configs/routes.js'] = true;

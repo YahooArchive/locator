@@ -1,7 +1,8 @@
 /*jslint nomen:true, white:true, node:true */
 module.exports = {
     options: {
-        ruleset: 'mojito-package'
+        ruleset: 'mojito-package',
+        rulesets: 'modown/rulesets.js'
     },
     name: 'modown-newsboxes',
     version: '0.0.2',
@@ -82,7 +83,8 @@ module.exports = {
     bundles: {
         Shelf: {
             options: {
-                ruleset: 'mojito-mojit'
+                ruleset: 'mojito-mojit',
+                rulesets: 'modown/rulesets'
             },
             name: 'Shelf',
             version: '0.0.2',
@@ -183,7 +185,8 @@ module.exports = {
         },
         Weather: {
             options: {
-                ruleset: 'mojito-mojit'
+                ruleset: 'mojito-mojit',
+                rulesets: 'modown/rulesets'
             },
             name: 'Weather',
             version: '0.0.2',
@@ -233,6 +236,7 @@ module.exports = {
         modown: {
             options: {
                 ruleset: 'mojito-package',
+                rulesets: 'rulesets.js',
                 location: 'lib/app'
             },
             name: 'modown',
@@ -269,7 +273,8 @@ module.exports = {
         },
         'modown-lib-read': {
             options: {
-                ruleset: 'mojito-package'
+                ruleset: 'mojito-package',
+                rulesets: 'modown/rulesets',
             },
             name: 'modown-lib-read',
             version: '0.0.3',
@@ -294,7 +299,8 @@ module.exports = {
             bundles: {
                 Read: {
                     options: {
-                        ruleset: 'mojito-mojit'
+                        ruleset: 'mojito-mojit',
+                        rulesets: 'modown/rulesets'
                     },
                     name: 'Read',
                     version: '0.0.3',

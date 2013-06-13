@@ -159,7 +159,7 @@ describe('BundleLocator', function () {
             expect(have).to.deep.equal(want);
         });
 
-        it('_getBundleNameByPath', function () {
+        it('_getBundleNameByPath()', function () {
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather'))).to.equal('Weather');
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather/x'))).to.equal('Weather');
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather2'))).to.equal('modown-newsboxes');
@@ -403,7 +403,7 @@ describe('BundleLocator', function () {
                 var want = require(fixture + '/expected-locator.js');
                 try {
                     compareObjects(have, want);
-                    expect(pluginJSON.fileCalls).to.equal(10);
+                    expect(pluginJSON.fileCalls).to.equal(11);
                     expect(pluginJSON.resourceCalls).to.equal(8);
                     expect(pluginDefault.calls).to.equal(2);
                     expect(pluginAll.calls).to.equal(0);
@@ -1291,6 +1291,65 @@ describe('BundleLocator', function () {
 
     describe('package handling', function () {
 
+        it('_makeBundleSeed()', function () {
+            var locator = new BundleLocator(),
+                seed;
+
+            seed = locator._makeBundleSeed('foo', 'bar', 'baz');
+            expect(seed).to.be.an('object');
+            expect(seed.baseDirectory).to.equal('foo');
+            expect(seed.name).to.equal('bar');
+            expect(seed.version).to.equal('baz');
+            expect(seed.options).to.be.an('undefined');
+
+            seed = locator._makeBundleSeed('foo', 'bar', 'baz', {name: 'orange', version: 'red'});
+            expect(seed).to.be.an('object');
+            expect(seed.baseDirectory).to.equal('foo');
+            expect(seed.name).to.equal('orange');
+            expect(seed.version).to.equal('red');
+            expect(seed.options).to.be.an('undefined');
+
+            seed = locator._makeBundleSeed('foo', 'bar', 'baz', {
+                name: 'orange',
+                version: 'red',
+                modown: {
+                    ruleset: 'x'
+                }
+            });
+            expect(seed).to.be.an('object');
+            expect(seed.baseDirectory).to.equal('foo');
+            expect(seed.name).to.equal('orange');
+            expect(seed.version).to.equal('red');
+            expect(seed.options).to.be.an('object');
+            expect(seed.options.ruleset).to.equal('x');
+
+            seed = locator._makeBundleSeed('foo', 'bar', 'baz', {
+                name: 'orange',
+                version: 'red',
+                modown: {
+                    ruleset: 'x'
+                }
+            }, {
+                ruleset: 'y'
+            });
+            expect(seed).to.be.an('object');
+            expect(seed.baseDirectory).to.equal('foo');
+            expect(seed.name).to.equal('orange');
+            expect(seed.version).to.equal('red');
+            expect(seed.options).to.be.an('object');
+            expect(seed.options.ruleset).to.equal('x');
+
+            seed = locator._makeBundleSeed('foo', 'bar', 'baz', undefined, {
+                ruleset: 'y'
+            });
+            expect(seed).to.be.an('object');
+            expect(seed.baseDirectory).to.equal('foo');
+            expect(seed.name).to.equal('bar');
+            expect(seed.version).to.equal('baz');
+            expect(seed.options).to.be.an('object');
+            expect(seed.options.ruleset).to.equal('y');
+        });
+
         it('_walkNPMTree()', function (next) {
             var fixture = libpath.join(fixturesPath, 'walk-packages'),
                 locator = new BundleLocator({
@@ -1300,25 +1359,25 @@ describe('BundleLocator', function () {
                 try {
                     expect(have).to.be.an('array');
                     expect(have.length).to.equal(6);
-                    have.forEach(function (pkg) {
-                        expect(pkg.options).to.be.an('object');
-                        expect(pkg.options.ruleset).to.equal('foo');
-                        switch (pkg.dir) {
+                    have.forEach(function (seed) {
+                        expect(seed.options).to.be.an('object');
+                        expect(seed.options.ruleset).to.equal('foo');
+                        switch (seed.baseDirectory) {
                         case fixture:
-                            expect(pkg.depth).to.equal(0);
-                            expect(pkg.name).to.equal('app');
+                            expect(seed.npmDepth).to.equal(0);
+                            expect(seed.name).to.equal('app');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'depth-different'):
-                            expect(pkg.depth).to.equal(1);
-                            expect(pkg.name).to.equal('depth-different');
-                            expect(pkg.version).to.equal('0.1.0');
+                            expect(seed.npmDepth).to.equal(1);
+                            expect(seed.name).to.equal('depth-different');
+                            expect(seed.version).to.equal('0.1.0');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'middle'):
-                            expect(pkg.depth).to.equal(1);
-                            expect(pkg.name).to.equal('middle');
-                            expect(pkg.version).to.equal('0.0.1');
+                            expect(seed.npmDepth).to.equal(1);
+                            expect(seed.name).to.equal('middle');
+                            expect(seed.version).to.equal('0.0.1');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-a'):
@@ -1328,28 +1387,28 @@ describe('BundleLocator', function () {
                             throw new Error('FAILURE -- should skip "skip-b"');
 
                         case libpath.join(fixture, 'node_modules', 'middle', 'node_modules', 'depth-different'):
-                            expect(pkg.depth).to.equal(2);
-                            expect(pkg.name).to.equal('depth-different');
-                            expect(pkg.version).to.equal('0.2.0');
+                            expect(seed.npmDepth).to.equal(2);
+                            expect(seed.name).to.equal('depth-different');
+                            expect(seed.version).to.equal('0.2.0');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-a', 'node_modules', 'depth-same'):
-                            expect(pkg.depth).to.equal(2);
-                            expect(pkg.name).to.equal('depth-same');
-                            expect(pkg.version).to.equal('0.1.0');
+                            expect(seed.npmDepth).to.equal(2);
+                            expect(seed.name).to.equal('depth-same');
+                            expect(seed.version).to.equal('0.1.0');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
-                            expect(pkg.depth).to.equal(2);
-                            expect(pkg.name).to.equal('depth-same');
-                            expect(pkg.version).to.equal('0.2.0');
+                            expect(seed.npmDepth).to.equal(2);
+                            expect(seed.name).to.equal('depth-same');
+                            expect(seed.version).to.equal('0.2.0');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
                             throw new Error('FAILURE -- did not honor maxPackageDepth');
 
                         default:
-                            throw new Error('FAILURE -- extra package ' + pkg.dir);
+                            throw new Error('FAILURE -- extra package ' + seed.baseDirectory);
                         }
                     });
                     next();
@@ -1359,7 +1418,7 @@ describe('BundleLocator', function () {
             }, next);
         });
 
-        it('_filterNPMPackages()', function (next) {
+        it('_filterBundleSeeds()', function (next) {
             var fixture = libpath.join(fixturesPath, 'walk-packages'),
                 locator = new BundleLocator({
                     maxPackageDepth: 2
@@ -1386,30 +1445,30 @@ describe('BundleLocator', function () {
                         next(err);
                     }
                 };
-                have = locator._filterNPMPackages(have);
+                have = locator._filterBundleSeeds(have);
                 try {
                     expect(logCalls).to.equal(2);
                     expect(have).to.be.an('array');
                     expect(have.length).to.equal(4);
-                    have.forEach(function (pkg) {
-                        expect(pkg.options).to.be.an('object');
-                        expect(pkg.options.ruleset).to.equal('foo');
-                        switch (pkg.dir) {
+                    have.forEach(function (seed) {
+                        expect(seed.options).to.be.an('object');
+                        expect(seed.options.ruleset).to.equal('foo');
+                        switch (seed.baseDirectory) {
                         case fixture:
-                            expect(pkg.depth).to.equal(0);
-                            expect(pkg.name).to.equal('app');
+                            expect(seed.npmDepth).to.equal(0);
+                            expect(seed.name).to.equal('app');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'depth-different'):
-                            expect(pkg.depth).to.equal(1);
-                            expect(pkg.name).to.equal('depth-different');
-                            expect(pkg.version).to.equal('0.1.0');
+                            expect(seed.npmDepth).to.equal(1);
+                            expect(seed.name).to.equal('depth-different');
+                            expect(seed.version).to.equal('0.1.0');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'middle'):
-                            expect(pkg.depth).to.equal(1);
-                            expect(pkg.name).to.equal('middle');
-                            expect(pkg.version).to.equal('0.0.1');
+                            expect(seed.npmDepth).to.equal(1);
+                            expect(seed.name).to.equal('middle');
+                            expect(seed.version).to.equal('0.0.1');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-a'):
@@ -1419,16 +1478,16 @@ describe('BundleLocator', function () {
                             throw new Error('FAILURE -- should skip "skip-b"');
 
                         case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
-                            expect(pkg.depth).to.equal(2);
-                            expect(pkg.name).to.equal('depth-same');
-                            expect(pkg.version).to.equal('0.2.0');
+                            expect(seed.npmDepth).to.equal(2);
+                            expect(seed.name).to.equal('depth-same');
+                            expect(seed.version).to.equal('0.2.0');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
                             throw new Error('FAILURE -- did not honor maxPackageDepth');
 
                         default:
-                            throw new Error('FAILURE -- extra package ' + pkg.dir);
+                            throw new Error('FAILURE -- extra package ' + seed.baseDirectory);
                         }
                     });
                     next();
@@ -1436,6 +1495,83 @@ describe('BundleLocator', function () {
                     next(err);
                 }
             }, next);
+        });
+
+        it('_loadRuleset()', function () {
+            var fixture = libpath.join(fixturesPath, 'rulesets'),
+                locator = new BundleLocator(),
+                ruleset;
+
+            locator._rootDirectory = fixture;
+
+            ruleset = locator._loadRuleset({});
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('main');
+
+            ruleset = locator._loadRuleset({options: {ruleset: 'main'}});
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('main');
+
+            ruleset = locator._loadRuleset({
+                options: {
+                    rulesets: libpath.join(__dirname, '..', '..', 'lib', 'rulesets')
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('main');
+
+            ruleset = locator._loadRuleset({options: {ruleset: 'foo'}});
+            expect(ruleset).to.be.an('undefined');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-local'),
+                options: {
+                    ruleset: 'rules-local-foo',
+                    rulesets: 'rules-local'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-local-foo');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-app'),
+                options: {
+                    ruleset: 'rules-app-foo',
+                    rulesets: 'rules-app'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-app-foo');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-dep'),
+                options: {
+                    ruleset: 'rules-dep-foo',
+                    rulesets: 'dep/rules-dep'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-dep-foo');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-fw-a'),
+                options: {
+                    ruleset: 'rules-fw-foo',
+                    rulesets: 'fw/rules-fw'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-fw-foo');
+
+            ruleset = locator._loadRuleset({
+                baseDirectory: libpath.join(fixture, 'node_modules', 'skip', 'node_modules', 'pkg-fw-b'),
+                options: {
+                    ruleset: 'rules-fw-foo',
+                    rulesets: 'fw/rules-fw'
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('rules-fw-foo');
         });
 
     });
