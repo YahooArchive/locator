@@ -1506,11 +1506,19 @@ describe('BundleLocator', function () {
 
             ruleset = locator._loadRuleset({});
             expect(ruleset).to.be.an('object');
-            expect(ruleset._name).to.equal('files');
+            expect(ruleset._name).to.equal('main');
 
-            ruleset = locator._loadRuleset({options: {ruleset: 'files'}});
+            ruleset = locator._loadRuleset({options: {ruleset: 'main'}});
             expect(ruleset).to.be.an('object');
-            expect(ruleset._name).to.equal('files');
+            expect(ruleset._name).to.equal('main');
+
+            ruleset = locator._loadRuleset({
+                options: {
+                    rulesets: libpath.join(__dirname, '..', '..', 'lib', 'rulesets')
+                }
+            });
+            expect(ruleset).to.be.an('object');
+            expect(ruleset._name).to.equal('main');
 
             ruleset = locator._loadRuleset({options: {ruleset: 'foo'}});
             expect(ruleset).to.be.an('undefined');
