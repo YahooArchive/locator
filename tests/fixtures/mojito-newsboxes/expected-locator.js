@@ -274,7 +274,7 @@ module.exports = {
         'modown-lib-read': {
             options: {
                 ruleset: 'mojito-package',
-                rulesets: 'modown/rulesets',
+                rulesets: 'modown/rulesets'
             },
             name: 'modown-lib-read',
             version: '0.0.3',
