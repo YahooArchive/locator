@@ -43,9 +43,12 @@ It is up to the user to understand and use the semantic meanings associated with
 
 ### Marking a Package
 * the `"modown"` section in `package.json` should be an object
-* it has a single `"ruleset"` field describing which ruleset should be used
-* (FUTURE:  this will probably be renamed to `"type"`)
-* currently, modown-locator only knows about a fixed set of rulesets, described below
+* it has a `"ruleset"` field describing which ruleset should be used
+    * currently, modown-locator only knows about a fixed set of rulesets, described below
+* it has a `"rulesets"` field describe where to load the ruleset definitions
+    * value is interpretted relative to the package's directory, or `node_modules/` in the package's directory
+    * if the file isn't found, looks in parent in a similar way
+    * stops looking in parents after the application root is reached
 
 
 ### Loading a Tree of Packages
@@ -65,12 +68,6 @@ The following rulesets ship with `modown-locator`:
 
 * `files`
     * used for packages whose files should be walked by plugins, but which don't otherwise contain resources
-* `touchdown-package`
-    * used to interpret the layout of a touchdown application or extension package
-* `mojito-package`
-    * used to interpret the layout of a mojito application or extension package
-* `mojito-mojit`
-    * used to interpret the layout of a mojito mojit
 
 
 ## Using the Locator, Advanced
