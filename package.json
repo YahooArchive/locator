@@ -1,7 +1,7 @@
 {
     "name": "locator",
     "description": "gives semantic meaning to filesystem paths",
-    "version": "0.1.0",
+    "version": "0.3.0",
     "homepage": "yo/modown",
     "keywords": [
         "filesystem",

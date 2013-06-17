@@ -1,9 +1,8 @@
 # @NEXT@
+
+# 0.3.0
 * renamed to "locator"
-* added HISTORY.md
-* license refresh
-* added "lint" script for eventual new screwdriver config
-* no longer update version or publish to ynpm
+* cleanup in preparation open source and publish to NPM
 
 # 0.2.2
 * delinted
