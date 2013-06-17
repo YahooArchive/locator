@@ -9,6 +9,8 @@ In addition it groups files into "bundles".
 The locator doesn't _interpret_ the semantic meaning of the files.
 It is up to the user to understand and use the semantic meanings associated with the files.
 
+[![Build Status](https://travis-ci.org/yahoo/locator.png?branch=master)](https://travis-ci.org/yahoo/locator)
+
 
 ## Goals & Design
 * provide an abstraction over filesystem paths
