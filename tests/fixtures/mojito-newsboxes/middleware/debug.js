@@ -1,3 +1,10 @@
+/*
+ * Copyright 2013 Yahoo! Inc. All rights reserved.
+ * Copyrights licensed under the BSD License.
+ * See the accompanying LICENSE.txt file for terms.
+ */
+
+
 /*jslint node:true, indent: 4, regexp: true */
 
 module.exports = function (req, res, next) {

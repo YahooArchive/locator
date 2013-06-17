@@ -1,8 +1,9 @@
 /*
- * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
- * Copyrights licensed under the New BSD License.
- * See the accompanying LICENSE file for terms.
+ * Copyright 2013 Yahoo! Inc. All rights reserved.
+ * Copyrights licensed under the BSD License.
+ * See the accompanying LICENSE.txt file for terms.
  */
+
 
 /*global YUI*/
 
