@@ -1,4 +1,5 @@
 # @NEXT@
+* renamed to "locator"
 * added HISTORY.md
 * license refresh
 * added "lint" script for eventual new screwdriver config

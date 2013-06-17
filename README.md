@@ -1,7 +1,7 @@
-modown-locator
-==============
+locator
+=======
 
-The modown-locator gives semantic meaning to files on the filesystem.
+The locator gives semantic meaning to files on the filesystem.
 It does this with a set of "rules" that describes how each file path should be interpreted.
 In addition it groups files into "bundles".
 (Each bundle is usually an NPM module, but not always.)
@@ -42,9 +42,9 @@ It is up to the user to understand and use the semantic meanings associated with
 
 
 ### Marking a Package
-* the `"modown"` section in `package.json` should be an object
+* the `"locator"` section in `package.json` should be an object
 * it has a `"ruleset"` field describing which ruleset should be used
-    * currently, modown-locator only knows about a fixed set of rulesets, described below
+    * currently, locator only knows about a fixed set of rulesets, described below
 * it has a `"rulesets"` field describe where to load the ruleset definitions
     * value is interpretted relative to the package's directory, or `node_modules/` in the package's directory
     * if the file isn't found, looks in parent in a similar way
@@ -64,9 +64,9 @@ Both `locator.getBundle(bundleName)` and `locator.getRootBundle()` return a Bund
 
 
 ### Rulesets
-The following rulesets ship with `modown-locator`:
+The following rulesets ship with `locator`:
 
-* `files`
+* `main`
     * used for packages whose files should be walked by plugins, but which don't otherwise contain resources
 
 

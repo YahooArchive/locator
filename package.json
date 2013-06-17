@@ -1,12 +1,28 @@
 {
-    "name": "modown-locator",
-    "version": "0.2.2",
-    "description": "modown resource locator",
+    "name": "locator",
+    "description": "gives semantic meaning to filesystem paths",
+    "version": "0.1.0",
+    "homepage": "yo/modown",
+    "keywords": [
+        "filesystem",
+        "fs",
+        "mojito",
+        "modown"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://git.corp.yahoo.com/modown/modown-locator.git"
+    },
+
     "author": "Drew Folta <folta@yahoo-inc.com>",
     "contributors": [
         "Isao Yagi <isao@yahoo-inc.com>",
-        "Michael Ridgway <mridgway@yahoo-inc.com>"
+        "Michael Ridgway <mridgway@yahoo-inc.com>",
+        "Caridy Patino <caridy@yahoo-inc.com> (http://github.com/caridy)",
+        "alberto chan <albertoc@yahoo-inc.com>"
     ],
+    "license": "BSD",
+
     "main": "lib/bundleLocator.js",
     "directories": {
         "lib": "./lib"
@@ -14,11 +30,6 @@
     "engines": {
         "node": ">0.8",
         "npm": ">1.0"
-    },
-    "homepage": "yo/modown",
-    "repository": {
-        "type": "git",
-        "url": "https://git.corp.yahoo.com/modown/modown-locator.git"
     },
     "dependencies": {
         "async": "*",
@@ -42,12 +53,5 @@
         "lint": "node ./node_modules/.bin/jshint --config ./node_modules/yui-lint/jshint.json ./lib/*.js tests/lib/*.js",
         "pretest": "node node_modules/.bin/jshint --config ./node_modules/yui-lint/jshint.json ./lib/*.js tests/lib/*.js",
         "test": "./node_modules/.bin/_mocha tests/lib/*.js --reporter spec"
-    },
-    "license": "BSD",
-    "yahoo": {
-        "bugzilla": {
-            "product": "Mojito",
-            "component": "General"
-        }
     }
 }

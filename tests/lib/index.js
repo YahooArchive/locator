@@ -1312,7 +1312,7 @@ describe('BundleLocator', function () {
             seed = locator._makeBundleSeed('foo', 'bar', 'baz', {
                 name: 'orange',
                 version: 'red',
-                modown: {
+                locator: {
                     ruleset: 'x'
                 }
             });
@@ -1326,7 +1326,7 @@ describe('BundleLocator', function () {
             seed = locator._makeBundleSeed('foo', 'bar', 'baz', {
                 name: 'orange',
                 version: 'red',
-                modown: {
+                locator: {
                     ruleset: 'x'
                 }
             }, {
