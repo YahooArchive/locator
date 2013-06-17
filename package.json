@@ -40,7 +40,7 @@
         "yui": "3.10.x"
     },
     "devDependencies": {
-        "chai": "*",
+        "chai": "~1.6.1",
         "istanbul": "*",
         "jshint": "~0.9.0",
         "mocha": "*",
