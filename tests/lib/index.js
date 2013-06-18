@@ -1361,23 +1361,25 @@ describe('BundleLocator', function () {
                     expect(have.length).to.equal(6);
                     have.forEach(function (seed) {
                         expect(seed.options).to.be.an('object');
-                        expect(seed.options.ruleset).to.equal('foo');
                         switch (seed.baseDirectory) {
                         case fixture:
                             expect(seed.npmDepth).to.equal(0);
                             expect(seed.name).to.equal('app');
+                            expect(seed.options.ruleset).to.be.an('undefined');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'depth-different'):
                             expect(seed.npmDepth).to.equal(1);
                             expect(seed.name).to.equal('depth-different');
                             expect(seed.version).to.equal('0.1.0');
+                            expect(seed.options.ruleset).to.equal('foo');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'middle'):
                             expect(seed.npmDepth).to.equal(1);
                             expect(seed.name).to.equal('middle');
                             expect(seed.version).to.equal('0.0.1');
+                            expect(seed.options.ruleset).to.equal('foo');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-a'):
@@ -1390,18 +1392,21 @@ describe('BundleLocator', function () {
                             expect(seed.npmDepth).to.equal(2);
                             expect(seed.name).to.equal('depth-different');
                             expect(seed.version).to.equal('0.2.0');
+                            expect(seed.options.ruleset).to.equal('foo');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-a', 'node_modules', 'depth-same'):
                             expect(seed.npmDepth).to.equal(2);
                             expect(seed.name).to.equal('depth-same');
                             expect(seed.version).to.equal('0.1.0');
+                            expect(seed.options.ruleset).to.equal('foo');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
                             expect(seed.npmDepth).to.equal(2);
                             expect(seed.name).to.equal('depth-same');
                             expect(seed.version).to.equal('0.2.0');
+                            expect(seed.options.ruleset).to.equal('foo');
                             break;
 
                         case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
@@ -1452,7 +1457,6 @@ describe('BundleLocator', function () {
                     expect(have.length).to.equal(4);
                     have.forEach(function (seed) {
                         expect(seed.options).to.be.an('object');
-                        expect(seed.options.ruleset).to.equal('foo');
                         switch (seed.baseDirectory) {
                         case fixture:
                             expect(seed.npmDepth).to.equal(0);
