@@ -1,7 +1,4 @@
 {
     "name": "app",
-    "version": "0.0.1",
-    "locator": {
-        "ruleset": "foo"
-    }
+    "version": "0.0.1"
 }
