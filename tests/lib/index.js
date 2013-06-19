@@ -335,7 +335,8 @@ describe('BundleLocator', function () {
                 bundleCalls = {},
                 pluginJSON,
                 pluginDefault,
-                pluginAll;
+                pluginAll,
+                bundlesWithfileUpdated = {};
 
             pluginJSON = {
                 fileCalls: 0,
@@ -344,6 +345,7 @@ describe('BundleLocator', function () {
                     extensions: 'js'
                 },
                 fileUpdated: function (evt) {
+                    bundlesWithfileUpdated[evt.bundle.name] = true;
                     pluginJSON.fileCalls += 1;
                     if (!fileCalls[evt.file.relativePath]) {
                         fileCalls[evt.file.relativePath] = [];
@@ -402,6 +404,10 @@ describe('BundleLocator', function () {
             locator.parseBundle(fixture, options).then(function (have) {
                 var want = require(fixture + '/expected-locator.js');
                 try {
+                    compareObjects(bundlesWithfileUpdated, {
+                        "roster": true,
+                        "simple": true
+                    });
                     compareObjects(have, want);
                     expect(pluginJSON.fileCalls).to.equal(11);
                     expect(pluginJSON.resourceCalls).to.equal(8);
