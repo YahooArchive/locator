@@ -1,5 +1,8 @@
 # @NEXT@
 
+# 0.3.1
+* padding `evt.bundle` when calling fileUpdated as well as any other file event
+
 # 0.3.0
 * renamed to "locator"
 * cleanup in preparation open source and publish to NPM
