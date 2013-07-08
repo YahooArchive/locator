@@ -12,6 +12,7 @@ module.exports = {
         rulesets: 'modown/rulesets.js'
     },
     name: 'modown-newsboxes',
+    isRoot: true,
     version: '0.0.2',
     baseDirectory: __dirname,
     type: 'mojito-package',

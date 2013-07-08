@@ -12,6 +12,7 @@ module.exports = {
         rulesets: 'rulesets-touchdown.js'
     },
     name: 'simple',
+    isRoot: true,
     version: '0.0.2',
     baseDirectory: __dirname,
     buildDirectory: __dirname + '/build/simple-0.0.2',
