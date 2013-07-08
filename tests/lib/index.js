@@ -279,6 +279,23 @@ describe('BundleLocator', function () {
             }, next);
         });
 
+        it('api.getRootBundleName()', function (next) {
+            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
+                locator = new BundleLocator();
+
+            locator.parseBundle(fixture).then(function () {
+                var rootBundleName;
+                try {
+                    rootBundleName = locator._pluginAPI.getRootBundleName();
+                    expect(rootBundleName).to.equal('modown-newsboxes');
+                    next();
+
+                } catch (err) {
+                    next(err);
+                }
+            }, next);
+        });
+
 
         it('api.getBundleResources()', function (next) {
             var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
