@@ -1,5 +1,8 @@
 # @NEXT@
 
+# 0.3.2
+* adding `api.getRootBundleName` to plugin API to get the name of the root bundle, which is needed for some plugins.
+
 # 0.3.1
 * padding `evt.bundle` when calling fileUpdated as well as any other file event
 
