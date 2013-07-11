@@ -414,6 +414,7 @@ module.exports.files[__dirname] = true;
 module.exports.files[__dirname + '/application.json'] = true;
 module.exports.files[__dirname + '/assets'] = true;
 module.exports.files[__dirname + '/assets/favicon.ico'] = true;
+module.exports.files[__dirname + '/examples'] = true;
 module.exports.files[__dirname + '/expected-locator.js'] = true;
 module.exports.files[__dirname + '/middleware'] = true;
 module.exports.files[__dirname + '/middleware/debug.js'] = true;
