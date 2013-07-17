@@ -12,7 +12,7 @@ describe('touchdown-simple', function () {
         }),
         options = {
             // for build dir name "roster__0-0-1" instead of "roster-0.0.1"
-            buildDirectoryNamer: function(bundle) {
+            bundleBuildDirectoryParser: function(bundle) {
                 return bundle.name + '__' + bundle.version.replace(/\./g, '-');
             }
         },
