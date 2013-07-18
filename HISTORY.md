@@ -1,5 +1,12 @@
 # @NEXT@
 
+
+# 0.3.4
+* enable custom bundle build dirnames w/constructor and/or parseBundle() option
+
+# 0.3.3
+* fix #5, issue with symlinked sub-packages
+
 # 0.3.2
 * adding `api.getRootBundleName` to plugin API to get the name of the root bundle, which is needed for some plugins.
 
