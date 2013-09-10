@@ -79,3 +79,24 @@ describe('custom bundle build dir via `new Locator` option', function () {
     });
 });
 
+describe('_isBuildFile()', function () {
+    var fixtureDir = join(fixturesPath, 'touchdown-simple'),
+        locator = new BundleLocator({
+            applicationDirectory: fixtureDir,
+            buildDirectory: 'build'
+        });
+
+    it('matches build dir', function () {
+        expect(locator._isBuildFile(join(fixtureDir, 'build'))).to.equal(true);
+    });
+
+    it('matches file in build dir', function () {
+        expect(locator._isBuildFile(join(fixtureDir, 'build/x.js'))).to.equal(true);
+    });
+
+    it('skips file with same basename as build dir', function () {
+        expect(locator._isBuildFile(join(fixtureDir, 'build.json'))).to.equal(false);
+    });
+});
+
+
