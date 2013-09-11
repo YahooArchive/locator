@@ -1,4 +1,7 @@
 # @NEXT@
+
+
+# 0.3.5
 * fixed bug (pr #13) where `build.json` in the app root was being ignored
 
 # 0.3.4
