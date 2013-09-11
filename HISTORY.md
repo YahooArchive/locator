@@ -1,5 +1,5 @@
 # @NEXT@
-
+* fixed bug (pr #13) where `build.json` in the app root was being ignored
 
 # 0.3.4
 * enable custom bundle build dirnames w/constructor and/or parseBundle() option
