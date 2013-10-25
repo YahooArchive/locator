@@ -1,5 +1,6 @@
 # @NEXT@
 
+* introducing `locatorObj.ready` (pr #15) where `locatorObj.ready` is a promise that will be fulfillled or rejected by `parseBundle()`
 
 # 0.3.5
 * fixed bug (pr #13) where `build.json` in the app root was being ignored
