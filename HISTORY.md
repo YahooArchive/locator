@@ -1,5 +1,7 @@
 # @NEXT@
 
+# 0.3.6
+
 * introducing `locatorObj.ready` (pr #15) where `locatorObj.ready` is a promise that will be fulfillled or rejected by `parseBundle()`
 
 # 0.3.5
