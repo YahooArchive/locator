@@ -1,3 +1,6 @@
+/*jslint nomen:true, node:true, rexexp:true */
+/*global describe,it,before */
+
 var join = require('path').join,
     expect = require('chai').expect,
     BundleLocator = require('../../lib/bundleLocator.js'),
