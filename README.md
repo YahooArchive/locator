@@ -145,8 +145,8 @@ See the [LICENSE file][] for license text and copyright information.
 
 
 ## Contribute
-See the [CONTRIBUTE.md file][] for info.
+See the [CONTRIBUTING.md file][] for information on contributing back to Locator.
 
-[CONTRIBUTE.md file]: https://github.com/yahoo/locator/blob/master/CONTRIBUTE.md
+[CONTRIBUTING.md file]: https://github.com/yahoo/locator/blob/master/CONTRIBUTING.md
 
 
