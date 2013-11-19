@@ -1,13 +1,16 @@
 var normalize = require('path').normalize;
 
 function walk(obj, fn) {
-	Object.keys(obj).forEach(function (key) {
-		var value = obj[key];
-		fn(key, obj);
-		if (value && typeof value === 'object') {
-			walk(value, fn);
+	var value;
+	for (var key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			value = obj[key];
+			fn(value, key, obj);
+			if (value && typeof value === 'object') {
+				walk(value, fn);
+			}
 		}
-	});
+	}
 }
 
 function normalizeFiles(value, key, obj) {
@@ -15,16 +18,17 @@ function normalizeFiles(value, key, obj) {
 		case 'fullPath':
 		case 'relativePath':
 		case 'baseDirectory':
+		case 'buildDirectory':
 			obj[key] = normalize(value);
 			break;
 		case 'files':
-			Object.keys(value, function (key) {
+			Object.keys(value).forEach(function (key) {
 				var newKey = normalize(key),
 					oldVal = value[key];
 
 				delete value[key];
 
-				value[key] = oldVal;
+				value[newKey] = oldVal;
 			});
 			break;
 	}
