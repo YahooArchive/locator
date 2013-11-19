@@ -1,4 +1,11 @@
+Locator Change History
+======================
+
 # @NEXT@
+
+# 0.3.7
+
+* Fix OS dependant path comparison to work on windows (pr #15)
 
 # 0.3.6
 
