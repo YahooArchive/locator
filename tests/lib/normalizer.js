@@ -1,8 +1,8 @@
 var normalize = require('path').normalize;
 
 function walk(obj, fn) {
-	var value;
-	for (var key in obj) {
+	var value, key;
+	for (key in obj) {
 		if (obj.hasOwnProperty(key)) {
 			value = obj[key];
 			fn(value, key, obj);
