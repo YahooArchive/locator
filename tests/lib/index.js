@@ -793,28 +793,31 @@ describe('BundleLocator', function () {
                     types: 'configs'
                 },
                 bundleUpdated: function (evt, api) {
+                    var fooConfig = libpath.normalize('configs/foo.json'),
+                        barConfig = libpath.normalize('configs/bar.json');
+
                     if ('roster' === evt.bundle.name) {
                         bundleCalls += 1;
                         if (1 === bundleCalls) {
-                            return api.writeFileInBundle(evt.bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'})
+                            return api.writeFileInBundle(evt.bundle.name, fooConfig, '// just testing', {encoding: 'utf8'})
                                 .then(function (pathToNewFile) {
                                     try {
-                                        expect(pathToNewFile).to.equal(libpath.join(evt.bundle.buildDirectory, 'configs/foo.json'));
+                                        expect(pathToNewFile).to.equal(libpath.join(evt.bundle.buildDirectory, fooConfig));
                                     } catch (err) {
                                         mockery.deregisterAll();
                                         mockery.disable();
                                         next(err);
                                     }
-                                    return api.writeFileInBundle(evt.bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
+                                    return api.writeFileInBundle(evt.bundle.name, barConfig, '// just testing', {encoding: 'utf8'});
                                 });
                         }
                         if (2 === bundleCalls) {
                             expect(Object.keys(evt.files).length).to.equal(2);
-                            expect(evt.files).to.have.property('configs/foo.json');
-                            expect(evt.files).to.have.property('configs/bar.json');
+                            expect(evt.files).to.have.property(fooConfig);
+                            expect(evt.files).to.have.property(barConfig);
                             expect(Object.keys(evt.resources).length).to.equal(2);
-                            expect(evt.resources).to.have.property('configs/foo.json');
-                            expect(evt.resources).to.have.property('configs/bar.json');
+                            expect(evt.resources).to.have.property(fooConfig);
+                            expect(evt.resources).to.have.property(barConfig);
                             mockery.deregisterAll();
                             mockery.disable();
                         }
