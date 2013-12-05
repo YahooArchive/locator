@@ -16,8 +16,7 @@ var libpath       = require('path'),
     mockery       = require('mockery'),
     expect        = require('chai').expect,
     BundleLocator = require('../../lib/bundleLocator.js'),
-    join          = libpath.join,
-    fixturesPath  = join(__dirname, '../fixtures'),
+    fixturesPath  = libpath.join(__dirname, '../fixtures'),
     normalize     = libpath.normalize;
 
 
@@ -41,7 +40,7 @@ describe('BundleLocator', function () {
 
 
     describe('mojito-newsboxes', function () {
-        var fixture = join(fixturesPath, 'mojito-newsboxes'),
+        var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
             locator = new BundleLocator(),
             options = {},
             rootHave,
@@ -162,16 +161,16 @@ describe('BundleLocator', function () {
         });
 
         it('_getBundleNameByPath()', function () {
-            expect(locator._getBundleNameByPath(join(fixture, 'mojits/Weather'))).to.equal('Weather');
-            expect(locator._getBundleNameByPath(join(fixture, 'mojits/Weather/x'))).to.equal('Weather');
-            expect(locator._getBundleNameByPath(join(fixture, 'mojits/Weather2'))).to.equal('modown-newsboxes');
-            expect(locator._getBundleNameByPath(join(fixture, 'mojits/Weather2/x'))).to.equal('modown-newsboxes');
+            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather'))).to.equal('Weather');
+            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather/x'))).to.equal('Weather');
+            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather2'))).to.equal('modown-newsboxes');
+            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather2/x'))).to.equal('modown-newsboxes');
         });
     });
 
 
     describe('touchdown-simple', function () {
-        var fixture = join(fixturesPath, 'touchdown-simple'),
+        var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
             locator = new BundleLocator({
                 applicationDirectory: fixture,
                 buildDirectory: 'build'
@@ -197,7 +196,7 @@ describe('BundleLocator', function () {
     describe('plugins', function () {
 
         it('_filterResource()', function () {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 locator = new BundleLocator({
                     applicationDirectory: fixture,
                     buildDirectory: 'build'
@@ -238,7 +237,7 @@ describe('BundleLocator', function () {
 
 
         it('api.getBundle()', function (next) {
-            var fixture = join(fixturesPath, 'mojito-newsboxes'),
+            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
             locator.parseBundle(fixture).then(function () {
                 var bundle;
@@ -255,7 +254,7 @@ describe('BundleLocator', function () {
 
 
         it('api.getBundleFiles()', function (next) {
-            var fixture = join(fixturesPath, 'mojito-newsboxes'),
+            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
             locator.parseBundle(fixture).then(function () {
                 var files;
@@ -264,15 +263,15 @@ describe('BundleLocator', function () {
                     // order doesn't matter, since it depends on how the filesystem is walked
                     files.sort();
                     expect(files.length).to.equal(2);
-                    expect(files).to.contain(join(fixture, 'mojits/Shelf/controller.common.js'));
-                    expect(files).to.contain(join(fixture, 'mojits/Shelf/views/index.js'));
+                    expect(files).to.contain(libpath.join(fixture, 'mojits/Shelf/controller.common.js'));
+                    expect(files).to.contain(libpath.join(fixture, 'mojits/Shelf/views/index.js'));
 
                     files = locator._pluginAPI.getBundleFiles('Read', {extensions: 'css'});
                     // order doesn't matter, since it depends on how the filesystem is walked
                     files.sort();
                     expect(files.length).to.equal(2);
-                    expect(files).to.contain(join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
-                    expect(files).to.contain(join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
+                    expect(files).to.contain(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
+                    expect(files).to.contain(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
 
                     next();
                 } catch (err) {
@@ -282,7 +281,7 @@ describe('BundleLocator', function () {
         });
 
         it('api.getRootBundleName()', function (next) {
-            var fixture = join(fixturesPath, 'mojito-newsboxes'),
+            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
 
             locator.parseBundle(fixture).then(function () {
@@ -300,7 +299,7 @@ describe('BundleLocator', function () {
 
 
         it('api.getBundleResources()', function (next) {
-            var fixture = join(fixturesPath, 'mojito-newsboxes'),
+            var fixture = libpath.join(fixturesPath, 'mojito-newsboxes'),
                 locator = new BundleLocator();
             locator.parseBundle(fixture).then(function () {
                 var ress;
@@ -314,11 +313,11 @@ describe('BundleLocator', function () {
                     expect(ress[0]).to.be.an('object');
                     expect(ress[0].bundleName).to.equal('Shelf');
                     expect(ress[0].type).to.equal('templates');
-                    expect(ress[0].fullPath).to.equal(join(fixture, 'mojits/Shelf/templates/index.hb.html'));
+                    expect(ress[0].fullPath).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.hb.html'));
                     expect(ress[1]).to.be.an('object');
                     expect(ress[1].bundleName).to.equal('Shelf');
                     expect(ress[1].type).to.equal('templates');
-                    expect(ress[1].fullPath).to.equal(join(fixture, 'mojits/Shelf/templates/index.opera-mini.hb.html'));
+                    expect(ress[1].fullPath).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.opera-mini.hb.html'));
 
                     ress = locator._pluginAPI.getBundleResources('Read', {extensions: 'css'});
                     // order doesn't matter, since it depends on how the filesystem is walked
@@ -329,11 +328,11 @@ describe('BundleLocator', function () {
                     expect(ress[0]).to.be.an('object');
                     expect(ress[0].bundleName).to.equal('Read');
                     expect(ress[0].ext).to.equal('css');
-                    expect(ress[0].fullPath).to.equal(join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
+                    expect(ress[0].fullPath).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
                     expect(ress[1]).to.be.an('object');
                     expect(ress[1].bundleName).to.equal('Read');
                     expect(ress[1].ext).to.equal('css');
-                    expect(ress[1].fullPath).to.equal(join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
+                    expect(ress[1].fullPath).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
                     next();
                 } catch (err) {
                     next(err);
@@ -343,7 +342,7 @@ describe('BundleLocator', function () {
 
 
         it('basics', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 locator = new BundleLocator({
                     applicationDirectory: fixture,
                     buildDirectory: 'build'
@@ -447,7 +446,7 @@ describe('BundleLocator', function () {
 
 
         it('create file during resourceUpdated', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
                 options = {},
@@ -522,11 +521,11 @@ describe('BundleLocator', function () {
             locator.parseBundle(fixture, options).then(function () {
                 try {
                     expect(mkdirs.length).to.equal(2);
-                    expect(mkdirs[0]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css'));
-                    expect(mkdirs[1]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css'));
+                    expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css'));
+                    expect(mkdirs[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css'));
                     expect(writes.length).to.equal(2);
-                    expect(writes[0]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
-                    expect(writes[1]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
+                    expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
+                    expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
                     expect(updates.length).to.equal(2);
                     expect(updates[0]).to.equal('roster styles/css/plugin.sel0.less');
                     expect(updates[1]).to.equal('roster styles/css/plugin.sel1.less');
@@ -550,7 +549,7 @@ describe('BundleLocator', function () {
 
 
         it('NOOP: create file during resourceUpdated', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
                 options = {},
@@ -627,8 +626,8 @@ describe('BundleLocator', function () {
             locator.parseBundle(fixture, options).then(function () {
                 try {
                     expect(reads.length).to.equal(2);
-                    expect(reads[0]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
-                    expect(reads[1]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
+                    expect(reads[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
+                    expect(reads[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
                     expect(mkdirs.length).to.equal(0);
                     expect(writes.length).to.equal(0);
                     expect(updates.length).to.equal(2);
@@ -654,7 +653,7 @@ describe('BundleLocator', function () {
 
 
         it('create file during resourceUpdated into build directory', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
                 jslint,
@@ -726,14 +725,14 @@ describe('BundleLocator', function () {
             }).then(function () {
                 try {
                     expect(mkdirs.length).to.equal(2);
-                    expect(mkdirs[0]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css'));
-                    expect(mkdirs[1]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css'));
+                    expect(mkdirs[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css'));
+                    expect(mkdirs[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css'));
                     expect(writes.length).to.equal(2);
-                    expect(writes[0]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
-                    expect(writes[1]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
+                    expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
+                    expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
                     expect(updates.length).to.equal(2);
-                    expect(updates[0]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
-                    expect(updates[1]).to.equal(join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
+                    expect(updates[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
+                    expect(updates[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
                     mockery.deregisterAll();
                     mockery.disable();
                     next();
@@ -751,7 +750,7 @@ describe('BundleLocator', function () {
 
 
         it('create files during bundleUpdated()', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
                 options = {},
@@ -800,7 +799,7 @@ describe('BundleLocator', function () {
                             return api.writeFileInBundle(evt.bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'})
                                 .then(function (pathToNewFile) {
                                     try {
-                                        expect(pathToNewFile).to.equal(join(evt.bundle.buildDirectory, 'configs/foo.json'));
+                                        expect(pathToNewFile).to.equal(libpath.join(evt.bundle.buildDirectory, 'configs/foo.json'));
                                     } catch (err) {
                                         mockery.deregisterAll();
                                         mockery.disable();
@@ -847,7 +846,7 @@ describe('BundleLocator', function () {
 
 
         it('reports errors in sync plugins', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
                 options = {};
@@ -883,7 +882,7 @@ describe('BundleLocator', function () {
 
 
         it('reports errors in async plugins', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
                 options = {};
@@ -922,7 +921,7 @@ describe('BundleLocator', function () {
     describe('file watching', function () {
 
         it('detects changes', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
                 mockwatch;
@@ -1010,7 +1009,7 @@ describe('BundleLocator', function () {
         });
 
         it('ignores files in build directory', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
                 mockwatch,
@@ -1063,7 +1062,7 @@ describe('BundleLocator', function () {
             BundleLocator = require('../../lib/bundleLocator.js');
             locator = new BundleLocator({
                 applicationDirectory: fixture,
-                buildDirectory: join(fixture, 'build')
+                buildDirectory: libpath.join(fixture, 'build')
             });
 
             locator.parseBundle(fixture).then(function () {
@@ -1093,7 +1092,7 @@ describe('BundleLocator', function () {
         });
 
         it('warn on NPM packages added or deleted during watch()', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 logs = [],
                 locator,
@@ -1182,7 +1181,7 @@ describe('BundleLocator', function () {
             };
             locator = new BundleLocator({
                 applicationDirectory: fixture,
-                buildDirectory: join(fixture, 'build')
+                buildDirectory: libpath.join(fixture, 'build')
             });
 
             locator.parseBundle(fixture).then(function () {
@@ -1212,7 +1211,7 @@ describe('BundleLocator', function () {
         });
 
         it('reports errors from plugins', function (next) {
-            var fixture = join(fixturesPath, 'touchdown-simple'),
+            var fixture = libpath.join(fixturesPath, 'touchdown-simple'),
                 BundleLocator,
                 locator,
                 mockwatch,
@@ -1270,19 +1269,19 @@ describe('BundleLocator', function () {
                         try {
                             switch (logCalls) {
                             case 1:
-                                expect(msg).to.equal('Error processing file ' + join(fixture + '/controllers/x.js'));
+                                expect(msg).to.equal('Error processing file ' + libpath.join(fixture + '/controllers/x.js'));
                                 break;
                             case 2:
                                 expect(msg.indexOf('Error: NOPE')).to.equal(0);
                                 break;
                             case 3:
-                                expect(msg).to.equal('Error processing file ' + join(fixture + '/controllers/x.js'));
+                                expect(msg).to.equal('Error processing file ' + libpath.join(fixture + '/controllers/x.js'));
                                 break;
                             case 4:
                                 expect(msg.indexOf('Error: NOPE')).to.equal(0);
                                 break;
                             case 5:
-                                expect(msg).to.equal('Error processing file ' + join(fixture + '/controllers/x.js'));
+                                expect(msg).to.equal('Error processing file ' + libpath.join(fixture + '/controllers/x.js'));
                                 break;
                             case 6:
                                 expect(msg.indexOf('Error: NOPE')).to.equal(0);
@@ -1378,7 +1377,7 @@ describe('BundleLocator', function () {
         });
 
         it('_walkNPMTree()', function (next) {
-            var fixture = join(fixturesPath, 'walk-packages'),
+            var fixture = libpath.join(fixturesPath, 'walk-packages'),
                 locator = new BundleLocator({
                     maxPackageDepth: 2
                 });
@@ -1395,48 +1394,48 @@ describe('BundleLocator', function () {
                             expect(seed.options.ruleset).to.be.an('undefined');
                             break;
 
-                        case join(fixture, 'node_modules', 'depth-different'):
+                        case libpath.join(fixture, 'node_modules', 'depth-different'):
                             expect(seed.npmDepth).to.equal(1);
                             expect(seed.name).to.equal('depth-different');
                             expect(seed.version).to.equal('0.1.0');
                             expect(seed.options.ruleset).to.equal('foo');
                             break;
 
-                        case join(fixture, 'node_modules', 'middle'):
+                        case libpath.join(fixture, 'node_modules', 'middle'):
                             expect(seed.npmDepth).to.equal(1);
                             expect(seed.name).to.equal('middle');
                             expect(seed.version).to.equal('0.0.1');
                             expect(seed.options.ruleset).to.equal('foo');
                             break;
 
-                        case join(fixture, 'node_modules', 'skip-a'):
+                        case libpath.join(fixture, 'node_modules', 'skip-a'):
                             throw new Error('FAILURE -- should skip "skip-a"');
 
-                        case join(fixture, 'node_modules', 'skip-b'):
+                        case libpath.join(fixture, 'node_modules', 'skip-b'):
                             throw new Error('FAILURE -- should skip "skip-b"');
 
-                        case join(fixture, 'node_modules', 'middle', 'node_modules', 'depth-different'):
+                        case libpath.join(fixture, 'node_modules', 'middle', 'node_modules', 'depth-different'):
                             expect(seed.npmDepth).to.equal(2);
                             expect(seed.name).to.equal('depth-different');
                             expect(seed.version).to.equal('0.2.0');
                             expect(seed.options.ruleset).to.equal('foo');
                             break;
 
-                        case join(fixture, 'node_modules', 'skip-a', 'node_modules', 'depth-same'):
+                        case libpath.join(fixture, 'node_modules', 'skip-a', 'node_modules', 'depth-same'):
                             expect(seed.npmDepth).to.equal(2);
                             expect(seed.name).to.equal('depth-same');
                             expect(seed.version).to.equal('0.1.0');
                             expect(seed.options.ruleset).to.equal('foo');
                             break;
 
-                        case join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
+                        case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
                             expect(seed.npmDepth).to.equal(2);
                             expect(seed.name).to.equal('depth-same');
                             expect(seed.version).to.equal('0.2.0');
                             expect(seed.options.ruleset).to.equal('foo');
                             break;
 
-                        case join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
+                        case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
                             throw new Error('FAILURE -- did not honor maxPackageDepth');
 
                         default:
@@ -1451,7 +1450,7 @@ describe('BundleLocator', function () {
         });
 
         it('_filterBundleSeeds()', function (next) {
-            var fixture = join(fixturesPath, 'walk-packages'),
+            var fixture = libpath.join(fixturesPath, 'walk-packages'),
                 locator = new BundleLocator({
                     maxPackageDepth: 2
                 });
@@ -1465,10 +1464,10 @@ describe('BundleLocator', function () {
                     try {
                         switch (matches[1]) {
                         case 'depth-different':
-                            expect(matches[2]).to.equal(join(fixture, 'node_modules', 'depth-different'));
+                            expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'depth-different'));
                             break;
                         case 'depth-same':
-                            expect(matches[2]).to.equal(join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'));
+                            expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'));
                             break;
                         default:
                             throw new Error('FAILURE -- unexpected log for ' + matches[1]);
@@ -1490,31 +1489,31 @@ describe('BundleLocator', function () {
                             expect(seed.name).to.equal('app');
                             break;
 
-                        case join(fixture, 'node_modules', 'depth-different'):
+                        case libpath.join(fixture, 'node_modules', 'depth-different'):
                             expect(seed.npmDepth).to.equal(1);
                             expect(seed.name).to.equal('depth-different');
                             expect(seed.version).to.equal('0.1.0');
                             break;
 
-                        case join(fixture, 'node_modules', 'middle'):
+                        case libpath.join(fixture, 'node_modules', 'middle'):
                             expect(seed.npmDepth).to.equal(1);
                             expect(seed.name).to.equal('middle');
                             expect(seed.version).to.equal('0.0.1');
                             break;
 
-                        case join(fixture, 'node_modules', 'skip-a'):
+                        case libpath.join(fixture, 'node_modules', 'skip-a'):
                             throw new Error('FAILURE -- should skip "skip-a"');
 
-                        case join(fixture, 'node_modules', 'skip-b'):
+                        case libpath.join(fixture, 'node_modules', 'skip-b'):
                             throw new Error('FAILURE -- should skip "skip-b"');
 
-                        case join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
+                        case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
                             expect(seed.npmDepth).to.equal(2);
                             expect(seed.name).to.equal('depth-same');
                             expect(seed.version).to.equal('0.2.0');
                             break;
 
-                        case join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
+                        case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
                             throw new Error('FAILURE -- did not honor maxPackageDepth');
 
                         default:
@@ -1529,7 +1528,7 @@ describe('BundleLocator', function () {
         });
 
         it('_loadRuleset()', function () {
-            var fixture = join(fixturesPath, 'rulesets'),
+            var fixture = libpath.join(fixturesPath, 'rulesets'),
                 locator = new BundleLocator(),
                 ruleset;
 
@@ -1545,7 +1544,7 @@ describe('BundleLocator', function () {
 
             ruleset = locator._loadRuleset({
                 options: {
-                    rulesets: join(__dirname, '..', '..', 'lib', 'rulesets')
+                    rulesets: libpath.join(__dirname, '..', '..', 'lib', 'rulesets')
                 }
             });
             expect(ruleset).to.be.an('object');
@@ -1555,7 +1554,7 @@ describe('BundleLocator', function () {
             expect(ruleset).to.be.an('undefined');
 
             ruleset = locator._loadRuleset({
-                baseDirectory: join(fixture, 'node_modules', 'pkg-local'),
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-local'),
                 options: {
                     ruleset: 'rules-local-foo',
                     rulesets: 'rules-local'
@@ -1565,7 +1564,7 @@ describe('BundleLocator', function () {
             expect(ruleset._name).to.equal('rules-local-foo');
 
             ruleset = locator._loadRuleset({
-                baseDirectory: join(fixture, 'node_modules', 'pkg-app'),
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-app'),
                 options: {
                     ruleset: 'rules-app-foo',
                     rulesets: 'rules-app'
@@ -1575,7 +1574,7 @@ describe('BundleLocator', function () {
             expect(ruleset._name).to.equal('rules-app-foo');
 
             ruleset = locator._loadRuleset({
-                baseDirectory: join(fixture, 'node_modules', 'pkg-dep'),
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-dep'),
                 options: {
                     ruleset: 'rules-dep-foo',
                     rulesets: 'dep/rules-dep'
@@ -1585,7 +1584,7 @@ describe('BundleLocator', function () {
             expect(ruleset._name).to.equal('rules-dep-foo');
 
             ruleset = locator._loadRuleset({
-                baseDirectory: join(fixture, 'node_modules', 'pkg-fw-a'),
+                baseDirectory: libpath.join(fixture, 'node_modules', 'pkg-fw-a'),
                 options: {
                     ruleset: 'rules-fw-foo',
                     rulesets: 'fw/rules-fw'
@@ -1595,7 +1594,7 @@ describe('BundleLocator', function () {
             expect(ruleset._name).to.equal('rules-fw-foo');
 
             ruleset = locator._loadRuleset({
-                baseDirectory: join(fixture, 'node_modules', 'skip', 'node_modules', 'pkg-fw-b'),
+                baseDirectory: libpath.join(fixture, 'node_modules', 'skip', 'node_modules', 'pkg-fw-b'),
                 options: {
                     ruleset: 'rules-fw-foo',
                     rulesets: 'fw/rules-fw'
