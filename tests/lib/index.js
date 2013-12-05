@@ -809,18 +809,14 @@ describe('BundleLocator', function () {
                                 });
                         }
                         if (2 === bundleCalls) {
-                            try {
-                                expect(Object.keys(evt.files).length).to.equal(2);
-                                expect(evt.files).to.have.property('configs/foo.json');
-                                expect(evt.files).to.have.property('configs/bar.json');
-                                expect(Object.keys(evt.resources).length).to.equal(2);
-                                expect(evt.resources).to.have.property('configs/foo.json');
-                                expect(evt.resources).to.have.property('configs/bar.json');
-                            } catch (err) {
-                                mockery.deregisterAll();
-                                mockery.disable();
-                                next(err);
-                            }
+                            expect(Object.keys(evt.files).length).to.equal(2);
+                            expect(evt.files).to.have.property('configs/foo.json');
+                            expect(evt.files).to.have.property('configs/bar.json');
+                            expect(Object.keys(evt.resources).length).to.equal(2);
+                            expect(evt.resources).to.have.property('configs/foo.json');
+                            expect(evt.resources).to.have.property('configs/bar.json');
+                            mockery.deregisterAll();
+                            mockery.disable();
                         }
                     }
                 }
