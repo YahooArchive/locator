@@ -3,7 +3,7 @@
  * Copyrights licensed under the BSD License.
  * See the accompanying LICENSE.txt file for terms.
  */
-
+var normalizeFiles = require('../../lib/normalizer');
 
 /*jslint nomen:true, white:true, node:true */
 module.exports = {
@@ -457,3 +457,5 @@ module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_
 module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/templates/index.hb.html'] = true;
 module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/templates/index.opera-mini.hb.html'] = true;
 module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/views/index.js'] = true;
+
+normalizeFiles(module.exports);

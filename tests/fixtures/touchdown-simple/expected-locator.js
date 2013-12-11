@@ -3,7 +3,7 @@
  * Copyrights licensed under the BSD License.
  * See the accompanying LICENSE.txt file for terms.
  */
-
+var normalizeFiles = require('../../lib/normalizer');
 
 /*jslint nomen:true, white:true, node:true */
 module.exports = {
@@ -257,3 +257,5 @@ module.exports.bundles.roster.files[__dirname + '/node_modules/roster/templates/
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/views/roster.js'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/styles/css/roster.sass'] = true;
 module.exports.bundles.roster.files[__dirname + '/node_modules/roster/templates/partials/player.dust'] = true;
+
+normalizeFiles(module.exports);

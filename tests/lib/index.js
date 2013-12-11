@@ -10,13 +10,14 @@
 "use strict";
 
 
-var libpath     = require('path'),
-    libfs       = require('fs'),
-    libasync    = require('async'),
-    mockery = require('mockery'),
-    expect = require('chai').expect,
+var libpath       = require('path'),
+    libfs         = require('fs'),
+    libasync      = require('async'),
+    mockery       = require('mockery'),
+    expect        = require('chai').expect,
     BundleLocator = require('../../lib/bundleLocator.js'),
-    fixturesPath = libpath.join(__dirname, '../fixtures');
+    fixturesPath  = libpath.join(__dirname, '../fixtures'),
+    normalize     = libpath.normalize;
 
 
 function compareObjects(have, want, path) {
@@ -65,43 +66,43 @@ describe('BundleLocator', function () {
             var ress = locator.listAllResources({extensions: 'js'});
             expect(ress.length).to.equal(10);
             ress.forEach(function (res) {
-                if ('Read' === res.bundleName && 'controller.common.js' === res.relativePath) {
+                if ('Read' === res.bundleName && normalize('controller.common.js') === res.relativePath) {
                     compareObjects(res, rootWant.bundles['modown-lib-read'].bundles.Read.resources.common.controllers.controller);
                     return;
                 }
-                if ('Read' === res.bundleName && 'models/rss.common.js' === res.relativePath) {
+                if ('Read' === res.bundleName && normalize('models/rss.common.js') === res.relativePath) {
                     compareObjects(res, rootWant.bundles['modown-lib-read'].bundles.Read.resources.common.models.rss);
                     return;
                 }
-                if ('Read' === res.bundleName && 'views/index.js' === res.relativePath) {
+                if ('Read' === res.bundleName && normalize('views/index.js') === res.relativePath) {
                     compareObjects(res, rootWant.bundles['modown-lib-read'].bundles.Read.resources['{}'].views.index);
                     return;
                 }
-                if ('Shelf' === res.bundleName && 'controller.common.js' === res.relativePath) {
+                if ('Shelf' === res.bundleName && normalize('controller.common.js') === res.relativePath) {
                     compareObjects(res, rootWant.bundles.Shelf.resources.common.controllers.controller);
                     return;
                 }
-                if ('Shelf' === res.bundleName && 'views/index.js' === res.relativePath) {
+                if ('Shelf' === res.bundleName && normalize('views/index.js') === res.relativePath) {
                     compareObjects(res, rootWant.bundles.Shelf.resources['{}'].views.index);
                     return;
                 }
-                if ('Weather' === res.bundleName && 'controller.common.js' === res.relativePath) {
+                if ('Weather' === res.bundleName && normalize('controller.common.js') === res.relativePath) {
                     compareObjects(res, rootWant.bundles.Weather.resources.common.controllers.controller);
                     return;
                 }
-                if ('Weather' === res.bundleName && 'models/YqlWeatherModel.common.js' === res.relativePath) {
+                if ('Weather' === res.bundleName && normalize('models/YqlWeatherModel.common.js') === res.relativePath) {
                     compareObjects(res, rootWant.bundles.Weather.resources.common.models.YqlWeatherModel);
                     return;
                 }
-                if ('modown' === res.bundleName && 'middleware/modown-contextualizer.js' === res.relativePath) {
+                if ('modown' === res.bundleName && normalize('middleware/modown-contextualizer.js') === res.relativePath) {
                     compareObjects(res, rootWant.bundles.modown.resources['{}'].middleware['modown-contextualizer']);
                     return;
                 }
-                if ('modown-newsboxes' === res.bundleName && 'middleware/debug.js' === res.relativePath) {
+                if ('modown-newsboxes' === res.bundleName && normalize('middleware/debug.js') === res.relativePath) {
                     compareObjects(res, rootWant.resources['{}'].middleware.debug);
                     return;
                 }
-                if ('modown-newsboxes' === res.bundleName && 'models/flickr.common.js' === res.relativePath) {
+                if ('modown-newsboxes' === res.bundleName && normalize('models/flickr.common.js') === res.relativePath) {
                     compareObjects(res, rootWant.resources.common.models.flickr);
                     return;
                 }
@@ -431,8 +432,8 @@ describe('BundleLocator', function () {
                     expect(pluginDefault.calls).to.equal(2);
                     expect(pluginAll.calls).to.equal(0);
                     // sample a couple to make sure that plugins were called in registration order
-                    expect(resourceCalls['controllers/teamManager.js']).to.deep.equal(['js']);
-                    expect(resourceCalls['templates/roster.dust']).to.deep.equal(['default']);
+                    expect(resourceCalls[normalize('controllers/teamManager.js')]).to.deep.equal(['js']);
+                    expect(resourceCalls[normalize('templates/roster.dust')]).to.deep.equal(['default']);
                     expect(Object.keys(bundleCalls).length).to.equal(2);
                     expect(bundleCalls.simple).to.equal(1);
                     expect(bundleCalls.roster).to.equal(1);
@@ -497,7 +498,7 @@ describe('BundleLocator', function () {
                     extensions: 'dust'
                 },
                 resourceUpdated: function (evt, api) {
-                    var path = 'styles/css/plugin.sel' + writes.length + '.less';
+                    var path = normalize('styles/css/plugin.sel' + writes.length + '.less');
                     return api.writeFileInBundle(evt.resource.bundleName, path, '// just testing', {encoding: 'utf8'});
                 },
                 bundleUpdated: function (evt) {
@@ -526,8 +527,8 @@ describe('BundleLocator', function () {
                     expect(writes[0]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel0.less'));
                     expect(writes[1]).to.equal(libpath.join(fixture, 'build/roster-0.0.1/styles/css/plugin.sel1.less'));
                     expect(updates.length).to.equal(2);
-                    expect(updates[0]).to.equal('roster styles/css/plugin.sel0.less');
-                    expect(updates[1]).to.equal('roster styles/css/plugin.sel1.less');
+                    expect(updates[0]).to.equal('roster ' + libpath.normalize('styles/css/plugin.sel0.less'));
+                    expect(updates[1]).to.equal('roster ' + libpath.normalize('styles/css/plugin.sel1.less'));
                     expect(Object.keys(bundleCalls).length).to.equal(2);
                     expect(bundleCalls.simple).to.equal(1);
                     expect(bundleCalls.roster).to.equal(1);
@@ -630,8 +631,8 @@ describe('BundleLocator', function () {
                     expect(mkdirs.length).to.equal(0);
                     expect(writes.length).to.equal(0);
                     expect(updates.length).to.equal(2);
-                    expect(updates[0]).to.equal('roster styles/css/plugin.sel0.less');
-                    expect(updates[1]).to.equal('roster styles/css/plugin.sel0.less');
+                    expect(updates[0]).to.equal('roster ' + libpath.normalize('styles/css/plugin.sel0.less'));
+                    expect(updates[1]).to.equal('roster ' + libpath.normalize('styles/css/plugin.sel0.less'));
                     expect(Object.keys(bundleCalls).length).to.equal(2);
                     expect(bundleCalls.simple).to.equal(1);
                     expect(bundleCalls.roster).to.equal(1);
@@ -792,34 +793,33 @@ describe('BundleLocator', function () {
                     types: 'configs'
                 },
                 bundleUpdated: function (evt, api) {
+                    var fooConfig = libpath.normalize('configs/foo.json'),
+                        barConfig = libpath.normalize('configs/bar.json');
+
                     if ('roster' === evt.bundle.name) {
                         bundleCalls += 1;
                         if (1 === bundleCalls) {
-                            return api.writeFileInBundle(evt.bundle.name, 'configs/foo.json', '// just testing', {encoding: 'utf8'})
+                            return api.writeFileInBundle(evt.bundle.name, fooConfig, '// just testing', {encoding: 'utf8'})
                                 .then(function (pathToNewFile) {
                                     try {
-                                        expect(pathToNewFile).to.equal(libpath.join(evt.bundle.buildDirectory, 'configs/foo.json'));
+                                        expect(pathToNewFile).to.equal(libpath.join(evt.bundle.buildDirectory, fooConfig));
                                     } catch (err) {
                                         mockery.deregisterAll();
                                         mockery.disable();
                                         next(err);
                                     }
-                                    return api.writeFileInBundle(evt.bundle.name, 'configs/bar.json', '// just testing', {encoding: 'utf8'});
+                                    return api.writeFileInBundle(evt.bundle.name, barConfig, '// just testing', {encoding: 'utf8'});
                                 });
                         }
                         if (2 === bundleCalls) {
-                            try {
-                                expect(Object.keys(evt.files).length).to.equal(2);
-                                expect(evt.files).to.have.property('configs/foo.json');
-                                expect(evt.files).to.have.property('configs/bar.json');
-                                expect(Object.keys(evt.resources).length).to.equal(2);
-                                expect(evt.resources).to.have.property('configs/foo.json');
-                                expect(evt.resources).to.have.property('configs/bar.json');
-                            } catch (err) {
-                                mockery.deregisterAll();
-                                mockery.disable();
-                                next(err);
-                            }
+                            expect(Object.keys(evt.files).length).to.equal(2);
+                            expect(evt.files).to.have.property(fooConfig);
+                            expect(evt.files).to.have.property(barConfig);
+                            expect(Object.keys(evt.resources).length).to.equal(2);
+                            expect(evt.resources).to.have.property(fooConfig);
+                            expect(evt.resources).to.have.property(barConfig);
+                            mockery.deregisterAll();
+                            mockery.disable();
                         }
                     }
                 }
