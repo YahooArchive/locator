@@ -136,6 +136,19 @@ locator.parseBundle(__dirname).then(function() {
 });
 ```
 
+## Example: Defining Your Own Bundle Name
+In your app's `package.json`:
+```javascript
+{
+    "name": "usually-a-long-name-for-npm"
+    "locator": {
+        "name": "foo"
+    }
+}
+```
+
+By default, locator will select the name of the bundle from the `package.json->name` entry, but you should be able to specify a custom name by adding a `name` entry under the `locator` entry in package.json. This will help to decouple the name of the package from the urls that you will use to fetch those scripts from the client side.
+
 
 ## License
 This software is free to use under the Yahoo! Inc. BSD license.
