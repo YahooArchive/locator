@@ -3,6 +3,8 @@ Locator Change History
 
 # @NEXT@
 
+* Add support for custom names for each package bundle thru the `locator.name` entry in `package.json` (pr #20)
+
 # 0.3.7
 
 * Fix OS dependant path comparison to work on windows (pr #15)
