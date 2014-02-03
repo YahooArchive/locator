@@ -1,0 +1,14 @@
+{
+    "name": "alias-support",
+    "description": "fixture to test that renaming pkgs is supported",
+    "version": "0.0.1",
+    "author": "Not A One <notaone@yahoo-inc.com>",
+    "engines": {
+        "node": "> 0.8",
+        "npm": "> 1.0"
+    },
+    "dependencies": {},
+    "locator": {
+        "name": "alias-support-renamed"
+    }
+}
