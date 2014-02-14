@@ -25,7 +25,6 @@ describe('default bundle build dir', function () {
 
     it('parseBundle()', function () {
         expect(actual.bundles.roster.buildDirectory).to.equal(expected);
-        expect(locator.ready._resolver._status).to.equal('fulfilled');
     });
 });
 
