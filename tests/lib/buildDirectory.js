@@ -24,9 +24,11 @@ describe('default bundle build dir', function () {
     });
 
     it('parseBundle()', function (done) {
-        expect(actual.bundles.roster.buildDirectory).to.equal(expected);
         locator.ready.then(function () {
-            done();
+            setTimeout(function () {
+                expect(actual.bundles.roster.buildDirectory).to.equal(expected);
+                done();
+            }, 0);
         }, done);
     });
 });
