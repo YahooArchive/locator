@@ -3,6 +3,8 @@ Locator Change History
 
 # @NEXT@
 
+* Remove dependency on YUI. Use standalone `ypromise` for promises.
+
 # 0.3.8
 
 * Add support for custom names for each package bundle thru the `locator.name` entry in `package.json` (pr #20)
