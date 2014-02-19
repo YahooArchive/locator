@@ -1,7 +1,7 @@
 Locator Change History
 ======================
 
-# @NEXT@
+# 0.3.9
 
 * Remove dependency on YUI. Use standalone `ypromise` for promises.
 
