@@ -32,12 +32,8 @@
         "npm": ">1.0"
     },
     "dependencies": {
-        "async": "*",
-        "mkdirp": "0.3.x",
         "scanfs": "~0.1.0",
-        "semver": "~1.1.4",
-        "watch": "0.6.x",
-        "ypromise": "~0.2.2"
+        "semver": "~1.1.4"
     },
     "devDependencies": {
         "chai": "~1.6.1",
