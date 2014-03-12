@@ -870,8 +870,6 @@ describe('BundleLocator', function () {
                 try {
                     expect(err).to.be.an('object');
                     expect(err.message).to.equal('NOPE');
-                    expect(locator.ready._resolver._status).to.equal('rejected');
-                    expect(locator.ready._resolver._result.message).to.equal('NOPE');
                     next();
                 } catch (err2) {
                     next(err2);

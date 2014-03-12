@@ -37,7 +37,7 @@
         "scanfs": "~0.1.0",
         "semver": "~1.1.4",
         "watch": "0.6.x",
-        "ypromise": "~0.2.2"
+        "ypromise": "~0.2.3"
     },
     "devDependencies": {
         "chai": "~1.6.1",
