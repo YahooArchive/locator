@@ -1,6 +1,11 @@
 Locator Change History
 ======================
 
+# 0.3.10
+
+* Do not override an existing promise implementation with `ypromise`. This opens
+up the possibility to use other promise libraries with Locator.
+
 # 0.3.9
 
 * Remove dependency on YUI. Use standalone `ypromise` for promises.
