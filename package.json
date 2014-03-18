@@ -32,8 +32,8 @@
         "npm": ">1.0"
     },
     "dependencies": {
-        "scanfs": "~0.1.0",
-        "semver": "~1.1.4"
+        "walk": "^2.3.1",
+        "semver": "^1.1.4"
     },
     "devDependencies": {
         "chai": "~1.6.1",
