@@ -9,24 +9,19 @@ var resolve = require('path').resolve,
     fixturesPath = resolve(__dirname, '../fixtures');
 
 
-describe('BundleLocator.parseBundle()', function () {
+describe('tests/lib/alias.js', function () {
 
-    it('parseBundle()', function (next) {
-        var mojapp = resolve(fixturesPath, 'alias-support'),
-            locator = new BundleLocator();
+    describe('BundleLocator.parseBundle()', function () {
 
-        function onParsed(bundle) {
+        it('parseBundle()', function () {
+            var mojapp = resolve(fixturesPath, 'alias-support'),
+                locator = new BundleLocator(),
+                bundle = locator.parseBundle(mojapp, {});
             //process.stdout.write('\n' + JSON.stringify(bundle, null, 4) + '\n');
-            try {
-                expect(bundle).to.be.an('object');
-                expect(bundle.name).to.equal('alias-support-renamed');
-                next();
-            } catch (er) {
-                next(er);
-            }
-        }
+            expect(bundle).to.be.an('object');
+            expect(bundle.name).to.equal('alias-support-renamed');
+        });
 
-        locator.parseBundle(mojapp, {}).then(onParsed, next);
     });
 
 });

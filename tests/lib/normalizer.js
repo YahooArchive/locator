@@ -13,23 +13,22 @@ function walk(obj, fn) {
     }
 }
 
-function normalizeFiles(value, key, obj) {
+function normalizeFiles(value, key) {
     switch (key) {
         case 'fullPath':
         case 'relativePath':
         case 'baseDirectory':
-        case 'buildDirectory':
-            obj[key] = normalize(value);
-            break;
         case 'files':
-            Object.keys(value).forEach(function (key) {
-                var newKey = normalize(key),
-                    oldVal = value[key];
+            if (typeof value === 'object') {
+                Object.keys(value).forEach(function (key) {
+                    var newKey = normalize(key),
+                        oldVal = value[key];
 
-                delete value[key];
+                    delete value[key];
 
-                value[newKey] = oldVal;
-            });
+                    value[newKey] = oldVal;
+                });
+            }
             break;
     }
 }
