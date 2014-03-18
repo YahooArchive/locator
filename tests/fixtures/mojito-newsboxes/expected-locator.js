@@ -91,7 +91,7 @@ module.exports = {
         Shelf: {
             options: {
                 ruleset: 'mojito-mojit',
-                rulesets: 'modown/rulesets'
+                rulesets: 'modown/rulesets.js'
             },
             name: 'Shelf',
             version: '0.0.2',
@@ -193,7 +193,7 @@ module.exports = {
         Weather: {
             options: {
                 ruleset: 'mojito-mojit',
-                rulesets: 'modown/rulesets'
+                rulesets: 'modown/rulesets.js'
             },
             name: 'Weather',
             version: '0.0.2',
@@ -307,7 +307,7 @@ module.exports = {
                 Read: {
                     options: {
                         ruleset: 'mojito-mojit',
-                        rulesets: 'modown/rulesets'
+                        rulesets: 'modown/rulesets.js'
                     },
                     name: 'Read',
                     version: '0.0.3',
