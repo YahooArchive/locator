@@ -24,6 +24,7 @@
     "license": "BSD",
 
     "main": "lib/bundleLocator.js",
+    "files": ["lib/"],
     "directories": {
         "lib": "./lib"
     },

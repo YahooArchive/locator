@@ -5,6 +5,7 @@ Locator Change History
 
 * **!IMPORTANT!** This release contains a notable backward-incompatible change..
 * **!Backwards-Incompatible Change!** sync version of locator without plugins.
+* **!Backwards-Incompatible Change!** removed support for nodejs 0.8.x.
 
 # 0.3.10
 
