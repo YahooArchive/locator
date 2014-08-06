@@ -40,7 +40,6 @@
         "istanbul": "*",
         "jshint": "~0.9.0",
         "mocha": "*",
-        "mockery": "1.4.x",
         "xunit-file": "*",
         "yui-lint": "~0.1.3"
     },
