@@ -30,14 +30,6 @@ It is up to the user to understand and use the semantic meanings associated with
     * ...defining new rulesets, for new bundle types
     * ...general runtime behavior configuration of returned values
     * ...etc
-* extensible (plugins)
-    * the locator also allows "plugins" to be informed about files/resources/bundles
-    * one type of plugin is a "compiler" which takes a file in an unknown format and "compiles" it into a known format
-        * for example, a "sass" compiler which generates "css" files
-    * other types of plugins can do general processing
-        * for example, a "config helper" plugin could load config files and cache their contents in memory
-    * other types of plugins can process a bundle as a whole
-        * for example, a "yui helper" plugin which can generate YUI loader metadata for the whole bundle
 
 
 ## Installation
@@ -113,26 +105,15 @@ Then, in your `app.js` (or wherever makes sense to you) you can do something lik
 var Locator = require('locator');
 
 locator = new Locator();
-locator.parseBundle(__dirname).then(function() {
-    var resources = locator.getRootBundle().getResources();
+var resources = locator.parseBundle(__dirname);
 
-    // access your "configs/foo.json" configuration file
-    ... resources.configs.foo ...
+// access your "configs/foo.json" configuration file
+... resources.configs.foo ...
 
-    // access all your templates
-    Object.keys(resources.templates).forEach(function (templateName) {
-        var templateResource = resources.templates[templateName];
-        ...
-    });
-
-    // File watching is optional, and probably only desired when running in
-    // a development environment.
-    locator.watch(__dirname).then(function () {
-        // File watching has started.
-        // Actual changes will be reflected into the results of `getBundle()`,
-        // `getRootBundle()`, `listAllResources()`, and `listBundleNames()`.
-        // Changes are also reported (as they happen) to the locator plugins.
-    });
+// access all your templates
+Object.keys(resources.templates).forEach(function (templateName) {
+    var templateResource = resources.templates[templateName];
+    ...
 });
 ```
 
@@ -161,5 +142,3 @@ See the [LICENSE file][] for license text and copyright information.
 See the [CONTRIBUTING.md file][] for information on contributing back to Locator.
 
 [CONTRIBUTING.md file]: https://github.com/yahoo/locator/blob/master/CONTRIBUTING.md
-
-

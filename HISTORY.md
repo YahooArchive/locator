@@ -1,6 +1,16 @@
 Locator Change History
 ======================
 
+# 1.0.0-rc-1
+
+* **!IMPORTANT!** This release contains a notable backward-incompatible change..
+* **!Backwards-Incompatible Change!** sync version of locator without plugins.
+
+# 0.3.10
+
+* Do not override an existing promise implementation with `ypromise`. This opens
+up the possibility to use other promise libraries with Locator.
+
 # 0.3.9
 
 * Remove dependency on YUI. Use standalone `ypromise` for promises.
@@ -110,4 +120,3 @@ _nothing to report_
 
 # 0.1.0-2
 * added "repository" marker
-
