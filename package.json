@@ -1,7 +1,7 @@
 {
   "name": "locator",
   "description": "gives semantic meaning to filesystem paths",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/yahoo/locator",
   "keywords": [
     "filesystem",

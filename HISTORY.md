@@ -1,6 +1,11 @@
 Locator Change History
 ======================
 
+# 1.0.1
+
+* `locator.getBundleResources()`: to filter resources per bundle.
+* `locator.getBundleFiles()`: to filter files per bundle.
+
 # 1.0.0
 
 * **!IMPORTANT!** This release contains a notable backward-incompatible change.
