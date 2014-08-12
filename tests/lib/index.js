@@ -156,6 +156,67 @@ describe('tests/lib/index.js: BundleLocator', function () {
             expect(have).to.deep.equal(want);
         });
 
+        it('getBundleFiles() : filter in bundle', function (next) {
+            var files;
+            try {
+                files = locator.getBundleFiles('Shelf', {extensions: 'js'});
+                // order doesn't matter, since it depends on how the filesystem is walked
+                files.sort();
+                expect(files.length).to.equal(2);
+                expect(files).to.contain(libpath.join(fixture, 'mojits/Shelf/controller.common.js'));
+                expect(files).to.contain(libpath.join(fixture, 'mojits/Shelf/views/index.js'));
+
+                files = locator.getBundleFiles('Read', {extensions: 'css'});
+                // order doesn't matter, since it depends on how the filesystem is walked
+                files.sort();
+                expect(files.length).to.equal(2);
+                expect(files).to.contain(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
+                expect(files).to.contain(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
+
+                next();
+            } catch (err) {
+                next(err);
+            }
+        });
+
+        it('getBundleResources() : filter in bundle', function (next) {
+            var ress;
+            try {
+                ress = locator.getBundleResources('Shelf', {types: 'templates'});
+                // order doesn't matter, since it depends on how the filesystem is walked
+                ress.sort(function (a, b) {
+                    return a.fullPath.localeCompare(b.fullPath);
+                });
+                expect(ress.length).to.equal(2);
+                expect(ress[0]).to.be.an('object');
+                expect(ress[0].bundleName).to.equal('Shelf');
+                expect(ress[0].type).to.equal('templates');
+                expect(ress[0].fullPath).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.hb.html'));
+                expect(ress[1]).to.be.an('object');
+                expect(ress[1].bundleName).to.equal('Shelf');
+                expect(ress[1].type).to.equal('templates');
+                expect(ress[1].fullPath).to.equal(libpath.join(fixture, 'mojits/Shelf/templates/index.opera-mini.hb.html'));
+
+                ress = locator.getBundleResources('Read', {extensions: 'css'});
+                // order doesn't matter, since it depends on how the filesystem is walked
+                ress.sort(function (a, b) {
+                    return a.fullPath.localeCompare(b.fullPath);
+                });
+                expect(ress.length).to.equal(2);
+                expect(ress[0]).to.be.an('object');
+                expect(ress[0].bundleName).to.equal('Read');
+                expect(ress[0].ext).to.equal('css');
+                expect(ress[0].fullPath).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
+                expect(ress[1]).to.be.an('object');
+                expect(ress[1].bundleName).to.equal('Read');
+                expect(ress[1].ext).to.equal('css');
+                expect(ress[1].fullPath).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
+                next();
+            } catch (err) {
+                next(err);
+            }
+        });
+
         it('_getBundleNameByPath()', function () {
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather'))).to.equal('Weather');
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather/x'))).to.equal('Weather');
