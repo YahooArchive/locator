@@ -1,6 +1,11 @@
 Locator Change History
 ======================
 
+# 1.0.2
+
+* Use `Module._resolveFilename()` to resolve alien rulesets thru npm lookup. This
+  helps if you want to parse a bundle that is a subdirectory of the current process.
+
 # 1.0.1
 
 * `locator.getBundleResources()`: to filter resources per bundle.
