@@ -1,11 +1,19 @@
 Locator Change History
 ======================
 
-# 1.0.0-rc-1
+# 1.0.0
 
-* **!IMPORTANT!** This release contains a notable backward-incompatible change..
+* **!IMPORTANT!** This release contains a notable backward-incompatible change.
 * **!Backwards-Incompatible Change!** sync version of locator without plugins.
 * **!Backwards-Incompatible Change!** removed support for nodejs 0.8.x.
+
+### No more plugins
+
+The support for plugins was removed, and therefore, any build process for files
+and resources should happen as a separate routine. This new version of locator can
+be used by grunt/gulp/broccoli tasks to apply custom builds based on the semantic
+of the application, in it can also be used during the runtime process as part of
+application code to get the semantic of the source files and resources.
 
 # 0.3.10
 
