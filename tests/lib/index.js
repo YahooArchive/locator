@@ -379,81 +379,111 @@ describe('tests/lib/index.js: BundleLocator', function () {
             }
         });
 
-        it('_filterBundleSeeds()', function (next) {
+        it('_filterBundleSeeds()', function () {
             var fixture = libpath.join(fixturesPath, 'walk-packages'),
                 locator = new BundleLocator({
                     maxPackageDepth: 2
                 }),
-                have = locator._walkNPMTree(fixture),
-                logCalls = 0;
-            BundleLocator.test.imports.log = function (msg) {
-                var matches = msg.match(/multiple "([a-zA-Z0-9\-]+)" packages found, using (\S+)/);
-                if (matches) {
-                    logCalls += 1;
-                }
-                try {
-                    switch (matches[1]) {
-                    case 'depth-different':
-                        expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'depth-different'));
-                        break;
-                    case 'depth-same':
-                        expect(matches[2]).to.equal(libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'));
-                        break;
-                    default:
-                        throw new Error('FAILURE -- unexpected log for ' + matches[1]);
-                    }
-                } catch (err) {
-                    next(err);
-                }
-            };
+                have = locator._walkNPMTree(fixture);
             have = locator._filterBundleSeeds(have);
-            try {
-                expect(logCalls).to.equal(2);
-                expect(have).to.be.an('array');
-                expect(have.length).to.equal(4);
-                have.forEach(function (seed) {
-                    expect(seed.options).to.be.an('object');
-                    switch (seed.baseDirectory) {
-                    case fixture:
-                        expect(seed.npmDepth).to.equal(0);
-                        expect(seed.name).to.equal('app');
-                        break;
+            expect(have).to.be.an('array');
+            expect(have.length).to.equal(4);
+            have.forEach(function (seed) {
+                expect(seed.options).to.be.an('object');
+                switch (seed.baseDirectory) {
+                case fixture:
+                    expect(seed.npmDepth).to.equal(0);
+                    expect(seed.name).to.equal('app');
+                    break;
 
-                    case libpath.join(fixture, 'node_modules', 'depth-different'):
-                        expect(seed.npmDepth).to.equal(1);
-                        expect(seed.name).to.equal('depth-different');
-                        expect(seed.version).to.equal('0.1.0');
-                        break;
+                case libpath.join(fixture, 'node_modules', 'depth-different'):
+                    expect(seed.npmDepth).to.equal(1);
+                    expect(seed.name).to.equal('depth-different');
+                    expect(seed.version).to.equal('0.1.0');
+                    break;
 
-                    case libpath.join(fixture, 'node_modules', 'middle'):
-                        expect(seed.npmDepth).to.equal(1);
-                        expect(seed.name).to.equal('middle');
-                        expect(seed.version).to.equal('0.0.1');
-                        break;
+                case libpath.join(fixture, 'node_modules', 'middle'):
+                    expect(seed.npmDepth).to.equal(1);
+                    expect(seed.name).to.equal('middle');
+                    expect(seed.version).to.equal('0.0.1');
+                    break;
 
-                    case libpath.join(fixture, 'node_modules', 'skip-a'):
-                        throw new Error('FAILURE -- should skip "skip-a"');
+                case libpath.join(fixture, 'node_modules', 'skip-a'):
+                    throw new Error('FAILURE -- should skip "skip-a"');
 
-                    case libpath.join(fixture, 'node_modules', 'skip-b'):
-                        throw new Error('FAILURE -- should skip "skip-b"');
+                case libpath.join(fixture, 'node_modules', 'skip-b'):
+                    throw new Error('FAILURE -- should skip "skip-b"');
 
-                    case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
-                        expect(seed.npmDepth).to.equal(2);
-                        expect(seed.name).to.equal('depth-same');
-                        expect(seed.version).to.equal('0.2.0');
-                        break;
+                case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same'):
+                    expect(seed.npmDepth).to.equal(2);
+                    expect(seed.name).to.equal('depth-same');
+                    expect(seed.version).to.equal('0.2.0');
+                    break;
 
-                    case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
-                        throw new Error('FAILURE -- did not honor maxPackageDepth');
+                case libpath.join(fixture, 'node_modules', 'skip-b', 'node_modules', 'depth-same', 'node_modules', 'depth-max'):
+                    throw new Error('FAILURE -- did not honor maxPackageDepth');
 
-                    default:
-                        throw new Error('FAILURE -- extra package ' + seed.baseDirectory);
-                    }
-                });
-                next();
-            } catch (err) {
-                next(err);
-            }
+                default:
+                    throw new Error('FAILURE -- extra package ' + seed.baseDirectory);
+                }
+            });
+        });
+
+
+        it('_dedupeSeeds()', function () {
+            var locator = new BundleLocator(),
+                r;
+            r = locator._dedupeSeeds({
+                '1': [{
+                    baseDirectory: 'tests/fixtures/walk-packages/node_modules/middle',
+                    name: 'middle',
+                    version: '0.0.1',
+                    npmDepth: 1
+                }]
+            });
+            expect(r.version).to.equal('0.0.1');
+
+            r = locator._dedupeSeeds({
+                '2': [{
+                    baseDirectory: 'tests/fixtures/walk-packages/node_modules/skip-a/node_modules/depth-same',
+                    name: 'depth-same',
+                    version: '0.1.0',
+                    npmDepth: 2
+                }, {
+                    baseDirectory: 'tests/fixtures/walk-packages/node_modules/skip-b/node_modules/depth-same',
+                    name: 'depth-same',
+                    version: '0.2.0',
+                    npmDepth: 2
+                }]
+            });
+            expect(r.version).to.equal('0.2.0');
+
+            r = locator._dedupeSeeds({
+                '1': [{
+                    baseDirectory: 'tests/fixtures/walk-packages/node_modules/depth-different',
+                    name: 'depth-different',
+                    version: '0.1.0',
+                    npmDepth: 1
+                }],
+                '2': [{
+                    baseDirectory: 'tests/fixtures/walk-packages/node_modules/middle/node_modules/depth-different',
+                    name: 'depth-different',
+                    version: '0.2.0',
+                    npmDepth: 2
+                }]
+            });
+            expect(r.version).to.equal('0.1.0');
+
+            r = locator._dedupeSeeds({
+                '0': [{
+                    baseDirectory: 'tests/fixtures/walk-packages',
+                    name: 'app',
+                    version: '0.0.1',
+                    options: {},
+                    npmDepth: 0
+                }]
+            });
+            expect(r.version).to.equal('0.0.1');
         });
 
         it('_loadRuleset()', function () {
