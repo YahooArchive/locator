@@ -58,8 +58,8 @@ describe('tests/lib/index.js: BundleLocator', function () {
             expect(locator.getRootBundle().name).to.equal('modown-newsboxes');
         });
 
-        it('listAllResources()', function () {
-            var ress = locator.listAllResources({extensions: 'js'});
+        it('getAllResources()', function () {
+            var ress = locator.getAllResources({extensions: 'js'});
             expect(ress.length).to.equal(10);
             ress.forEach(function (res) {
                 if ('Read' === res.bundleName && normalize('controller.common.js') === res.relativePath) {
@@ -105,18 +105,18 @@ describe('tests/lib/index.js: BundleLocator', function () {
             });
         });
 
-        it('listBundleNames()', function () {
-            var have = locator.listBundleNames(),
+        it('getBundleNames()', function () {
+            var have = locator.getBundleNames(),
                 want = ['Read', 'Shelf', 'Weather', 'modown', 'modown-lib-read', 'modown-newsboxes'];
             have.sort();
             expect(have).to.deep.equal(want);
         });
 
-        it('listBundleNames() : filter by bundleName', function () {
+        it('getBundleNames() : filter by bundleName', function () {
             var have,
                 want = ['modown-lib-read', 'modown-newsboxes'];
 
-            have = locator.listBundleNames(function (bundle) {
+            have = locator.getBundleNames(function (bundle) {
                 if (bundle.name && /^modown-/.test(bundle.name)) {
                     return true;
                 }
@@ -129,11 +129,11 @@ describe('tests/lib/index.js: BundleLocator', function () {
 
         // for use case where application need to filter on a specific
         // property of package.json
-        it('listBundleNames() : filter by pkgJSON property', function () {
+        it('getBundleNames() : filter by pkgJSON property', function () {
             var have,
                 want = ['modown-lib-read'];
 
-            have = locator.listBundleNames(function (bundle) {
+            have = locator.getBundleNames(function (bundle) {
                 var match = false,
                     pkgJSON;
 
