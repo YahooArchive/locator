@@ -565,4 +565,48 @@ describe('tests/lib/index.js: BundleLocator', function () {
 
     });
 
+
+    describe('filters', function () {
+
+        it('_filterResource() with empty filter', function () {
+            var locator = new BundleLocator(),
+                res = {ext: 'js', type: 'foo'};
+
+            expect(locator._filterResource(res)).to.equal(true);
+            expect(locator._filterResource(res), null).to.equal(true);
+            expect(locator._filterResource(res), false).to.equal(true);
+            expect(locator._filterResource(res), []).to.equal(true);
+            expect(locator._filterResource(res), true).to.equal(true);
+            expect(locator._filterResource(res), {}).to.equal(true);
+            expect(locator._filterResource(res), undefined).to.equal(true);
+        });
+
+        it('_filterResource() with filter', function () {
+            var locator = new BundleLocator(),
+                res = {ext: 'js', type: 'foo'};
+
+            expect(locator._filterResource(res, {extensions: 'js'})).to.equal(true);
+            expect(locator._filterResource(res, {extensions: 'css'})).to.equal(false);
+            expect(locator._filterResource(res, {extensions: ''})).to.equal(false);
+            expect(locator._filterResource(res, {extensions: false})).to.equal(false);
+            expect(locator._filterResource(res, {extensions: null})).to.equal(false);
+            expect(locator._filterResource(res, {extensions: undefined})).to.equal(false);
+
+            expect(locator._filterResource(res, {types: 'foo'})).to.equal(true);
+            expect(locator._filterResource(res, {types: 'foobar'})).to.equal(false);
+            expect(locator._filterResource(res, {types: ''})).to.equal(false);
+            expect(locator._filterResource(res, {types: false})).to.equal(false);
+            expect(locator._filterResource(res, {types: null})).to.equal(false);
+            expect(locator._filterResource(res, {types: undefined})).to.equal(false);
+
+            expect(locator._filterResource(res, {extensions: 'js',  types: 'foo'})).to.equal(true);
+            expect(locator._filterResource(res, {extensions: 'js',  types: 'bar', more: 1})).to.equal(false);
+            expect(locator._filterResource(res, {extensions: 'js',  types: 'bar'})).to.equal(false);
+            expect(locator._filterResource(res, {extensions: 'css', types: 'foo'})).to.equal(false);
+
+            expect(locator._filterResource(res, {foo: 'bar'})).to.equal(false);
+        });
+
+    });
+
 });
