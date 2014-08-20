@@ -1,0 +1,7 @@
+{
+    "name": "jsnext-support",
+    "description": "fixture to test that renaming pkgs is supported",
+    "version": "0.0.1",
+    "author": "Not A One <notaone@yahoo-inc.com>",
+    "dependencies": {}
+}
