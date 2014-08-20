@@ -1,6 +1,20 @@
 Locator Change History
 ======================
 
+# 1.1.0
+
+PR #30: Fixes #25 - logs
+
+* relied on `debug()` to log locator warnings
+* moved logic to dedupe duplicates into its own method for better testing
+
+PR #30: Fixes #27 - method deprecation:
+
+    * listAllResources() -> getAllResources()
+    * listBundleNames() -> getBundleNames()
+
+PR #29: Fixes #25 - support rulesets generation thru `rulesetFn` configuration
+
 # 1.0.2
 
 * Use `Module._resolveFilename()` to resolve alien rulesets thru npm lookup. This
