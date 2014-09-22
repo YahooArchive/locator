@@ -219,9 +219,11 @@ describe('tests/lib/index.js: BundleLocator', function () {
 
         it('_getBundleNameByPath()', function () {
             expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather'))).to.equal('Weather');
-            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather/x'))).to.equal('Weather');
-            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather2'))).to.equal('modown-newsboxes');
-            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather2/x'))).to.equal('modown-newsboxes');
+            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/Weather/controller.common.js'))).to.equal('Weather');
+            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits'))).to.equal('modown-newsboxes');
+            expect(locator._getBundleNameByPath(libpath.join(fixture, 'mojits/'))).to.equal('modown-newsboxes');
+            expect(locator._getBundleNameByPath(libpath.join(fixture, 'models/flickr.common.js'))).to.equal('modown-newsboxes');
+            expect(locator._getBundleNameByPath(fixture)).to.equal('modown-newsboxes');
         });
     });
 
