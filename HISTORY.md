@@ -1,6 +1,11 @@
 Locator Change History
 ======================
 
+# 1.1.1
+
+* PR #31: expands path to bundle using fs.realpathSync() for the internal
+  registry to guarantee resolution when developing using symblinks to bundles.
+
 # 1.1.0
 
 PR #30: Fixes #25 - logs
