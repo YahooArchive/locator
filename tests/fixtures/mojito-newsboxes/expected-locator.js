@@ -285,7 +285,7 @@ module.exports = {
             },
             name: 'modown-lib-read',
             version: '0.0.3',
-            baseDirectory: __dirname + '/node_modules/modown-lib-read',
+            baseDirectory: __dirname + '/node_modules/@scope/modown-lib-read',
             type: 'mojito-package',
             files: {},
             resources: {
@@ -293,7 +293,7 @@ module.exports = {
                     "configs": {
                         "package": {
                             "bundleName": "modown-lib-read",
-                            "fullPath": __dirname + "/node_modules/modown-lib-read/package.json",
+                            "fullPath": __dirname + "/node_modules/@scope/modown-lib-read/package.json",
                             "relativePath": "package.json",
                             "ext": "json",
                             "name": "package",
@@ -311,7 +311,7 @@ module.exports = {
                     },
                     name: 'Read',
                     version: '0.0.3',
-                    baseDirectory: __dirname + '/node_modules/modown-lib-read/mojits/Read',
+                    baseDirectory: __dirname + '/node_modules/@scope/modown-lib-read/mojits/Read',
                     type: 'mojito-mojit',
                     files: {},
                     resources: {
@@ -320,7 +320,7 @@ module.exports = {
                                 "css": {
                                     "read": {
                                         "bundleName": "Read",
-                                        "fullPath": __dirname + "/node_modules/modown-lib-read/mojits/Read/assets/read.css",
+                                        "fullPath": __dirname + "/node_modules/@scope/modown-lib-read/mojits/Read/assets/read.css",
                                         "relativePath": "assets/read.css",
                                         "ext": "css",
                                         "name": "read",
@@ -333,7 +333,7 @@ module.exports = {
                             "templates": {
                                 "index": {
                                     "bundleName": "Read",
-                                    "fullPath": __dirname + "/node_modules/modown-lib-read/mojits/Read/templates/index.hb.html",
+                                    "fullPath": __dirname + "/node_modules/@scope/modown-lib-read/mojits/Read/templates/index.hb.html",
                                     "relativePath": "templates/index.hb.html",
                                     "ext": "html",
                                     "name": "index",
@@ -344,7 +344,7 @@ module.exports = {
                             "views": {
                                 "index": {
                                     "bundleName": "Read",
-                                    "fullPath": __dirname + "/node_modules/modown-lib-read/mojits/Read/views/index.js",
+                                    "fullPath": __dirname + "/node_modules/@scope/modown-lib-read/mojits/Read/views/index.js",
                                     "relativePath": "views/index.js",
                                     "ext": "js",
                                     "name": "index",
@@ -357,7 +357,7 @@ module.exports = {
                             "controllers": {
                                 "controller": {
                                     "bundleName": "Read",
-                                    "fullPath": __dirname + "/node_modules/modown-lib-read/mojits/Read/controller.common.js",
+                                    "fullPath": __dirname + "/node_modules/@scope/modown-lib-read/mojits/Read/controller.common.js",
                                     "relativePath": "controller.common.js",
                                     "ext": "js",
                                     "name": "controller",
@@ -368,7 +368,7 @@ module.exports = {
                             "models": {
                                 "rss": {
                                     "bundleName": "Read",
-                                    "fullPath": __dirname + "/node_modules/modown-lib-read/mojits/Read/models/rss.common.js",
+                                    "fullPath": __dirname + "/node_modules/@scope/modown-lib-read/mojits/Read/models/rss.common.js",
                                     "relativePath": "models/rss.common.js",
                                     "ext": "js",
                                     "name": "rss",
@@ -382,7 +382,7 @@ module.exports = {
                                 "css": {
                                     "read": {
                                         "bundleName": "Read",
-                                        "fullPath": __dirname + "/node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css",
+                                        "fullPath": __dirname + "/node_modules/@scope/modown-lib-read/mojits/Read/assets/read.opera-mini.css",
                                         "relativePath": "assets/read.opera-mini.css",
                                         "ext": "css",
                                         "name": "read",
@@ -395,7 +395,7 @@ module.exports = {
                             "templates": {
                                 "index": {
                                     "bundleName": "Read",
-                                    "fullPath": __dirname + "/node_modules/modown-lib-read/mojits/Read/templates/index.opera-mini.hb.html",
+                                    "fullPath": __dirname + "/node_modules/@scope/modown-lib-read/mojits/Read/templates/index.opera-mini.hb.html",
                                     "relativePath": "templates/index.opera-mini.hb.html",
                                     "ext": "html",
                                     "name": "index",
@@ -443,19 +443,19 @@ module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app'] 
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/dimensions.json'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware'] = true;
 module.exports.bundles.modown.files[__dirname + '/node_modules/modown/lib/app/middleware/modown-contextualizer.js'] = true;
-module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read'] = true;
-module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read/mojits'] = true;
-module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/modown-lib-read/package.json'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/assets'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/controller.common.js'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/models'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/templates'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/views'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/assets/read.css'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/models/rss.common.js'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/templates/index.hb.html'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/templates/index.opera-mini.hb.html'] = true;
-module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/modown-lib-read/mojits/Read/views/index.js'] = true;
+module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/@scope/modown-lib-read'] = true;
+module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/@scope/modown-lib-read/mojits'] = true;
+module.exports.bundles['modown-lib-read'].files[__dirname + '/node_modules/@scope/modown-lib-read/package.json'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/assets'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/controller.common.js'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/models'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/templates'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/views'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/assets/read.css'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/assets/read.opera-mini.css'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/models/rss.common.js'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/templates/index.hb.html'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/templates/index.opera-mini.hb.html'] = true;
+module.exports.bundles['modown-lib-read'].bundles.Read.files[__dirname + '/node_modules/@scope/modown-lib-read/mojits/Read/views/index.js'] = true;
 
 normalizeFiles(module.exports);

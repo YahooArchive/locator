@@ -170,8 +170,8 @@ describe('tests/lib/index.js: BundleLocator', function () {
                 // order doesn't matter, since it depends on how the filesystem is walked
                 files.sort();
                 expect(files.length).to.equal(2);
-                expect(files).to.contain(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
-                expect(files).to.contain(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
+                expect(files).to.contain(libpath.join(fixture, 'node_modules/@scope/modown-lib-read/mojits/Read/assets/read.css'));
+                expect(files).to.contain(libpath.join(fixture, 'node_modules/@scope/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
 
                 next();
             } catch (err) {
@@ -206,11 +206,13 @@ describe('tests/lib/index.js: BundleLocator', function () {
                 expect(ress[0]).to.be.an('object');
                 expect(ress[0].bundleName).to.equal('Read');
                 expect(ress[0].ext).to.equal('css');
-                expect(ress[0].fullPath).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.css'));
+                expect(ress[0].fullPath).to.equal(libpath.join(fixture, 'node_modules/@scope/modown-lib-read/mojits/Read/assets/read.css'));
                 expect(ress[1]).to.be.an('object');
                 expect(ress[1].bundleName).to.equal('Read');
                 expect(ress[1].ext).to.equal('css');
-                expect(ress[1].fullPath).to.equal(libpath.join(fixture, 'node_modules/modown-lib-read/mojits/Read/assets/read.opera-mini.css'));
+                expect(ress[1].fullPath).to.equal(
+                    libpath.join(fixture, 'node_modules/@scope/modown-lib-read/mojits/Read/assets/read.opera-mini.css')
+                );
                 next();
             } catch (err) {
                 next(err);
