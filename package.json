@@ -40,8 +40,8 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "istanbul": "*",
-    "jshint": "^2.5.3",
-    "mocha": "*",
+    "jshint": "^2.9.6",
+    "mocha": "^5.2.0",
     "xunit-file": "*",
     "yui-lint": "^0.2.0"
   },
